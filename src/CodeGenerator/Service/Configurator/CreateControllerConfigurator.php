@@ -7,7 +7,7 @@ use JtcSolutions\CodeGenerator\CodeGenerator\Dto\ControllerConfiguration\Control
 use JtcSolutions\CodeGenerator\CodeGenerator\Dto\ControllerConfiguration\Method\MethodArgumentConfiguration;
 use JtcSolutions\CodeGenerator\CodeGenerator\Dto\ControllerConfiguration\Method\MethodConfiguration;
 use JtcSolutions\CodeGenerator\CodeGenerator\Exception\ConfigurationException;
-use JtcSolutions\CodeGenerator\CodeGenerator\MoveToOtherPackage\BaseController;
+use JtcSolutions\CodeGenerator\CodeGenerator\MoveToOtherPackage\BaseEntityController;
 use JtcSolutions\CodeGenerator\CodeGenerator\MoveToOtherPackage\ErrorRequestJsonResponse;
 use JtcSolutions\CodeGenerator\CodeGenerator\Service\Builder\Configuration\ControllerConfigurationBuilder;
 use JtcSolutions\CodeGenerator\CodeGenerator\Service\Builder\Configuration\MethodConfigurationBuilder;
@@ -19,13 +19,13 @@ use OpenApi\Attributes as OA;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Attribute\Route;
 
-class DetailControllerConfigurator extends BaseControllerConfigurator implements IControllerConfigurator
+class CreateControllerConfigurator extends BaseControllerConfigurator implements IControllerConfigurator
 {
-    protected const string METHOD_NAME = 'detail';
+    protected const string METHOD_NAME = 'create';
 
-    protected const string ARGUMENT_NAME = 'entity';
+    protected const string ARGUMENT_NAME = 'request';
 
-    protected const string CONTROLLER_NAME_TEMPLATE = 'Detail%sController';
+    protected const string CONTROLLER_NAME_TEMPLATE = 'Create%sController';
 
     protected const string NAMESPACE_TEMPLATE = 'App\\%s\App\Api\\%s';
 
@@ -36,7 +36,7 @@ class DetailControllerConfigurator extends BaseControllerConfigurator implements
     {
         $builder = $this->createBuilder($context);
 
-        $builder->addExtendedClass(BaseController::class);
+        $builder->addExtendedClass(BaseEntityController::class);
 
         $this->configureUseStatements($builder, $context->entity);
         $this->configureOpenApiDocs($context->entity, $builder);
@@ -51,7 +51,7 @@ class DetailControllerConfigurator extends BaseControllerConfigurator implements
         $methodBuilder = new MethodConfigurationBuilder(self::METHOD_NAME, 'JsonResponse', $this->configureMethodBody($context->entity));
         $methodBuilder
             ->addArgument(new MethodArgumentConfiguration(self::ARGUMENT_NAME, $entityClassName))
-            ->addAttribute(MethodAttributeConfigurationFactory::createDetailRouteAttribute($context->entity));
+            ->addAttribute(MethodAttributeConfigurationFactory::createCreateRouteAttribute($context->entity));
 
         return $methodBuilder->build();
     }
@@ -84,8 +84,8 @@ class DetailControllerConfigurator extends BaseControllerConfigurator implements
 
         $builder->addOpenApiDoc($openApiDocFactory->createTag($entity));
         $builder->addOpenApiDoc($openApiDocFactory->createModelResponse(
-            responseCode: 'Response::HTTP_OK',
-            description: "Detail of {$className}",
+            responseCode: 'Response::HTTP_CREATED',
+            description: "Create of {$className}",
             type: $entity,
             groups: [
                 StringUtils::firstToLowercase($className) . ':detail',
@@ -98,6 +98,12 @@ class DetailControllerConfigurator extends BaseControllerConfigurator implements
             type: ErrorRequestJsonResponse::class,
             groups: ['error'],
         ));
+        $builder->addOpenApiDoc($openApiDocFactory->createModelResponse(
+            responseCode: 'Response::HTTP_CONFLICT',
+            description: 'Entity already exists.',
+            type: ErrorRequestJsonResponse::class,
+            groups: ['error'],
+        ));
     }
 
     protected function configureMethodBody(string $entity): string
@@ -106,8 +112,9 @@ class DetailControllerConfigurator extends BaseControllerConfigurator implements
         $lowercase = StringUtils::firstToLowercase($className);
 
         return <<<PHP
-            \$this->checkPermissions({$className}::class, RequestAction::DETAIL);
-            return \$this->json(\$entity, Response::HTTP_OK, [], ['groups' => ['{$lowercase}:detail', 'reference']]);
+            \$this->checkPermissions({$className}::class, RequestAction::CREATE);
+            
+            return \$this->handleCreation(\$entity, Response::HTTP_CREATED, [], ['groups' => ['{$lowercase}:detail', 'reference']]);
         PHP;
     }
 }

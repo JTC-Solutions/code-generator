@@ -1,5 +1,4 @@
-<?php
-declare(strict_types = 1);
+<?php declare(strict_types = 1);
 
 namespace JtcSolutions\CodeGenerator\CodeGenerator\Service\Builder\Configuration;
 
@@ -45,9 +44,10 @@ abstract class BaseConfigurationBuilder
         array $existingItems,
     ): bool {
         if (is_string($item) === true) {
-            return in_array($item, $existingItems);
+            return in_array($item, $existingItems, true);
         }
 
+        /** @var IConfiguration $existingItem */
         foreach ($existingItems as $existingItem) {
             if ($existingItem->getIdentifier() === $item->getIdentifier()) {
                 return true;

@@ -4,7 +4,6 @@ namespace JtcSolutions\CodeGenerator\CodeGenerator\Service\Configurator;
 
 use JtcSolutions\CodeGenerator\CodeGenerator\Dto\Context;
 use JtcSolutions\CodeGenerator\CodeGenerator\Dto\ControllerConfiguration\ControllerConfiguration;
-use JtcSolutions\CodeGenerator\CodeGenerator\Dto\ControllerConfiguration\Method\MethodArgumentConfiguration;
 use JtcSolutions\CodeGenerator\CodeGenerator\Dto\ControllerConfiguration\Method\MethodConfiguration;
 use JtcSolutions\CodeGenerator\CodeGenerator\Exception\ConfigurationException;
 use JtcSolutions\CodeGenerator\CodeGenerator\MoveToOtherPackage\BaseController;
@@ -19,13 +18,11 @@ use OpenApi\Attributes as OA;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Attribute\Route;
 
-class DetailControllerConfigurator extends BaseControllerConfigurator implements IControllerConfigurator
+class ListControllerConfigurator extends BaseControllerConfigurator implements IControllerConfigurator
 {
-    protected const string METHOD_NAME = 'detail';
+    protected const string METHOD_NAME = 'list';
 
-    protected const string ARGUMENT_NAME = 'entity';
-
-    protected const string CONTROLLER_NAME_TEMPLATE = 'Detail%sController';
+    protected const string CONTROLLER_NAME_TEMPLATE = 'List%sController';
 
     protected const string NAMESPACE_TEMPLATE = 'App\\%s\App\Api\\%s';
 
@@ -46,13 +43,9 @@ class DetailControllerConfigurator extends BaseControllerConfigurator implements
 
     public function createMethodConfiguration(Context $context): MethodConfiguration
     {
-        $entityClassName = FQCNHelper::transformFQCNToEntityName($context->entity, false);
-
         $methodBuilder = new MethodConfigurationBuilder(self::METHOD_NAME, 'JsonResponse', $this->configureMethodBody($context->entity));
         $methodBuilder
-            ->addArgument(new MethodArgumentConfiguration(self::ARGUMENT_NAME, $entityClassName))
-            ->addAttribute(MethodAttributeConfigurationFactory::createDetailRouteAttribute($context->entity));
-
+            ->addAttribute(MethodAttributeConfigurationFactory::createListRouteAttribute($context->entity));
         return $methodBuilder->build();
     }
 
@@ -83,9 +76,9 @@ class DetailControllerConfigurator extends BaseControllerConfigurator implements
         $className = FQCNHelper::transformFQCNToEntityName($entity, false);
 
         $builder->addOpenApiDoc($openApiDocFactory->createTag($entity));
-        $builder->addOpenApiDoc($openApiDocFactory->createModelResponse(
+        $builder->addOpenApiDoc($openApiDocFactory->createJsonContentResponse(
             responseCode: 'Response::HTTP_OK',
-            description: "Detail of {$className}",
+            description: "List of {$className}, paginated by offset and limit.",
             type: $entity,
             groups: [
                 StringUtils::firstToLowercase($className) . ':detail',
@@ -106,8 +99,9 @@ class DetailControllerConfigurator extends BaseControllerConfigurator implements
         $lowercase = StringUtils::firstToLowercase($className);
 
         return <<<PHP
-            \$this->checkPermissions({$className}::class, RequestAction::DETAIL);
-            return \$this->json(\$entity, Response::HTTP_OK, [], ['groups' => ['{$lowercase}:detail', 'reference']]);
+            \$this->checkPermissions({$className}::class, RequestAction::LIST);
+            
+            return \$this->json(\$entity, Response::HTTP_OK, [], ['groups' => ['{$lowercase}:list', 'reference']]);
         PHP;
     }
 }

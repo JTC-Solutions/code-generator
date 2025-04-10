@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace JtcSolutions\CodeGenerator\Tests\Integration\CodeRenderer;
 
@@ -13,6 +13,7 @@ use PHPUnit\Framework\TestCase;
 class ControllerCodeRendererTest extends TestCase
 {
     private ControllerCodeRenderer $renderer;
+
     private ControllerConfiguration $configuration;
 
     protected function setUp(): void
@@ -27,7 +28,7 @@ class ControllerCodeRendererTest extends TestCase
             'JsonResponse',
             'return $this->json([]);',
             [$methodArg],
-            [$methodAttribute]
+            [$methodAttribute],
         );
 
         $openApiDoc = $this->createMock(IOpenApiDocConfiguration::class);
@@ -42,7 +43,7 @@ class ControllerCodeRendererTest extends TestCase
             [$openApiDoc],
             ['TestInterface'],
             [new MethodArgumentConfiguration('service', 'TestService')],
-            'parent::__construct();'
+            'parent::__construct();',
         );
 
         $this->renderer = new ControllerCodeRenderer($this->configuration);
@@ -53,21 +54,21 @@ class ControllerCodeRendererTest extends TestCase
         $result = $this->renderer->generateCode();
 
         // Check structure and key elements
-        $this->assertStringContainsString('<?php declare(strict_types = 1);', $result);
-        $this->assertStringContainsString('namespace App\Test\Controller;', $result);
-        $this->assertStringContainsString('use App\Base\BaseController;', $result);
-        $this->assertStringContainsString('use Symfony\Component\HttpFoundation\JsonResponse;', $result);
-        $this->assertStringContainsString('#[OA\Tag(name: "Test")]', $result);
-        $this->assertStringContainsString('class TestController extends BaseController implements TestInterface', $result);
-        $this->assertStringContainsString('public function __construct(', $result);
-        $this->assertStringContainsString('TestService $service', $result);
-        $this->assertStringContainsString('parent::__construct();', $result);
-        $this->assertStringContainsString('#[Route("/test")]', $result);
-        $this->assertStringContainsString('public function testMethod(', $result);
-        $this->assertStringContainsString('string $testArg', $result);
-        $this->assertStringContainsString('): JsonResponse {', $result);
-        $this->assertStringContainsString('return $this->json([]);', $result);
-        $this->assertStringContainsString('}', $result);
+        self::assertStringContainsString('<?php declare(strict_types = 1);', $result);
+        self::assertStringContainsString('namespace App\Test\Controller;', $result);
+        self::assertStringContainsString('use App\Base\BaseController;', $result);
+        self::assertStringContainsString('use Symfony\Component\HttpFoundation\JsonResponse;', $result);
+        self::assertStringContainsString('#[OA\Tag(name: "Test")]', $result);
+        self::assertStringContainsString('class TestController extends BaseController implements TestInterface', $result);
+        self::assertStringContainsString('public function __construct(', $result);
+        self::assertStringContainsString('TestService $service', $result);
+        self::assertStringContainsString('parent::__construct();', $result);
+        self::assertStringContainsString('#[Route("/test")]', $result);
+        self::assertStringContainsString('public function testMethod(', $result);
+        self::assertStringContainsString('string $testArg', $result);
+        self::assertStringContainsString('): JsonResponse {', $result);
+        self::assertStringContainsString('return $this->json([]);', $result);
+        self::assertStringContainsString('}', $result);
     }
 
     public function testMinimalConfigurationRendering(): void
@@ -77,7 +78,7 @@ class ControllerCodeRendererTest extends TestCase
             'void',
             'return;',
             [],
-            []
+            [],
         );
 
         $minimalConfig = new ControllerConfiguration(
@@ -89,19 +90,19 @@ class ControllerCodeRendererTest extends TestCase
             [],
             [],
             [],
-            null
+            null,
         );
 
         $renderer = new ControllerCodeRenderer($minimalConfig);
         $result = $renderer->generateCode();
 
-        $this->assertStringContainsString('<?php declare(strict_types = 1);', $result);
-        $this->assertStringContainsString('namespace App\Simple;', $result);
-        $this->assertStringContainsString('class SimpleController', $result);
-        $this->assertStringNotContainsString('extends', $result);
-        $this->assertStringNotContainsString('implements', $result);
-        $this->assertStringContainsString('public function simple(', $result);
-        $this->assertStringContainsString('): void {', $result);
-        $this->assertStringContainsString('return;', $result);
+        self::assertStringContainsString('<?php declare(strict_types = 1);', $result);
+        self::assertStringContainsString('namespace App\Simple;', $result);
+        self::assertStringContainsString('class SimpleController', $result);
+        self::assertStringNotContainsString('extends', $result);
+        self::assertStringNotContainsString('implements', $result);
+        self::assertStringContainsString('public function simple(', $result);
+        self::assertStringContainsString('): void {', $result);
+        self::assertStringContainsString('return;', $result);
     }
 }

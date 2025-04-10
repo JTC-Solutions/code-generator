@@ -1,8 +1,8 @@
-<?php
-declare(strict_types = 1);
+<?php declare(strict_types = 1);
 
 namespace JtcSolutions\CodeGenerator\Tests\Integration\Configurator;
 
+use JtcSolutions\CodeGenerator\CodeGenerator\Dto\Context;
 use JtcSolutions\CodeGenerator\CodeGenerator\Dto\ControllerConfiguration\ControllerConfiguration;
 use JtcSolutions\CodeGenerator\CodeGenerator\Service\Configurator\DetailControllerConfigurator;
 use PHPUnit\Framework\TestCase;
@@ -23,14 +23,14 @@ class DetailControllerConfiguratorTest extends TestCase
         $domain = 'TestDomain';
         $entity = 'App\Entity\Test';
 
-        $result = $this->configurator->configure($domain, $entity);
+        $result = $this->configurator->configure(new Context($domain, $entity, ''));
 
         self::assertInstanceOf(ControllerConfiguration::class, $result, 'Invalid instance provided.');
         self::assertEquals('DetailTestController', $result->className, 'Class name does not match.');
         self::assertEquals('App\TestDomain\App\Api\Test', $result->namespace, 'Namespace does not match.');
-        self::assertTrue(in_array('BaseController', $result->extends), 'Extended class is missing.');
-        self::assertTrue(in_array(JsonResponse::class, $result->useStatements), 'Use statement is missing.');
-        self::assertTrue(in_array(Route::class, $result->useStatements), 'Use statement is missing.');
+        self::assertTrue(in_array('BaseController', $result->extends, true), 'Extended class is missing.');
+        self::assertTrue(in_array(JsonResponse::class, $result->useStatements, true), 'Use statement is missing.');
+        self::assertTrue(in_array(Route::class, $result->useStatements, true), 'Use statement is missing.');
         self::assertEquals('detail', $result->methodConfiguration->name, 'Method name does not match.');
         self::assertEquals('JsonResponse', $result->methodConfiguration->returnType, 'Method return type does not match.');
         self::assertCount(1, $result->methodConfiguration->arguments, 'Number of method arguments does not match.');
@@ -42,7 +42,7 @@ class DetailControllerConfiguratorTest extends TestCase
     {
         $entity = 'App\Entity\TestEntity';
 
-        $result = $this->configurator->createMethodConfiguration($entity);
+        $result = $this->configurator->createMethodConfiguration(new Context('', $entity, ''));
 
         self::assertEquals('detail', $result->name, 'Method name does not match.');
         self::assertEquals('JsonResponse', $result->returnType, 'Method return type does not match.');

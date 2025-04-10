@@ -1,5 +1,4 @@
-<?php
-declare(strict_types = 1);
+<?php declare(strict_types = 1);
 
 namespace JtcSolutions\CodeGenerator\CodeGenerator\Service\Factory;
 
@@ -19,9 +18,37 @@ class MethodAttributeConfigurationFactory
         $snakeCase = StringUtils::toSnakeCase($className);
 
         return new RouteAttributeConfiguration(
-            path: self::API_PREFIX . $kebabCase . '/{entity}',
+            path: static::API_PREFIX . $kebabCase . '/{entity}',
             name: "{$snakeCase}_detail",
             methods: ['GET'],
+        );
+    }
+
+    public static function createListRouteAttribute(
+        string $entity,
+    ): RouteAttributeConfiguration {
+        $className = FQCNHelper::transformFQCNToEntityName($entity, false);
+        $kebabCase = StringUtils::toKebabCase($className);
+        $snakeCase = StringUtils::toSnakeCase($className);
+
+        return new RouteAttributeConfiguration(
+            path: static::API_PREFIX . $kebabCase,
+            name: "{$snakeCase}_list",
+            methods: ['GET'],
+        );
+    }
+
+    public static function createCreateRouteAttribute(
+        string $entity,
+    ): RouteAttributeConfiguration {
+        $className = FQCNHelper::transformFQCNToEntityName($entity, false);
+        $kebabCase = StringUtils::toKebabCase($className);
+        $snakeCase = StringUtils::toSnakeCase($className);
+
+        return new RouteAttributeConfiguration(
+            path: static::API_PREFIX . $kebabCase,
+            name: "{$snakeCase}_create",
+            methods: ['POST'],
         );
     }
 }

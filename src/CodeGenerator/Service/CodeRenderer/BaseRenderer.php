@@ -81,20 +81,37 @@ class BaseRenderer
 
     protected function addMethodAttributes(): void
     {
-        if ($this->configuration->methodConfiguration->attributes !== []) {
-            foreach ($this->configuration->methodConfiguration->attributes as $attribute) {
-                $this->code .= '    ' . $attribute->render() . "\n";
-            }
+        if (
+            $this->configuration->methodConfiguration === null
+            || $this->configuration->methodConfiguration->attributes === []
+        ) {
+            return;
+        }
+
+        foreach ($this->configuration->methodConfiguration->attributes as $attribute) {
+            $this->code .= '    ' . $attribute->render() . "\n";
         }
     }
 
     protected function addMethodName(): void
     {
+        if (
+            $this->configuration->methodConfiguration === null
+        ) {
+            return;
+        }
+
         $this->code .= "    public function {$this->configuration->methodConfiguration->name}(\n";
     }
 
     protected function addMethodArguments(): void
     {
+        if (
+            $this->configuration->methodConfiguration === null
+        ) {
+            return;
+        }
+
         $argStrings = [];
 
         foreach ($this->configuration->methodConfiguration->arguments as $arg) {
@@ -110,6 +127,10 @@ class BaseRenderer
 
     protected function addMethodBody(): void
     {
+        if ($this->configuration->methodConfiguration === null) {
+            return;
+        }
+
         $methodLine = explode("\n", $this->configuration->methodConfiguration->methodBody);
 
         foreach ($methodLine as $line) {

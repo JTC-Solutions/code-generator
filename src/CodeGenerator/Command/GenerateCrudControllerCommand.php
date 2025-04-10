@@ -2,8 +2,11 @@
 
 namespace JtcSolutions\CodeGenerator\CodeGenerator\Command;
 
+use JtcSolutions\CodeGenerator\CodeGenerator\Service\Generator\BaseControllerGenerator;
+use JtcSolutions\CodeGenerator\CodeGenerator\Service\Generator\CreateControllerGenerator;
 use JtcSolutions\CodeGenerator\CodeGenerator\Service\Generator\DetailControllerGenerator;
-use JtcSolutions\CodeGenerator\CodeGenerator\Service\Provider\DomainContextProvider;
+use JtcSolutions\CodeGenerator\CodeGenerator\Service\Generator\ListControllerGenerator;
+use JtcSolutions\CodeGenerator\CodeGenerator\Service\Provider\ContextProvider;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -17,7 +20,7 @@ class GenerateCrudControllerCommand extends Command
 {
     protected SymfonyStyle $console;
 
-    protected DomainContextProvider $domainContextProvider;
+    protected ContextProvider $domainContextProvider;
 
     protected bool $override;
 
@@ -25,6 +28,7 @@ class GenerateCrudControllerCommand extends Command
     {
         $this
             ->setDescription('Generate CRUD Controllers for given entity in given domain.')
+            ->addArgument('path', InputArgument::REQUIRED, 'Path where to put the generated classes')
             ->addArgument('domain', InputArgument::REQUIRED, 'Domain used to generate')
             ->addArgument('entity', InputArgument::REQUIRED, 'Entity name for which to generate')
             ->addOption('override', 'o', InputOption::VALUE_NONE, 'Override existing controllers');
@@ -35,21 +39,41 @@ class GenerateCrudControllerCommand extends Command
         $this->console = new SymfonyStyle($input, $output);
         $this->loadArguments($input);
 
-        $detailControllerGenerator = new DetailControllerGenerator();
-        $detailControllerGenerator->generate($this->domainContextProvider->getContext());
+        /** @var BaseControllerGenerator[] $generators */
+        $generators = [
+            new DetailControllerGenerator(),
+            new ListControllerGenerator(),
+            new CreateControllerGenerator(),
+        ];
+
+        foreach ($generators as $generator) {
+            $generator->generate($this->domainContextProvider->getContext());
+        }
 
         return Command::SUCCESS;
     }
 
     private function loadArguments(InputInterface $input): void
     {
-        /** @var string|null $entity */
+        $path = $input->getArgument('path');
+
+        if (is_string($path) === false) {
+            $this->console->error('Path is invalid!');
+            return;
+        }
+
+        /** @var class-string|null $entity */
         $entity = $input->getArgument('entity');
         /** @var string|null $domain */
         $domain = $input->getArgument('domain');
 
         $this->override = (bool) $input->getOption('override');
 
-        $this->domainContextProvider = new DomainContextProvider($domain, $entity);
+        if ($entity === null || $domain == null) {
+            $this->console->error('Domain or Entity parameter is invalid');
+            return;
+        }
+
+        $this->domainContextProvider = new ContextProvider($path, $domain, $entity);
     }
 }

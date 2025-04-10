@@ -11,6 +11,21 @@ class OpenApiDocConfigurationFactory
 {
     protected const string RESPONSE_MODEL_TEMPLATE = 'new Model(type: %s::class, groups: [\'%s\'])';
 
+    protected const string RESPONSE_JSON_CONTENT_TEMPLATE = 'new OA\JsonContent(
+        properties: [
+            new OA\Property(
+                property: \'data\',
+                type: \'array\',
+                items: new OA\Items(ref: new Model(type: %s::class, groups: [\'%s\'])),
+            ),
+            new OA\Property(
+                property: \'metadata\',
+                ref: new Model(type: Pagination::class, groups: [\'reference\']),
+            ),
+        ],
+        type: \'object\',
+    )';
+
     /**
      * @param class-string $name
      */
@@ -26,7 +41,7 @@ class OpenApiDocConfigurationFactory
      * @param string[] $groups
      * @param class-string|string $type
      */
-    public function createResponse(
+    public function createModelResponse(
         string $responseCode,
         string $description,
         string $type,
@@ -38,6 +53,25 @@ class OpenApiDocConfigurationFactory
             response: $responseCode,
             description: $description,
             content: sprintf(self::RESPONSE_MODEL_TEMPLATE, $model, implode(', ', $groups)),
+        );
+    }
+
+    /**
+     * @param string[] $groups
+     * @param class-string|string $type
+     */
+    public function createJsonContentResponse(
+        string $responseCode,
+        string $description,
+        string $type,
+        array $groups,
+    ): OpenApiDocResponseConfiguration {
+        $model = FQCNHelper::transformFQCNToEntityName($type, false);
+
+        return new OpenApiDocResponseConfiguration(
+            response: $responseCode,
+            description: $description,
+            content: sprintf(self::RESPONSE_JSON_CONTENT_TEMPLATE, $model, implode(', ', $groups)),
         );
     }
 }

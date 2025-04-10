@@ -2,7 +2,7 @@
 
 namespace JtcSolutions\CodeGenerator\CodeGenerator\Service\CodeRenderer;
 
-class ControllerCodeRenderer extends BaseRenderer
+class ControllerCodeRenderer extends BaseRenderer implements IControllerCodeRenderer
 {
     public function generateCode(): string
     {
