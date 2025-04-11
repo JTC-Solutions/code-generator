@@ -39,12 +39,10 @@ class GenerateCrudControllerCommand extends Command
 
         /** @var BaseControllerGenerator[] $generators */
         $generators = [
-            /*
             new DetailControllerGenerator(),
             new ListControllerGenerator(),
             new CreateControllerGenerator(),
             new UpdateControllerGenerator(),
-            */
             new DeleteControllerGenerator(),
         ];
 

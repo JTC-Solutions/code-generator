@@ -5,7 +5,7 @@ namespace JtcSolutions\CodeGenerator\CodeGenerator\Dto\Configuration;
 abstract readonly class BaseConfiguration
 {
     /**
-     * @param array<int, string> $useStatements
+     * @param array<int, UseStatementConfiguration> $useStatements
      * @param array<int, string> $extends
      * @param array<int, string> $interfaces
      */
@@ -29,7 +29,7 @@ abstract readonly class BaseConfiguration
     }
 
     /**
-     * @return array<int,string>
+     * @return array<int, UseStatementConfiguration>
      */
     public function getUseStatements(): array
     {

@@ -6,6 +6,7 @@ use JtcSolutions\CodeGenerator\CodeGenerator\Dto\Configuration\Controller\Contro
 use JtcSolutions\CodeGenerator\CodeGenerator\Dto\Configuration\Controller\Method\MethodArgumentConfiguration;
 use JtcSolutions\CodeGenerator\CodeGenerator\Dto\Configuration\Controller\Method\MethodConfiguration;
 use JtcSolutions\CodeGenerator\CodeGenerator\Dto\Configuration\Controller\OpenApiDoc\IOpenApiDocConfiguration;
+use JtcSolutions\CodeGenerator\CodeGenerator\Dto\Configuration\UseStatementConfiguration;
 use JtcSolutions\CodeGenerator\CodeGenerator\Exception\ConfigurationException;
 use JtcSolutions\Helpers\Helper\FQCNHelper;
 
@@ -27,7 +28,7 @@ class ControllerConfigurationBuilder extends BaseConfigurationBuilder
     protected array $extends = [];
 
     /**
-     * @var array<int, string>
+     * @var array<int, UseStatementConfiguration>
      */
     protected array $useStatements = []; // TODO: Add option to import as "as"
 
@@ -78,10 +79,12 @@ class ControllerConfigurationBuilder extends BaseConfigurationBuilder
     /**
      * @throws ConfigurationException
      */
-    public function addUseStatement(string $useStatement, ?int $order = null): self
+    public function addUseStatement(string $fqcn, ?string $alias = null, ?int $order = null): self
     {
-        /** @var array<int,string> $result */
-        $result = $this->addItem(self::USE_STATEMENT, $useStatement, $this->useStatements, $order);
+        $statement = new UseStatementConfiguration($fqcn, $alias);
+
+        /** @var array<int, UseStatementConfiguration> $result */
+        $result = $this->addItem(self::USE_STATEMENT, $statement, $this->useStatements, $order);
 
         $this->useStatements = $result;
 

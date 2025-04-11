@@ -40,7 +40,10 @@ class ControllerConfigurationBuilderTest extends TestCase
         $this->builder->addUseStatement(JsonResponse::class); //
         $config = $this->builder->build();
         self::assertCount(1, $config->useStatements);
-        self::assertContains(JsonResponse::class, $config->useStatements);
+
+        foreach ($config->useStatements as $statement) {
+            self::assertTrue($statement->fqcn === JsonResponse::class);
+        }
     }
 
     public function testAddUseStatementDuplicateThrowsException(): void
@@ -58,8 +61,9 @@ class ControllerConfigurationBuilderTest extends TestCase
         $config = $this->builder->build();
 
         // BaseController should be added to use statements automatically
-        self::assertContains(BaseController::class, $config->useStatements);
-        // Only the class name should be in extends
+        foreach ($config->useStatements as $statement) {
+            self::assertTrue($statement->fqcn === BaseController::class);
+        }
         self::assertCount(1, $config->extends);
         self::assertContains('BaseController', $config->extends); // Class name only
     }

@@ -16,7 +16,6 @@ use JtcSolutions\CodeGenerator\CodeGenerator\Service\Factory\OpenApiDocConfigura
 use JtcSolutions\Helpers\Helper\FQCNHelper;
 use JtcSolutions\Helpers\Helper\StringUtils;
 use Nelmio\ApiDocBundle\Attribute\Model;
-use OpenApi\Attributes as OA;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Attribute\Route;
@@ -59,8 +58,6 @@ class DeleteControllerConfigurator extends BaseControllerConfigurator implements
         $builder->addUseStatement(Route::class);
 
         // TODO: Handle automatic adding of use statements
-        $builder->addUseStatement(OA\Tag::class);
-        $builder->addUseStatement(OA\Response::class);
         $builder->addUseStatement(ErrorRequestJsonResponse::class);
         $builder->addUseStatement(Model::class);
         $builder->addUseStatement(UuidInterface::class);

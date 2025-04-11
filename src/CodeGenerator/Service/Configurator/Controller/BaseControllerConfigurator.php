@@ -49,6 +49,8 @@ abstract class BaseControllerConfigurator
      */
     protected function configureUseStatements(ControllerConfigurationBuilder $builder, Context $context): void
     {
+        $builder->addUseStatement("OpenApi\Attributes", 'OA');
+
         foreach ($context->defaultUseStatements as $defaultUseStatement) {
             $builder->addUseStatement($defaultUseStatement);
         }

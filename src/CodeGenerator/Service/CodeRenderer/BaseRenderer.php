@@ -3,6 +3,7 @@
 namespace JtcSolutions\CodeGenerator\CodeGenerator\Service\CodeRenderer;
 
 use JtcSolutions\CodeGenerator\CodeGenerator\Dto\Configuration\IRenderableConfiguration;
+use JtcSolutions\CodeGenerator\CodeGenerator\Dto\Configuration\UseStatementConfiguration;
 
 class BaseRenderer
 {
@@ -24,11 +25,22 @@ class BaseRenderer
 
     protected function addUseStatements(): void
     {
-        if ($this->configuration->getUseStatements() !== []) {
-            foreach ($this->configuration->getUseStatements() as $use) {
-                $this->code .= "use {$use};\n";
+        /** @var array<string, UseStatementConfiguration> $useStatements */
+        $useStatements = $this->configuration->getUseStatements();
+
+        if ($useStatements !== []) {
+            // Array should be sorted by FQCN key in the builder before rendering
+            foreach ($useStatements as $useStatementDto) {
+                // Check if an alias exists for this use statement
+                if ($useStatementDto->alias !== null) {
+                    // Format with 'as Alias'
+                    $this->code .= sprintf('use %s as %s;', $useStatementDto->fqcn, $useStatementDto->alias) . "\n";
+                } else {
+                    // Format without alias
+                    $this->code .= sprintf('use %s;', $useStatementDto->fqcn) . "\n";
+                }
             }
-            $this->code .= "\n";
+            $this->code .= "\n"; // Add blank line after use statements
         }
     }
 

@@ -11,7 +11,6 @@ class GenerateCrudControllerCommandTest extends TestCase
 {
     public function testBasic(): void
     {
-        self::markTestSkipped();
         $app = new Application();
         $generateCrudControllerCommand = new GenerateCrudControllerCommand();
         $app->addCommands([$generateCrudControllerCommand]);

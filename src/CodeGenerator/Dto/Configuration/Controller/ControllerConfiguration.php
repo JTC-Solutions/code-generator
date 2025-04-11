@@ -7,12 +7,13 @@ use JtcSolutions\CodeGenerator\CodeGenerator\Dto\Configuration\Controller\Method
 use JtcSolutions\CodeGenerator\CodeGenerator\Dto\Configuration\Controller\Method\MethodConfiguration;
 use JtcSolutions\CodeGenerator\CodeGenerator\Dto\Configuration\Controller\OpenApiDoc\IOpenApiDocConfiguration;
 use JtcSolutions\CodeGenerator\CodeGenerator\Dto\Configuration\IRenderableConfiguration;
+use JtcSolutions\CodeGenerator\CodeGenerator\Dto\Configuration\UseStatementConfiguration;
 
 readonly class ControllerConfiguration extends BaseConfiguration implements IRenderableConfiguration
 {
     /**
      * @param array<int, string> $extends
-     * @param array<int, string> $useStatements
+     * @param array<int, UseStatementConfiguration> $useStatements
      * @param array<int, IOpenApiDocConfiguration> $openApiDocs
      * @param array<int, string> $interfaces
      * @param array<int, MethodArgumentConfiguration> $constructorParams

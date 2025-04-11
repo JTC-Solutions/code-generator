@@ -2,13 +2,6 @@
 
 namespace JtcSolutions\CodeGenerator\CodeGenerator\Dto\Configuration;
 
-/**
- * @property string $namespace
- * @property string $className
- * @property array<int, string> $useStatements
- * @property array<int, string> $extends
- * @property array<int, string> $interfaces
- */
 interface IRenderableConfiguration
 {
     public function getNamespace(): string;
@@ -16,7 +9,7 @@ interface IRenderableConfiguration
     public function getClassName(): string;
 
     /**
-     * @return array<int, string>
+     * @return array<int, UseStatementConfiguration>
      */
     public function getUseStatements(): array;
 

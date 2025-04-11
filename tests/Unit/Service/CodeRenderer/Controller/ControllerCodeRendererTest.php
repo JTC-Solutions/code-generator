@@ -7,6 +7,7 @@ use JtcSolutions\CodeGenerator\CodeGenerator\Dto\Configuration\Controller\Method
 use JtcSolutions\CodeGenerator\CodeGenerator\Dto\Configuration\Controller\Method\MethodArgumentConfiguration;
 use JtcSolutions\CodeGenerator\CodeGenerator\Dto\Configuration\Controller\Method\MethodConfiguration;
 use JtcSolutions\CodeGenerator\CodeGenerator\Dto\Configuration\Controller\OpenApiDoc\OpenApiDocTagConfiguration;
+use JtcSolutions\CodeGenerator\CodeGenerator\Dto\Configuration\UseStatementConfiguration;
 use JtcSolutions\CodeGenerator\CodeGenerator\MoveToOtherPackage\BaseController;
 use JtcSolutions\CodeGenerator\CodeGenerator\Service\CodeRenderer\Controller\ControllerCodeRenderer;
 use OpenApi\Attributes\Tag;
@@ -19,7 +20,12 @@ class ControllerCodeRendererTest extends TestCase
 {
     public function testRenderWithUseStatements(): void
     {
-        $config = $this->createBasicConfig(useStatements: [JsonResponse::class, UuidInterface::class]);
+        $config = $this->createBasicConfig(
+            useStatements: [
+                new UseStatementConfiguration(JsonResponse::class),
+                new UseStatementConfiguration(UuidInterface::class),
+            ],
+        );
         $renderer = new ControllerCodeRenderer($config);
         $code = $renderer->renderCode();
 
@@ -32,7 +38,7 @@ class ControllerCodeRendererTest extends TestCase
     {
         // Assuming BaseController is imported via use statement added automatically by builder or manually here
         $config = $this->createBasicConfig(
-            useStatements: [BaseController::class],
+            useStatements: [new UseStatementConfiguration(BaseController::class)],
             extends: ['BaseController'], // Builder adds class name, not FQCN here
         );
         $renderer = new ControllerCodeRenderer($config);
@@ -53,7 +59,11 @@ class ControllerCodeRendererTest extends TestCase
         );
         $config = $this->createBasicConfig(
             methodConfig: $methodConfig,
-            useStatements: [JsonResponse::class, UuidInterface::class, Route::class],
+            useStatements: [
+                new UseStatementConfiguration(JsonResponse::class),
+                new UseStatementConfiguration(UuidInterface::class),
+                new UseStatementConfiguration(Route::class),
+            ],
         );
         $renderer = new ControllerCodeRenderer($config);
         $code = $renderer->renderCode();
@@ -68,12 +78,15 @@ class ControllerCodeRendererTest extends TestCase
     public function testRenderWithConstructor(): void
     {
         $config = $this->createBasicConfig(
+            useStatements: [
+                new UseStatementConfiguration('Psr\Log\LoggerInterface'),
+                new UseStatementConfiguration('Doctrine\ORM\EntityManagerInterface'),
+            ],
             constructorParams: [
                 new MethodArgumentConfiguration('logger', 'LoggerInterface'),
                 new MethodArgumentConfiguration('entityManager', 'EntityManagerInterface'),
             ],
-            constructorBody: "\$this->logger = \$logger;\n        // More complex body",
-            useStatements: ['Psr\Log\LoggerInterface', 'Doctrine\ORM\EntityManagerInterface'], // Add needed use statements
+            constructorBody: "\$this->logger = \$logger;\n        // More complex body", // Add needed use statements
         );
         $renderer = new ControllerCodeRenderer($config);
         $code = $renderer->renderCode();
@@ -89,8 +102,8 @@ class ControllerCodeRendererTest extends TestCase
     public function testRenderWithOpenApiDocs(): void
     {
         $config = $this->createBasicConfig(
-            openApiDocs: [new OpenApiDocTagConfiguration('TestTag')],
-            useStatements: [Tag::class], // Need OA namespace
+            useStatements: [new UseStatementConfiguration(Tag::class)],
+            openApiDocs: [new OpenApiDocTagConfiguration('TestTag')], // Need OA namespace
         );
         $renderer = new ControllerCodeRenderer($config);
         $code = $renderer->renderCode();
