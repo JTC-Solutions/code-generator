@@ -2,16 +2,17 @@
 
 namespace JtcSolutions\CodeGenerator\CodeGenerator\Command;
 
-use JtcSolutions\CodeGenerator\CodeGenerator\Service\Generator\BaseControllerGenerator;
-use JtcSolutions\CodeGenerator\CodeGenerator\Service\Generator\CreateControllerGenerator;
-use JtcSolutions\CodeGenerator\CodeGenerator\Service\Generator\DetailControllerGenerator;
-use JtcSolutions\CodeGenerator\CodeGenerator\Service\Generator\ListControllerGenerator;
+use JtcSolutions\CodeGenerator\CodeGenerator\Service\Generator\Controller\BaseControllerGenerator;
+use JtcSolutions\CodeGenerator\CodeGenerator\Service\Generator\Controller\CreateControllerGenerator;
+use JtcSolutions\CodeGenerator\CodeGenerator\Service\Generator\Controller\DeleteControllerGenerator;
+use JtcSolutions\CodeGenerator\CodeGenerator\Service\Generator\Controller\DetailControllerGenerator;
+use JtcSolutions\CodeGenerator\CodeGenerator\Service\Generator\Controller\ListControllerGenerator;
+use JtcSolutions\CodeGenerator\CodeGenerator\Service\Generator\Controller\UpdateControllerGenerator;
 use JtcSolutions\CodeGenerator\CodeGenerator\Service\Provider\ContextProvider;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
@@ -22,16 +23,13 @@ class GenerateCrudControllerCommand extends Command
 
     protected ContextProvider $domainContextProvider;
 
-    protected bool $override;
-
     protected function configure(): void
     {
         $this
             ->setDescription('Generate CRUD Controllers for given entity in given domain.')
-            ->addArgument('path', InputArgument::REQUIRED, 'Path where to put the generated classes')
-            ->addArgument('domain', InputArgument::REQUIRED, 'Domain used to generate')
-            ->addArgument('entity', InputArgument::REQUIRED, 'Entity name for which to generate')
-            ->addOption('override', 'o', InputOption::VALUE_NONE, 'Override existing controllers');
+            ->addArgument('controllerNamespace', InputArgument::REQUIRED, 'Path where to put the generated controllers')
+            ->addArgument('dtoNamespace', InputArgument::REQUIRED, 'Path where to put the generated DTOs')
+            ->addArgument('targetClass', InputArgument::REQUIRED, 'Class for which to generate CRUD');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -41,9 +39,13 @@ class GenerateCrudControllerCommand extends Command
 
         /** @var BaseControllerGenerator[] $generators */
         $generators = [
+            /*
             new DetailControllerGenerator(),
             new ListControllerGenerator(),
             new CreateControllerGenerator(),
+            new UpdateControllerGenerator(),
+            */
+            new DeleteControllerGenerator(),
         ];
 
         foreach ($generators as $generator) {
@@ -55,25 +57,22 @@ class GenerateCrudControllerCommand extends Command
 
     private function loadArguments(InputInterface $input): void
     {
-        $path = $input->getArgument('path');
+        $controllerPath = $input->getArgument('controllerNamespace');
+        $dtoPath = $input->getArgument('dtoNamespace');
 
-        if (is_string($path) === false) {
-            $this->console->error('Path is invalid!');
+        if (is_string($controllerPath) === false || is_string($dtoPath) === false) {
+            $this->console->error('Paths are invalid!');
             return;
         }
 
         /** @var class-string|null $entity */
-        $entity = $input->getArgument('entity');
-        /** @var string|null $domain */
-        $domain = $input->getArgument('domain');
+        $entity = $input->getArgument('targetClass');
 
-        $this->override = (bool) $input->getOption('override');
-
-        if ($entity === null || $domain == null) {
+        if ($entity === null) {
             $this->console->error('Domain or Entity parameter is invalid');
             return;
         }
 
-        $this->domainContextProvider = new ContextProvider($path, $domain, $entity);
+        $this->domainContextProvider = new ContextProvider($controllerPath, $dtoPath, $entity);
     }
 }

@@ -2,13 +2,23 @@
 
 namespace JtcSolutions\CodeGenerator\CodeGenerator\Service\Factory;
 
-use JtcSolutions\CodeGenerator\CodeGenerator\Dto\ControllerConfiguration\Method\Attribute\RouteAttributeConfiguration;
+use JtcSolutions\CodeGenerator\CodeGenerator\Dto\Configuration\Controller\Method\Attribute\RouteAttributeConfiguration;
 use JtcSolutions\Helpers\Helper\FQCNHelper;
 use JtcSolutions\Helpers\Helper\StringUtils;
 
 class MethodAttributeConfigurationFactory
 {
     protected const string API_PREFIX = '/api/v1/';
+
+    protected const string DETAIL_ROUTE_PATH = self::API_PREFIX . '%s/{entity}';
+
+    protected const string LIST_ROUTE_PATH = self::API_PREFIX . '%s';
+
+    protected const string DELETE_ROUTE_PATH = self::API_PREFIX . '%s/{id}';
+
+    protected const string CREATE_ROUTE_PATH = self::API_PREFIX . '%s';
+
+    protected const string UPDATE_ROUTE_PATH = self::API_PREFIX . '%s/{id}';
 
     public static function createDetailRouteAttribute(
         string $entity,
@@ -18,7 +28,7 @@ class MethodAttributeConfigurationFactory
         $snakeCase = StringUtils::toSnakeCase($className);
 
         return new RouteAttributeConfiguration(
-            path: static::API_PREFIX . $kebabCase . '/{entity}',
+            path: sprintf(static::DETAIL_ROUTE_PATH, $kebabCase),
             name: "{$snakeCase}_detail",
             methods: ['GET'],
         );
@@ -32,9 +42,23 @@ class MethodAttributeConfigurationFactory
         $snakeCase = StringUtils::toSnakeCase($className);
 
         return new RouteAttributeConfiguration(
-            path: static::API_PREFIX . $kebabCase,
+            path: sprintf(static::LIST_ROUTE_PATH, $kebabCase),
             name: "{$snakeCase}_list",
             methods: ['GET'],
+        );
+    }
+
+    public static function createDeleteRouteAttribute(
+        string $entity,
+    ): RouteAttributeConfiguration {
+        $className = FQCNHelper::transformFQCNToEntityName($entity, false);
+        $kebabCase = StringUtils::toKebabCase($className);
+        $snakeCase = StringUtils::toSnakeCase($className);
+
+        return new RouteAttributeConfiguration(
+            path: sprintf(static::DELETE_ROUTE_PATH, $kebabCase),
+            name: "{$snakeCase}_delete",
+            methods: ['DELETE'],
         );
     }
 
@@ -46,9 +70,23 @@ class MethodAttributeConfigurationFactory
         $snakeCase = StringUtils::toSnakeCase($className);
 
         return new RouteAttributeConfiguration(
-            path: static::API_PREFIX . $kebabCase,
+            path: sprintf(self::CREATE_ROUTE_PATH, $kebabCase),
             name: "{$snakeCase}_create",
             methods: ['POST'],
+        );
+    }
+
+    public static function createUpdateRouteAttribute(
+        string $entity,
+    ): RouteAttributeConfiguration {
+        $className = FQCNHelper::transformFQCNToEntityName($entity, false);
+        $kebabCase = StringUtils::toKebabCase($className);
+        $snakeCase = StringUtils::toSnakeCase($className);
+
+        return new RouteAttributeConfiguration(
+            path: sprintf(static::UPDATE_ROUTE_PATH, $kebabCase),
+            name: "{$snakeCase}_update",
+            methods: ['PUT'],
         );
     }
 }

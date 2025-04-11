@@ -2,8 +2,8 @@
 
 namespace JtcSolutions\CodeGenerator\CodeGenerator\Service\Factory;
 
-use JtcSolutions\CodeGenerator\CodeGenerator\Dto\ControllerConfiguration\OpenApiDoc\OpenApiDocResponseConfiguration;
-use JtcSolutions\CodeGenerator\CodeGenerator\Dto\ControllerConfiguration\OpenApiDoc\OpenApiDocTagConfiguration;
+use JtcSolutions\CodeGenerator\CodeGenerator\Dto\Configuration\Controller\OpenApiDoc\OpenApiDocResponseConfiguration;
+use JtcSolutions\CodeGenerator\CodeGenerator\Dto\Configuration\Controller\OpenApiDoc\OpenApiDocTagConfiguration;
 use JtcSolutions\Helpers\Helper\FQCNHelper;
 use JtcSolutions\Helpers\Helper\StringUtils;
 
@@ -53,6 +53,16 @@ class OpenApiDocConfigurationFactory
             response: $responseCode,
             description: $description,
             content: sprintf(self::RESPONSE_MODEL_TEMPLATE, $model, implode(', ', $groups)),
+        );
+    }
+
+    public function createEmptyResponse(
+        string $responseCode,
+        string $description,
+    ): OpenApiDocResponseConfiguration {
+        return new OpenApiDocResponseConfiguration(
+            response: $responseCode,
+            description: $description,
         );
     }
 

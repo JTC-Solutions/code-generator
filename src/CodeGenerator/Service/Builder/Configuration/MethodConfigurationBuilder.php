@@ -2,9 +2,9 @@
 
 namespace JtcSolutions\CodeGenerator\CodeGenerator\Service\Builder\Configuration;
 
-use JtcSolutions\CodeGenerator\CodeGenerator\Dto\ControllerConfiguration\Method\IMethodAttributeConfiguration;
-use JtcSolutions\CodeGenerator\CodeGenerator\Dto\ControllerConfiguration\Method\MethodArgumentConfiguration;
-use JtcSolutions\CodeGenerator\CodeGenerator\Dto\ControllerConfiguration\Method\MethodConfiguration;
+use JtcSolutions\CodeGenerator\CodeGenerator\Dto\Configuration\Controller\Method\IMethodAttributeConfiguration;
+use JtcSolutions\CodeGenerator\CodeGenerator\Dto\Configuration\Controller\Method\MethodArgumentConfiguration;
+use JtcSolutions\CodeGenerator\CodeGenerator\Dto\Configuration\Controller\Method\MethodConfiguration;
 use JtcSolutions\CodeGenerator\CodeGenerator\Exception\ConfigurationException;
 
 class MethodConfigurationBuilder extends BaseConfigurationBuilder

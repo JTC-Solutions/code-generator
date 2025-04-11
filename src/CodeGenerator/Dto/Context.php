@@ -2,15 +2,21 @@
 
 namespace JtcSolutions\CodeGenerator\CodeGenerator\Dto;
 
-readonly class Context
+class Context
 {
     /**
-     * @param class-string $entity
+     * @param class-string $entityFQCN
+     * @param string[] $defaultUseStatements
      */
     public function __construct(
-        public string $domain,
-        public string $entity,
-        public string $controllerPath,
+        public readonly string $entityFQCN,
+        public readonly string $entityNamespace,
+        public readonly string $entityPath,
+        public readonly string $controllerPath,
+        public readonly string $controllerNamespace,
+        public readonly string $dtoPath,
+        public readonly string $dtoNamespace,
+        public array $defaultUseStatements = [],
     ) {
     }
 }

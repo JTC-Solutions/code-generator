@@ -9,7 +9,6 @@ interface IControllerClassWriter
     public function write(
         Context $context,
         string $className,
-        string $endpointPrefix,
         string $code,
     ): void;
 }

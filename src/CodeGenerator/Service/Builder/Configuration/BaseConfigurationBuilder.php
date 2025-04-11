@@ -2,7 +2,7 @@
 
 namespace JtcSolutions\CodeGenerator\CodeGenerator\Service\Builder\Configuration;
 
-use JtcSolutions\CodeGenerator\CodeGenerator\Dto\ControllerConfiguration\IConfiguration;
+use JtcSolutions\CodeGenerator\CodeGenerator\Dto\Configuration\Controller\IConfiguration;
 use JtcSolutions\CodeGenerator\CodeGenerator\Exception\ConfigurationException;
 
 abstract class BaseConfigurationBuilder

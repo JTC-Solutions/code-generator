@@ -3,7 +3,7 @@
 namespace JtcSolutions\CodeGenerator\CodeGenerator\Exception;
 
 use Exception;
-use JtcSolutions\CodeGenerator\CodeGenerator\Dto\ControllerConfiguration\IConfiguration;
+use JtcSolutions\CodeGenerator\CodeGenerator\Dto\Configuration\Controller\IConfiguration;
 
 class ConfigurationException extends Exception
 {
