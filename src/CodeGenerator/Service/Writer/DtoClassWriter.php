@@ -7,7 +7,7 @@ use JtcSolutions\CodeGenerator\CodeGenerator\Exception\TemplateNotValidPhpCodeEx
 use PhpParser\Error;
 use PhpParser\ParserFactory;
 
-class DtoClassWriter
+class DtoClassWriter extends BaseClassWriter implements IClassWriter
 {
     public function write(
         Context $context,
@@ -19,10 +19,11 @@ class DtoClassWriter
         $parser = (new ParserFactory())->createForNewestSupportedVersion();
         try {
             $parser->parse($code);
-            file_put_contents($filepath, $code);
         } catch (Error $e) {
             throw TemplateNotValidPhpCodeException::create($className, $context->entityFQCN, $e);
         }
+
+        $this->dumpFile($filepath, $code);
 
         return $filepath;
     }

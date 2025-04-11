@@ -6,13 +6,9 @@ use JtcSolutions\CodeGenerator\CodeGenerator\Dto\Context;
 
 interface IClassWriter
 {
-    /**
-     * @param array<string, mixed> $data
-     */
     public function write(
         Context $context,
         string $className,
         string $code,
-        array $data = [],
-    ): void;
+    ): string;
 }

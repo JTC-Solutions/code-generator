@@ -20,7 +20,7 @@ abstract class BaseControllerGenerator
         $this->createClassWriter()->write($context, $configuration->className, $code);
     }
 
-    public function createCodeRenderer(ControllerConfiguration $configuration): IControllerCodeRenderer
+    protected function createCodeRenderer(ControllerConfiguration $configuration): IControllerCodeRenderer
     {
         return new ControllerCodeRenderer($configuration);
     }

@@ -2,13 +2,6 @@
 
 namespace JtcSolutions\CodeGenerator\CodeGenerator\Service\Writer;
 
-use JtcSolutions\CodeGenerator\CodeGenerator\Dto\Context;
-
-interface IControllerClassWriter
+interface IControllerClassWriter extends IClassWriter
 {
-    public function write(
-        Context $context,
-        string $className,
-        string $code,
-    ): void;
 }
