@@ -8,6 +8,7 @@ use JtcSolutions\CodeGenerator\CodeGenerator\Dto\Context;
 use JtcSolutions\CodeGenerator\CodeGenerator\Exception\ConfigurationException;
 use JtcSolutions\CodeGenerator\CodeGenerator\Service\Builder\Configuration\ControllerConfigurationBuilder;
 use JtcSolutions\Helpers\Helper\FQCNHelper;
+use OpenApi\Attributes\Response;
 
 abstract class BaseControllerConfigurator
 {
@@ -50,6 +51,7 @@ abstract class BaseControllerConfigurator
     protected function configureUseStatements(ControllerConfigurationBuilder $builder, Context $context): void
     {
         $builder->addUseStatement("OpenApi\Attributes", 'OA');
+        $builder->addUseStatement(Response::class);
 
         foreach ($context->defaultUseStatements as $defaultUseStatement) {
             $builder->addUseStatement($defaultUseStatement);
