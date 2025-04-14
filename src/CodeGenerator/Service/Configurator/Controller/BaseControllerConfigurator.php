@@ -8,7 +8,7 @@ use JtcSolutions\CodeGenerator\CodeGenerator\Dto\Context;
 use JtcSolutions\CodeGenerator\CodeGenerator\Exception\ConfigurationException;
 use JtcSolutions\CodeGenerator\CodeGenerator\Service\Builder\Configuration\ControllerConfigurationBuilder;
 use JtcSolutions\Helpers\Helper\FQCNHelper;
-use OpenApi\Attributes\Response;
+use Symfony\Component\HttpFoundation\Response;
 
 abstract class BaseControllerConfigurator
 {
