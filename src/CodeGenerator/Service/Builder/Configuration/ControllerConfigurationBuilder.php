@@ -143,8 +143,16 @@ class ControllerConfigurationBuilder extends BaseConfigurationBuilder
      */
     public function addConstructorParam(MethodArgumentConfiguration $constructorParam, ?int $order = null): self
     {
+        if ($this->itemExists($constructorParam->argumentType, $this->useStatements) === false) {
+            $this->addUseStatement($constructorParam->argumentType);
+        }
+
+        $paramTypeClassName = FQCNHelper::transformFQCNToEntityName($constructorParam->argumentType, false);
+
+        $parsed = new MethodArgumentConfiguration($constructorParam->argumentName, $paramTypeClassName);
+
         /** @var array<int,MethodArgumentConfiguration> $result */
-        $result = $this->addItem(self::CONSTRUCTOR_PARAM, $constructorParam, $this->constructorParams, $order);
+        $result = $this->addItem(self::CONSTRUCTOR_PARAM, $parsed, $this->constructorParams, $order);
 
         $this->constructorParams = $result;
 
