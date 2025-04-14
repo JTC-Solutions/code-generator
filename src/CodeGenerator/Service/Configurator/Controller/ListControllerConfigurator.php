@@ -93,8 +93,6 @@ class ListControllerConfigurator extends BaseControllerConfigurator implements I
         $lowercase = StringUtils::firstToLowercase($className);
 
         return <<<PHP
-            \$this->checkPermissions({$className}::class, RequestAction::LIST);
-            
             return \$this->json(\$entity, Response::HTTP_OK, [], ['groups' => ['{$lowercase}:list', 'reference']]);
         PHP;
     }

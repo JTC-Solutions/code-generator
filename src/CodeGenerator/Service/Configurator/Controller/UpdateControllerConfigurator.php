@@ -109,8 +109,6 @@ class UpdateControllerConfigurator extends BaseControllerConfigurator implements
         $lowercase = StringUtils::firstToLowercase($className);
 
         return <<<PHP
-            \$this->checkPermissions({$className}::class, RequestAction::CREATE);
-            
             // TODO: Implement
             
             return \$this->json(\$entity, Response::HTTP_OK, [], ['groups' => ['{$lowercase}:detail', 'reference']]);
