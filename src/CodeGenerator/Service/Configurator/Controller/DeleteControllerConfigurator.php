@@ -30,8 +30,6 @@ class DeleteControllerConfigurator extends BaseControllerConfigurator implements
     {
         $builder = $this->createBuilder($context);
 
-        $builder->addExtendedClass(BaseEntityController::class);
-
         $this->configureOpenApiDocs($builder, $context);
 
         return $builder->build();

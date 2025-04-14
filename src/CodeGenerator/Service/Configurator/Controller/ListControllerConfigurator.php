@@ -31,8 +31,6 @@ class ListControllerConfigurator extends BaseControllerConfigurator implements I
     {
         $builder = $this->createBuilder($context);
 
-        $builder->addExtendedClass(BaseController::class);
-
         $this->configureOpenApiDocs($builder, $context);
 
         return $builder->build();

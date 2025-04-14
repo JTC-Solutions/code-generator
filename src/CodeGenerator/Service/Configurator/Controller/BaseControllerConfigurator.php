@@ -8,6 +8,7 @@ use JtcSolutions\CodeGenerator\CodeGenerator\Dto\Context;
 use JtcSolutions\CodeGenerator\CodeGenerator\Exception\ConfigurationException;
 use JtcSolutions\CodeGenerator\CodeGenerator\Service\Builder\Configuration\ControllerConfigurationBuilder;
 use JtcSolutions\Helpers\Helper\FQCNHelper;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 
 abstract class BaseControllerConfigurator
@@ -37,6 +38,14 @@ abstract class BaseControllerConfigurator
             namespace: $context->controllerNamespace,
             method: $this->createMethodConfiguration($context),
         );
+
+        if ($context->extendedClasses === []) {
+            $builder->addExtendedClass(AbstractController::class);
+        } else {
+            foreach ($context->extendedClasses as $extendedClass) {
+                $builder->addExtendedClass($extendedClass);
+            }
+        }
 
         $this->configureUseStatements($builder, $context);
 

@@ -34,14 +34,6 @@ class DetailControllerConfigurator extends BaseControllerConfigurator implements
     {
         $builder = $this->createBuilder($context);
 
-        if ($context->extendedClasses !== []) {
-            foreach ($context->extendedClasses as $extendedClass) {
-                $builder->addExtendedClass($extendedClass);
-            }
-        } else {
-            $builder->addExtendedClass(AbstractController::class);
-        }
-
         $this->configureOpenApiDocs($builder, $context);
 
         return $builder->build();
