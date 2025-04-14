@@ -10,11 +10,13 @@ final class ContextProvider
 
     /**
      * @param class-string $entity
+     * @param class-string[] $extendedClasses
      */
     public function __construct(
         string $controllerNamespace,
         string $dtoNamespace,
         string $entity,
+        array $extendedClasses = []
     ) {
         $this->context = new Context(
             entityFQCN: $entity,
@@ -24,6 +26,7 @@ final class ContextProvider
             controllerNamespace: $controllerNamespace,
             dtoPath: $this->namespaceToPath($dtoNamespace),
             dtoNamespace: $dtoNamespace,
+            extendedClasses: $extendedClasses
         );
     }
 
