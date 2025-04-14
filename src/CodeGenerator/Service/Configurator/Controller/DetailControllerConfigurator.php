@@ -7,7 +7,6 @@ use JtcSolutions\CodeGenerator\CodeGenerator\Dto\Configuration\Controller\Method
 use JtcSolutions\CodeGenerator\CodeGenerator\Dto\Configuration\Controller\Method\MethodConfiguration;
 use JtcSolutions\CodeGenerator\CodeGenerator\Dto\Context;
 use JtcSolutions\CodeGenerator\CodeGenerator\Exception\ConfigurationException;
-use JtcSolutions\CodeGenerator\CodeGenerator\MoveToOtherPackage\BaseController;
 use JtcSolutions\CodeGenerator\CodeGenerator\MoveToOtherPackage\ErrorRequestJsonResponse;
 use JtcSolutions\CodeGenerator\CodeGenerator\Service\Builder\Configuration\ControllerConfigurationBuilder;
 use JtcSolutions\CodeGenerator\CodeGenerator\Service\Builder\Configuration\MethodConfigurationBuilder;
@@ -16,6 +15,7 @@ use JtcSolutions\CodeGenerator\CodeGenerator\Service\Factory\OpenApiDocConfigura
 use JtcSolutions\Helpers\Helper\FQCNHelper;
 use JtcSolutions\Helpers\Helper\StringUtils;
 use Nelmio\ApiDocBundle\Attribute\Model;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -34,7 +34,13 @@ class DetailControllerConfigurator extends BaseControllerConfigurator implements
     {
         $builder = $this->createBuilder($context);
 
-        $builder->addExtendedClass(BaseController::class);
+        if ($context->extendedClasses !== []) {
+            foreach ($context->extendedClasses as $extendedClass) {
+                $builder->addExtendedClass($extendedClass);
+            }
+        } else {
+            $builder->addExtendedClass(AbstractController::class);
+        }
 
         $this->configureOpenApiDocs($builder, $context);
 

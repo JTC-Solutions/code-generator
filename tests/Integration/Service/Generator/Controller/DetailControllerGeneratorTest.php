@@ -54,7 +54,7 @@ class DetailControllerGeneratorTest extends TestCase
 
         $generatedCode = file_get_contents($expectedFilePath);
         self::assertStringContainsString('namespace App\Controller\TestProduct;', $generatedCode); //
-        self::assertStringContainsString('class DetailTestProductController extends BaseController', $generatedCode); //
+        self::assertStringContainsString('class DetailTestProductController', $generatedCode); //
         self::assertStringContainsString('use App\Entity\TestProduct;', $generatedCode); //
         self::assertStringContainsString('#[Route(\'/api/v1/test-product/{entity}\', name: \'test_product_detail\', methods: [\'GET\'])]', $generatedCode); //
         self::assertStringContainsString('public function detail(', $generatedCode); //

@@ -12,8 +12,9 @@ use JtcSolutions\CodeGenerator\CodeGenerator\Service\Writer\IControllerClassWrit
 
 abstract class BaseControllerGenerator
 {
-    public function generate(Context $context): void
-    {
+    public function generate(
+        Context $context,
+    ): void {
         $configuration = $this->createConfigurator()->configure($context);
         $code = $this->createCodeRenderer($configuration)->renderCode();
 
