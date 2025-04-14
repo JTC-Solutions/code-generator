@@ -21,12 +21,19 @@ abstract class BaseControllerRenderer extends BaseRenderer
             $this->code .= "    public function __construct(\n";
 
             $paramStrings = [];
+            $paramNames = [];
+
             foreach ($this->configuration->constructorParams as $param) {
                 $paramStrings[] = "        {$param->argumentType} \${$param->argumentName}";
+                $paramNames[] = "\${$param->argumentName}";
             }
 
             $this->code .= implode(",\n", $paramStrings) . "\n";
             $this->code .= "    ) {\n";
+
+            if ($this->configuration->callParent) {
+                $this->code .= "        parent::__construct(" . implode(", ", $paramNames) . ");\n";
+            }
 
             if ($this->configuration->constructorBody !== null) {
                 $this->code .= "        {$this->configuration->constructorBody}\n";

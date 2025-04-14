@@ -28,6 +28,7 @@ readonly class ControllerConfiguration extends BaseConfiguration implements IRen
         array $interfaces = [],
         public array $constructorParams = [],
         public ?string $constructorBody = null,
+        public bool $callParent = false,
     ) {
         parent::__construct($namespace, $className, $useStatements, $extends, $interfaces);
     }

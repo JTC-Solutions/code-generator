@@ -30,7 +30,7 @@ class ControllerConfigurationBuilder extends BaseConfigurationBuilder
     /**
      * @var array<int, UseStatementConfiguration>
      */
-    protected array $useStatements = []; // TODO: Add option to import as "as"
+    protected array $useStatements = [];
 
     /**
      * @var array<int, IOpenApiDocConfiguration>
@@ -47,12 +47,12 @@ class ControllerConfigurationBuilder extends BaseConfigurationBuilder
      */
     protected array $constructorParams = [];
 
-    protected ?string $constructorBody = null; // TODO: maybe by default pass parent arguments ?
-
     public function __construct(
         protected readonly string $className,
         protected readonly string $namespace,
         protected readonly ?MethodConfiguration $method = null,
+        protected readonly bool $callParent = false,
+        protected readonly ?string $constructorBody = null
     ) {
     }
 
@@ -73,6 +73,7 @@ class ControllerConfigurationBuilder extends BaseConfigurationBuilder
             $this->interfaces,
             $this->constructorParams,
             $this->constructorBody,
+            $this->callParent,
         );
     }
 

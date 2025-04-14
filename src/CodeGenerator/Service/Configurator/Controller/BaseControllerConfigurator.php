@@ -15,6 +15,8 @@ abstract class BaseControllerConfigurator
 {
     protected const string CONTROLLER_NAME_TEMPLATE = '';
 
+    protected const bool CALL_PARENT_CONSTRUCTOR = false;
+
     /**
      * @throws ConfigurationException
      * @throws Exception
@@ -37,6 +39,8 @@ abstract class BaseControllerConfigurator
             className: sprintf(static::CONTROLLER_NAME_TEMPLATE, $entityClassName),
             namespace: $context->controllerNamespace,
             method: $this->createMethodConfiguration($context),
+            callParent: static::CALL_PARENT_CONSTRUCTOR,
+            constructorBody: $this->configureConstructorBody($context)
         );
 
         if ($context->extendedClasses === []) {
@@ -50,6 +54,11 @@ abstract class BaseControllerConfigurator
         $this->configureUseStatements($builder, $context);
 
         return $builder;
+    }
+
+    protected function configureConstructorBody(Context $context): ?string
+    {
+        return null;
     }
 
     abstract protected function createMethodConfiguration(Context $context): MethodConfiguration|null;
