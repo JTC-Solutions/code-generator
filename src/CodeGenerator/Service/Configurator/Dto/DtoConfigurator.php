@@ -19,11 +19,16 @@ class DtoConfigurator
             $useStatements[] = new UseStatementConfiguration($dtoInterface);
         }
 
+        $interfaces = [];
+        foreach ($context->dtoInterfaces as $dtoInterface) {
+            $interfaces[] = FQCNHelper::transformFQCNToEntityName($dtoInterface, false);
+        }
+
         return new DtoConfiguration(
             namespace: $context->dtoNamespace,
             className: $dtoClassName,
             useStatements: $useStatements,
-            interfaces: $context->dtoInterfaces,
+            interfaces: $interfaces,
         );
     }
 }
