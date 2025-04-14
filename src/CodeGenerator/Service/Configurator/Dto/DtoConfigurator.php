@@ -16,6 +16,7 @@ class DtoConfigurator
         return new DtoConfiguration(
             namespace: $context->dtoNamespace,
             className: $dtoClassName,
+            interfaces: $context->dtoInterfaces
         );
     }
 }

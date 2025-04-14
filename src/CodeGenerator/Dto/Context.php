@@ -8,6 +8,7 @@ class Context
      * @param class-string $entityFQCN
      * @param string[] $defaultUseStatements
      * @param class-string[] $extendedClasses
+     * @param class-string[] $dtoInterfaces
      */
     public function __construct(
         public readonly string $entityFQCN,
@@ -18,6 +19,7 @@ class Context
         public readonly string $dtoPath,
         public readonly string $dtoNamespace,
         public readonly array $extendedClasses = [],
+        public readonly array $dtoInterfaces = [],
         public array $defaultUseStatements = [],
     ) {
     }

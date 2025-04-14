@@ -43,9 +43,9 @@ class CreateControllerConfigurator extends BaseControllerConfigurator implements
     {
         $entityClassName = FQCNHelper::transformFQCNToEntityName($context->entityFQCN, false);
 
-        $methodBuilder = new MethodConfigurationBuilder(self::METHOD_NAME, 'JsonResponse', $this->configureMethodBody($context->entityFQCN));
+        $methodBuilder = new MethodConfigurationBuilder(static::METHOD_NAME, 'JsonResponse', $this->configureMethodBody($context->entityFQCN));
         $methodBuilder
-            ->addArgument(new MethodArgumentConfiguration(self::ARGUMENT_NAME, $entityClassName . 'CreateRequest'))
+            ->addArgument(new MethodArgumentConfiguration(static::ARGUMENT_NAME, $entityClassName . 'CreateRequest'))
             ->addAttribute(MethodAttributeConfigurationFactory::createCreateRouteAttribute($context->entityFQCN));
 
         return $methodBuilder->build();
