@@ -7,6 +7,7 @@ use JtcSolutions\CodeGenerator\CodeGenerator\Service\Generator\Dto\DtoGenerator;
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamDirectory;
 use PHPUnit\Framework\TestCase;
+use Throwable;
 
 class DtoGeneratorTest extends TestCase
 {
@@ -29,6 +30,7 @@ class DtoGeneratorTest extends TestCase
             controllerNamespace: 'App\Controller',
             dtoPath: 'vfs://projectDir/Dto/Product', // Specific DTO path
             dtoNamespace: 'App\Dto\Product', // Specific DTO namespace
+            errorResponseClass: Throwable::class,
         );
 
         // Ensure DTO directory exists

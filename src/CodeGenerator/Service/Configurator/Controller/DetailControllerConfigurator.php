@@ -7,7 +7,6 @@ use JtcSolutions\CodeGenerator\CodeGenerator\Dto\Configuration\Controller\Method
 use JtcSolutions\CodeGenerator\CodeGenerator\Dto\Configuration\Controller\Method\MethodConfiguration;
 use JtcSolutions\CodeGenerator\CodeGenerator\Dto\Context;
 use JtcSolutions\CodeGenerator\CodeGenerator\Exception\ConfigurationException;
-use JtcSolutions\CodeGenerator\CodeGenerator\MoveToOtherPackage\ErrorRequestJsonResponse;
 use JtcSolutions\CodeGenerator\CodeGenerator\Service\Builder\Configuration\ControllerConfigurationBuilder;
 use JtcSolutions\CodeGenerator\CodeGenerator\Service\Builder\Configuration\MethodConfigurationBuilder;
 use JtcSolutions\CodeGenerator\CodeGenerator\Service\Factory\MethodAttributeConfigurationFactory;
@@ -15,7 +14,6 @@ use JtcSolutions\CodeGenerator\CodeGenerator\Service\Factory\OpenApiDocConfigura
 use JtcSolutions\Helpers\Helper\FQCNHelper;
 use JtcSolutions\Helpers\Helper\StringUtils;
 use Nelmio\ApiDocBundle\Attribute\Model;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -62,7 +60,6 @@ class DetailControllerConfigurator extends BaseControllerConfigurator implements
         $builder->addUseStatement(Route::class);
 
         // TODO: Handle automatic adding of use statements
-        $builder->addUseStatement(ErrorRequestJsonResponse::class);
         $builder->addUseStatement(Model::class);
         $builder->addUseStatement($context->entityFQCN);
     }
@@ -89,7 +86,7 @@ class DetailControllerConfigurator extends BaseControllerConfigurator implements
         $builder->addOpenApiDoc($openApiDocFactory->createModelResponse(
             responseCode: 'Response::HTTP_BAD_REQUEST',
             description: 'Request is invalid',
-            type: ErrorRequestJsonResponse::class,
+            type: $context->errorResponseClass,
             groups: ['error'],
         ));
     }

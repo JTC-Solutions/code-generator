@@ -6,8 +6,6 @@ use JtcSolutions\CodeGenerator\CodeGenerator\Dto\Configuration\Controller\Contro
 use JtcSolutions\CodeGenerator\CodeGenerator\Dto\Configuration\Controller\Method\MethodConfiguration;
 use JtcSolutions\CodeGenerator\CodeGenerator\Dto\Context;
 use JtcSolutions\CodeGenerator\CodeGenerator\Exception\ConfigurationException;
-use JtcSolutions\CodeGenerator\CodeGenerator\MoveToOtherPackage\BaseController;
-use JtcSolutions\CodeGenerator\CodeGenerator\MoveToOtherPackage\ErrorRequestJsonResponse;
 use JtcSolutions\CodeGenerator\CodeGenerator\Service\Builder\Configuration\ControllerConfigurationBuilder;
 use JtcSolutions\CodeGenerator\CodeGenerator\Service\Builder\Configuration\MethodConfigurationBuilder;
 use JtcSolutions\CodeGenerator\CodeGenerator\Service\Factory\MethodAttributeConfigurationFactory;
@@ -55,7 +53,6 @@ class ListControllerConfigurator extends BaseControllerConfigurator implements I
         $builder->addUseStatement(Route::class);
 
         // TODO: Handle automatic adding of use statements
-        $builder->addUseStatement(ErrorRequestJsonResponse::class);
         $builder->addUseStatement(Model::class);
         $builder->addUseStatement($context->entityFQCN);
     }
@@ -82,7 +79,7 @@ class ListControllerConfigurator extends BaseControllerConfigurator implements I
         $builder->addOpenApiDoc($openApiDocFactory->createModelResponse(
             responseCode: 'Response::HTTP_BAD_REQUEST',
             description: 'Request is invalid',
-            type: ErrorRequestJsonResponse::class,
+            type: $context->errorResponseClass,
             groups: ['error'],
         ));
     }

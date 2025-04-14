@@ -10,6 +10,7 @@ final class ContextProvider
 
     /**
      * @param class-string $entity
+     * @param class-string $errorResponseClass
      * @param class-string[] $extendedClasses
      * @param class-string[] $dtoInterfaces
      */
@@ -17,6 +18,7 @@ final class ContextProvider
         string $controllerNamespace,
         string $dtoNamespace,
         string $entity,
+        string $errorResponseClass,
         array $extendedClasses = [],
         array $dtoInterfaces = [],
     ) {
@@ -28,6 +30,7 @@ final class ContextProvider
             controllerNamespace: $controllerNamespace,
             dtoPath: $this->namespaceToPath($dtoNamespace),
             dtoNamespace: $dtoNamespace,
+            errorResponseClass: $errorResponseClass,
             extendedClasses: $extendedClasses,
             dtoInterfaces: $dtoInterfaces,
         );

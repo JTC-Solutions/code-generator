@@ -61,6 +61,7 @@ abstract class BaseControllerConfigurator
     {
         $builder->addUseStatement("OpenApi\Attributes", 'OA');
         $builder->addUseStatement(Response::class);
+        $builder->addUseStatement($context->errorResponseClass);
 
         foreach ($context->defaultUseStatements as $defaultUseStatement) {
             $builder->addUseStatement($defaultUseStatement);

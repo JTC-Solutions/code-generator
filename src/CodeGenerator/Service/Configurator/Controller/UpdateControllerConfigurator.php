@@ -7,8 +7,6 @@ use JtcSolutions\CodeGenerator\CodeGenerator\Dto\Configuration\Controller\Method
 use JtcSolutions\CodeGenerator\CodeGenerator\Dto\Configuration\Controller\Method\MethodConfiguration;
 use JtcSolutions\CodeGenerator\CodeGenerator\Dto\Context;
 use JtcSolutions\CodeGenerator\CodeGenerator\Exception\ConfigurationException;
-use JtcSolutions\CodeGenerator\CodeGenerator\MoveToOtherPackage\BaseEntityController;
-use JtcSolutions\CodeGenerator\CodeGenerator\MoveToOtherPackage\ErrorRequestJsonResponse;
 use JtcSolutions\CodeGenerator\CodeGenerator\Service\Builder\Configuration\ControllerConfigurationBuilder;
 use JtcSolutions\CodeGenerator\CodeGenerator\Service\Builder\Configuration\MethodConfigurationBuilder;
 use JtcSolutions\CodeGenerator\CodeGenerator\Service\Factory\MethodAttributeConfigurationFactory;
@@ -65,7 +63,6 @@ class UpdateControllerConfigurator extends BaseControllerConfigurator implements
         $builder->addUseStatement(UuidInterface::class);
 
         // TODO: Handle automatic adding of use statements
-        $builder->addUseStatement(ErrorRequestJsonResponse::class);
         $builder->addUseStatement(Model::class);
         $builder->addUseStatement($context->entityFQCN);
     }
@@ -92,13 +89,13 @@ class UpdateControllerConfigurator extends BaseControllerConfigurator implements
         $builder->addOpenApiDoc($openApiDocFactory->createModelResponse(
             responseCode: 'Response::HTTP_BAD_REQUEST',
             description: 'Request is invalid',
-            type: ErrorRequestJsonResponse::class,
+            type: $context->errorResponseClass,
             groups: ['error'],
         ));
         $builder->addOpenApiDoc($openApiDocFactory->createModelResponse(
             responseCode: 'Response::HTTP_CONFLICT',
             description: 'Entity already exists.',
-            type: ErrorRequestJsonResponse::class,
+            type: FQCNHelper::transformFQCNToEntityName($context->errorResponseClass),
             groups: ['error'],
         ));
     }

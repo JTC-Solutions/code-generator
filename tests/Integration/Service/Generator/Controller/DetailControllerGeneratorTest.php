@@ -5,6 +5,7 @@ namespace JtcSolutions\CodeGenerator\Tests\Integration\Service\Generator\Control
 use JtcSolutions\CodeGenerator\CodeGenerator\Dto\Context; //
 use JtcSolutions\CodeGenerator\CodeGenerator\Service\Generator\Controller\DetailControllerGenerator; //
 use PHPUnit\Framework\TestCase;
+use Throwable;
 
 class DetailControllerGeneratorTest extends TestCase
 {
@@ -30,7 +31,7 @@ class DetailControllerGeneratorTest extends TestCase
             controllerNamespace: 'App\Controller\TestProduct', //
             dtoPath: $this->tempDir . '/Dto', //
             dtoNamespace: 'App\Dto\TestProduct', //
-            // Add default use statements if needed
+            errorResponseClass: Throwable::class,
         );
     }
 

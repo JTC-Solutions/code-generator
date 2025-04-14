@@ -40,6 +40,7 @@ class DtoClassWriterTest extends TestCase
             controllerNamespace: 'App\Controller',
             dtoPath: $this->baseDtoPath . '/SomeEntity', // Path doesn't exist yet
             dtoNamespace: $this->baseDtoNamespace . '\SomeEntity', // Namespace reflects path
+            errorResponseClass: Throwable::class,
         );
     }
 

@@ -15,6 +15,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Throwable;
 
 #[AsCommand('app:test')]
 class GenerateCrudControllerCommand extends Command
@@ -71,6 +72,6 @@ class GenerateCrudControllerCommand extends Command
             return;
         }
 
-        $this->domainContextProvider = new ContextProvider($controllerPath, $dtoPath, $entity);
+        $this->domainContextProvider = new ContextProvider($controllerPath, $dtoPath, $entity, Throwable::class);
     }
 }

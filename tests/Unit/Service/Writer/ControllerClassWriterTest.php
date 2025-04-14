@@ -8,6 +8,7 @@ use JtcSolutions\CodeGenerator\CodeGenerator\Service\Writer\ControllerClassWrite
 use org\bovigo\vfs\vfsStream; // Import vfsStream
 use org\bovigo\vfs\vfsStreamDirectory; // Import vfsStreamDirectory
 use PhpParser\Error as ParserError; // Import PhpParser\Error
+use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestCase;
 use Throwable;
 
@@ -32,6 +33,7 @@ class ControllerClassWriterTest extends TestCase
             controllerNamespace: 'App\Controller',
             dtoPath: 'vfs://projectDir/Dto', // Use vfs path
             dtoNamespace: 'App\Dto',
+            errorResponseClass: Exception::class,
         );
 
         // Ensure the target directory exists in VFS

@@ -5,6 +5,7 @@ namespace JtcSolutions\CodeGenerator\Tests\Unit\Service\Provider;
 use JtcSolutions\CodeGenerator\CodeGenerator\Dto\Context;
 use JtcSolutions\CodeGenerator\CodeGenerator\Service\Provider\ContextProvider;
 use PHPUnit\Framework\TestCase;
+use Throwable;
 
 class ContextProviderTest extends TestCase
 {
@@ -24,6 +25,7 @@ class ContextProviderTest extends TestCase
             $this->controllerNamespace,
             $this->dtoNamespace,
             $this->entityFqcn,
+            Throwable::class,
         );
     }
 
