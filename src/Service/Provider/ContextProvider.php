@@ -19,10 +19,11 @@ class ContextProvider
         public readonly string $projectDir,
         public readonly string $projectBaseNamespace,
         public readonly string $errorResponseClass,
+        public string $paginationClass,
+        // manually set settings
         public array $extendedClasses = [],
         public array $dtoInterfaces = [],
         public ?string $dtoFullyQualifiedClassName = null,
-        public string $paginationClass,
     ) {
     }
 
