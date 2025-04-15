@@ -24,36 +24,40 @@ class ContextProvider
     ) {
     }
 
-    public function getDtoPath(string $classFullyQualifiedClassName): string
+    private function replaceVariables(string $template, string $classFullyQualifiedClassName): string
     {
         ['domain' => $domain, 'entity' => $entity] = FQCNHelper::extractDomainAndEntity($classFullyQualifiedClassName);
-        $namespace = str_replace('{domain}', $domain, $this->dtoNamespaceTemplate);
-        $namespace = str_replace('{entity}', $entity, $namespace);
 
-        return FQCNHelper::convertNamespaceToFilepath($namespace, $this->projectBaseNamespace, $this->projectDir);
+        $namespace = str_replace('{domain}', $domain, $template);
+        return str_replace('{entity}', $entity, $namespace);
+    }
+
+    public function getDtoPath(string $classFullyQualifiedClassName): string
+    {
+        return FQCNHelper::convertNamespaceToFilepath(
+            $this->replaceVariables($this->dtoNamespaceTemplate, $classFullyQualifiedClassName),
+            $this->projectBaseNamespace,
+            $this->projectDir
+        );
     }
 
     public function getControllerPath(string $classFullyQualifiedClassName): string
     {
-        ['domain' => $domain, 'entity' => $entity] = FQCNHelper::extractDomainAndEntity($classFullyQualifiedClassName);
-        $namespace = str_replace('{domain}', $domain, $this->controllerNamespaceTemplate);
-        $namespace = str_replace('{entity}', $entity, $namespace);
-
-        return FQCNHelper::convertNamespaceToFilepath($namespace, $this->projectBaseNamespace, $this->projectDir);
+        return FQCNHelper::convertNamespaceToFilepath(
+            $this->replaceVariables($this->controllerNamespaceTemplate, $classFullyQualifiedClassName),
+            $this->projectBaseNamespace,
+            $this->projectDir
+        );
     }
 
     public function getDtoNamespace(string $classFullyQualifiedClassName): string
     {
-        ['domain' => $domain, 'entity' => $entity] = FQCNHelper::extractDomainAndEntity($classFullyQualifiedClassName);
-
-        return sprintf($this->dtoNamespaceTemplate, $domain, $entity);
+        return $this->replaceVariables($this->dtoNamespaceTemplate, $classFullyQualifiedClassName);
     }
 
     public function getControllerNamespace(string $classFullyQualifiedClassName): string
     {
-        ['domain' => $domain, 'entity' => $entity] = FQCNHelper::extractDomainAndEntity($classFullyQualifiedClassName);
-
-        return sprintf($this->controllerNamespaceTemplate, $domain, $entity);
+        return $this->replaceVariables($this->controllerNamespaceTemplate, $classFullyQualifiedClassName);
     }
 
     /**
