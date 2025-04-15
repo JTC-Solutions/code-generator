@@ -15,18 +15,23 @@ services:
   ## Generators
 
   JtcSolutions\CodeGenerator\Service\Generator\Controller\CreateControllerGenerator:
+    tags: ['jtc_solutions.controller_generator']
     public: true
 
   JtcSolutions\CodeGenerator\Service\Generator\Controller\DeleteControllerGenerator:
+    tags: ['jtc_solutions.controller_generator']
     public: true
 
   JtcSolutions\CodeGenerator\Service\Generator\Controller\DetailControllerGenerator:
+    tags: ['jtc_solutions.controller_generator']
     public: true
 
   JtcSolutions\CodeGenerator\Service\Generator\Controller\ListControllerGenerator:
+    tags: ['jtc_solutions.controller_generator']
     public: true
 
   JtcSolutions\CodeGenerator\Service\Generator\Controller\UpdateControllerGenerator:
+    tags: ['jtc_solutions.controller_generator']
     public: true
 
   JtcSolutions\CodeGenerator\Service\Generator\Dto\DtoGenerator:
@@ -67,3 +72,7 @@ services:
 
   JtcSolutions\CodeGenerator\Service\Writer\DtoClassWriter:
     public: true
+
+  ## Commands
+  JtcSolutions\CodeGenerator\Command\GenerateCrudCommand:
+    tags: ['console.command']

@@ -7,7 +7,6 @@ use JtcSolutions\CodeGenerator\Service\Configurator\Controller\IControllerConfig
 use JtcSolutions\CodeGenerator\Service\Writer\IControllerClassWriter;
 use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 
-#[AutoconfigureTag('jtc_solutions.controller_generator')]
 abstract class BaseControllerGenerator
 {
     public function __construct(

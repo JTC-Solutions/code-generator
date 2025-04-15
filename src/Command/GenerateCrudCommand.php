@@ -13,7 +13,7 @@ use Symfony\Component\DependencyInjection\Attribute\AutowireIterator;
 #[AsCommand('jtc-solutions:generate-crud')]
 class GenerateCrudCommand extends Command
 {
-    /** @param BaseControllerGenerator[] $controllerGenerators */
+    /** @param BaseControllerGenerator[] $controllerGenerators */ // TODO: Add interface
     public function __construct(
         #[AutowireIterator('jtc_solutions.controller_generator')]
         private readonly array $controllerGenerators, // TODO: Handle dynamic ability to remove or add custom generators
