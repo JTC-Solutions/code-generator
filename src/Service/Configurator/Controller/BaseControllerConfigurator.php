@@ -71,6 +71,10 @@ abstract class BaseControllerConfigurator
         $builder->addUseStatement("OpenApi\Attributes", 'OA');
         $builder->addUseStatement(Response::class);
         $builder->addUseStatement($this->contextProvider->getErrorResponseClass());
+
+        if ($this->contextProvider->dtoFullyQualifiedClassName !== null) {
+            $builder->addUseStatement($this->contextProvider->dtoFullyQualifiedClassName);
+        }
     }
 
     protected function configureConstructorBody(string $classFullyQualifiedClassName): ?string

@@ -25,10 +25,10 @@ class CreateControllerGenerator extends BaseControllerGenerator
     public function generate(string $classFullyQualifiedClassName): void
     {
         $this->dtoGenerator->generate($classFullyQualifiedClassName, '', static::DTO_SUFFIX);
-        $dtoNamespace = $this->contextProvider->getDtoNamespace($classFullyQualifiedClassName);
-        $dtoNamespace = str_replace('.php', '', $dtoNamespace);
 
-        // TODO: add dto namespace use statements
+        $dtoClassName = DtoGenerator::getDtoClassName($classFullyQualifiedClassName, '', static::DTO_SUFFIX);
+        $dtoFullyQualifiedClassName = $this->contextProvider->getDtoNamespace($classFullyQualifiedClassName) . '\\' . $dtoClassName;
+        $this->contextProvider->dtoFullyQualifiedClassName = $dtoFullyQualifiedClassName;
 
         parent::generate($classFullyQualifiedClassName);
     }

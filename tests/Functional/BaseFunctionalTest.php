@@ -33,7 +33,7 @@ abstract class BaseFunctionalTest extends TestCase
 
         // delete all generated files
         $fs = new Filesystem();
-        //$fs->remove(__DIR__ . '/../../output');
+        $fs->remove(__DIR__ . '/../../output');
     }
 
     protected function createDtoGenerator(): DtoGenerator

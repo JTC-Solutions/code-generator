@@ -6,6 +6,9 @@ use JtcSolutions\Helpers\Helper\FQCNHelper;
 
 class ContextProvider
 {
+    /**
+     * @param class-string|null $dtoFullyQualifiedClassName
+     */
     public function __construct(
         private readonly string $controllerNamespaceTemplate,
         private readonly string $dtoNamespaceTemplate,
@@ -14,6 +17,7 @@ class ContextProvider
         public readonly string $errorResponseClass,
         public array $extendedClasses = [],
         public array $dtoInterfaces = [],
+        public ?string $dtoFullyQualifiedClassName = null,
     ) {
     }
 

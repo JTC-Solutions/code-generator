@@ -24,9 +24,18 @@ class DtoGenerator
         $configuration = $this->configurator->configure($classFullyQualifiedClassName, $prefix, $suffix);
         $code = $this->codeRenderer->renderCode($configuration);
 
-        $className = FQCNHelper::transformFQCNToShortClassName($classFullyQualifiedClassName);
-        $dtoClassName = $prefix . $className . $suffix;
+        $dtoClassName = self::getDtoClassName($classFullyQualifiedClassName, $prefix, $suffix);
 
         $this->classWriter->write($classFullyQualifiedClassName, $dtoClassName, $code);
+    }
+
+    public static function getDtoClassName(
+        string $classFullyQualifiedClassName,
+        string $prefix = '',
+        string $suffix = '',
+    ): string {
+        $className = FQCNHelper::transformFQCNToShortClassName($classFullyQualifiedClassName);
+
+        return $prefix . $className . $suffix;
     }
 }
