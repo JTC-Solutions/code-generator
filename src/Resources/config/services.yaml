@@ -2,7 +2,7 @@ services:
   _defaults:
     autowire: true
     autoconfigure: true
-    public: true
+    public: false
 
   JtcSolutions\CodeGenerator\Service\Provider\ContextProvider:
     arguments:
@@ -13,4 +13,19 @@ services:
       $errorResponseClass: 'App\ErrorJson'
 
   JtcSolutions\CodeGenerator\Service\Generator\Controller\CreateControllerGenerator:
+    public: true
+
+  JtcSolutions\CodeGenerator\Service\Generator\Controller\DeleteControllerGenerator:
+    public: true
+
+  JtcSolutions\CodeGenerator\Service\Generator\Controller\DetailControllerGenerator:
+    public: true
+
+  JtcSolutions\CodeGenerator\Service\Generator\Controller\ListControllerGenerator:
+    public: true
+
+  JtcSolutions\CodeGenerator\Service\Generator\Controller\UpdateControllerGenerator:
+    public: true
+
+  JtcSolutions\CodeGenerator\Service\Generator\Dto\DtoGenerator:
     public: true
