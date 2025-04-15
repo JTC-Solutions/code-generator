@@ -15,6 +15,9 @@ abstract class BaseControllerGenerator
     ) {
     }
 
+    /**
+     * @param class-string $classFullyQualifiedClassName
+     */
     public function generate(string $classFullyQualifiedClassName): void
     {
         $configuration = $this->configurator->configure($classFullyQualifiedClassName);

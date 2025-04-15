@@ -6,5 +6,8 @@ use JtcSolutions\CodeGenerator\Dto\Configuration\Controller\ControllerConfigurat
 
 interface IControllerConfigurator
 {
+    /**
+     * @param class-string $classFullyQualifiedClassName
+     */
     public function configure(string $classFullyQualifiedClassName): ControllerConfiguration;
 }

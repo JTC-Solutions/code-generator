@@ -26,6 +26,7 @@ class UpdateControllerConfigurator extends BaseControllerConfigurator implements
     protected const string CONTROLLER_NAME_TEMPLATE = 'Update%sController';
 
     /**
+     * @param class-string $classFullyQualifiedClassName
      * @throws ConfigurationException
      */
     public function configure(string $classFullyQualifiedClassName): ControllerConfiguration
@@ -37,6 +38,10 @@ class UpdateControllerConfigurator extends BaseControllerConfigurator implements
         return $builder->build();
     }
 
+    /**
+     * @param class-string $classFullyQualifiedClassName
+     * @throws ConfigurationException
+     */
     public function createMethodConfiguration(string $classFullyQualifiedClassName): MethodConfiguration
     {
         $entityClassName = FQCNHelper::transformFQCNToShortClassName($classFullyQualifiedClassName);
@@ -51,6 +56,7 @@ class UpdateControllerConfigurator extends BaseControllerConfigurator implements
     }
 
     /**
+     * @param class-string $classFullyQualifiedClassName
      * @throws ConfigurationException
      */
     protected function configureUseStatements(ControllerConfigurationBuilder $builder, string $classFullyQualifiedClassName): void
@@ -67,6 +73,7 @@ class UpdateControllerConfigurator extends BaseControllerConfigurator implements
     }
 
     /**
+     * @param class-string $classFullyQualifiedClassName
      * @throws ConfigurationException
      */
     protected function configureOpenApiDocs(ControllerConfigurationBuilder $builder, string $classFullyQualifiedClassName): void
@@ -75,7 +82,7 @@ class UpdateControllerConfigurator extends BaseControllerConfigurator implements
 
         $className = FQCNHelper::transformFQCNToShortClassName($classFullyQualifiedClassName);
 
-        $builder->addOpenApiDoc($openApiDocFactory->createTag($className));
+        $builder->addOpenApiDoc($openApiDocFactory->createTag($classFullyQualifiedClassName));
         $builder->addOpenApiDoc($openApiDocFactory->createModelResponse(
             responseCode: 'Response::HTTP_OK',
             description: "Update of {$className}",
@@ -99,6 +106,9 @@ class UpdateControllerConfigurator extends BaseControllerConfigurator implements
         ));
     }
 
+    /**
+     * @param class-string $classFullyQualifiedClassName
+     */
     protected function configureMethodBody(string $classFullyQualifiedClassName): string
     {
         $className = FQCNHelper::transformFQCNToShortClassName($classFullyQualifiedClassName);

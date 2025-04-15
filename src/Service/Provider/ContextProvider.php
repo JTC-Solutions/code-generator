@@ -8,6 +8,9 @@ class ContextProvider
 {
     /**
      * @param class-string|null $dtoFullyQualifiedClassName
+     * @param class-string[] $extendedClasses
+     * @param class-string[] $dtoInterfaces
+     * @param class-string $errorResponseClass
      */
     public function __construct(
         private readonly string $controllerNamespaceTemplate,
@@ -51,6 +54,9 @@ class ContextProvider
         return sprintf($this->controllerNamespaceTemplate, $domain, $entity);
     }
 
+    /**
+     * @return class-string[]
+     */
     public function getExtendedClasses(): array
     {
         return $this->extendedClasses;

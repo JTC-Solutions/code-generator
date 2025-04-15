@@ -27,6 +27,7 @@ class CreateControllerGenerator extends BaseControllerGenerator
         $this->dtoGenerator->generate($classFullyQualifiedClassName, '', static::DTO_SUFFIX);
 
         $dtoClassName = DtoGenerator::getDtoClassName($classFullyQualifiedClassName, '', static::DTO_SUFFIX);
+        /** @var class-string $dtoFullyQualifiedClassName */
         $dtoFullyQualifiedClassName = $this->contextProvider->getDtoNamespace($classFullyQualifiedClassName) . '\\' . $dtoClassName;
         $this->contextProvider->dtoFullyQualifiedClassName = $dtoFullyQualifiedClassName;
 

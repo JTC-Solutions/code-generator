@@ -22,5 +22,8 @@
             <directory suffix="Test.php">./tests/Functional</directory>
             <exclude>tests/Functional/BaseFunctionalTest.php</exclude>
         </testsuite>
+        <testsuite name="Core">
+            <directory suffix="Test.php">./tests/Core</directory>
+        </testsuite>
     </testsuites>
 </phpunit>

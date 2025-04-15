@@ -33,6 +33,10 @@ class ListControllerConfigurator extends BaseControllerConfigurator implements I
         return $builder->build();
     }
 
+    /**
+     * @param class-string $classFullyQualifiedClassName
+     * @throws ConfigurationException
+     */
     public function createMethodConfiguration(string $classFullyQualifiedClassName): MethodConfiguration
     {
         $methodBuilder = new MethodConfigurationBuilder(self::METHOD_NAME, 'JsonResponse', $this->configureMethodBody($classFullyQualifiedClassName));
@@ -42,6 +46,7 @@ class ListControllerConfigurator extends BaseControllerConfigurator implements I
     }
 
     /**
+     * @param class-string $classFullyQualifiedClassName
      * @throws ConfigurationException
      */
     protected function configureUseStatements(ControllerConfigurationBuilder $builder, string $classFullyQualifiedClassName): void
@@ -57,6 +62,7 @@ class ListControllerConfigurator extends BaseControllerConfigurator implements I
     }
 
     /**
+     * @param class-string $classFullyQualifiedClassName
      * @throws ConfigurationException
      */
     protected function configureOpenApiDocs(ControllerConfigurationBuilder $builder, string $classFullyQualifiedClassName): void
@@ -65,7 +71,7 @@ class ListControllerConfigurator extends BaseControllerConfigurator implements I
 
         $className = FQCNHelper::transformFQCNToShortClassName($classFullyQualifiedClassName);
 
-        $builder->addOpenApiDoc($openApiDocFactory->createTag($className));
+        $builder->addOpenApiDoc($openApiDocFactory->createTag($classFullyQualifiedClassName));
         $builder->addOpenApiDoc($openApiDocFactory->createJsonContentResponse(
             responseCode: 'Response::HTTP_OK',
             description: "List of {$className}, paginated by offset and limit.",
@@ -83,6 +89,9 @@ class ListControllerConfigurator extends BaseControllerConfigurator implements I
         ));
     }
 
+    /**
+     * @param class-string $classFullyQualifiedClassName
+     */
     protected function configureMethodBody(string $classFullyQualifiedClassName): string
     {
         $className = FQCNHelper::transformFQCNToShortClassName($classFullyQualifiedClassName);

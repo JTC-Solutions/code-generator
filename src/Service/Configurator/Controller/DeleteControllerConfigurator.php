@@ -23,6 +23,10 @@ class DeleteControllerConfigurator extends BaseControllerConfigurator implements
 
     protected const string CONTROLLER_NAME_TEMPLATE = 'Delete%sController';
 
+    /**
+     * @param class-string $classFullyQualifiedClassName
+     * @throws ConfigurationException
+     */
     public function configure(string $classFullyQualifiedClassName): ControllerConfiguration
     {
         $builder = $this->createBuilder($classFullyQualifiedClassName);
@@ -32,6 +36,10 @@ class DeleteControllerConfigurator extends BaseControllerConfigurator implements
         return $builder->build();
     }
 
+    /**
+     * @param class-string $classFullyQualifiedClassName
+     * @throws ConfigurationException
+     */
     protected function createMethodConfiguration(string $classFullyQualifiedClassName): MethodConfiguration|null
     {
         $methodBuilder = new MethodConfigurationBuilder(static::METHOD_NAME, 'JsonResponse', $this->configureMethodBody($classFullyQualifiedClassName));
@@ -43,6 +51,7 @@ class DeleteControllerConfigurator extends BaseControllerConfigurator implements
     }
 
     /**
+     * @param class-string $classFullyQualifiedClassName
      * @throws ConfigurationException
      */
     protected function configureUseStatements(ControllerConfigurationBuilder $builder, string $classFullyQualifiedClassName): void
@@ -59,6 +68,7 @@ class DeleteControllerConfigurator extends BaseControllerConfigurator implements
     }
 
     /**
+     * @param class-string $classFullyQualifiedClassName
      * @throws ConfigurationException
      */
     protected function configureOpenApiDocs(ControllerConfigurationBuilder $builder, string $classFullyQualifiedClassName): void
@@ -80,6 +90,9 @@ class DeleteControllerConfigurator extends BaseControllerConfigurator implements
         ));
     }
 
+    /**
+     * @param class-string $classFullyQualifiedClassName
+     */
     protected function configureMethodBody(string $classFullyQualifiedClassName): string
     {
         $className = FQCNHelper::transformFQCNToShortClassName($classFullyQualifiedClassName);

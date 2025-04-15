@@ -25,6 +25,7 @@ class CreateControllerConfigurator extends BaseControllerConfigurator implements
     protected const string CONTROLLER_NAME_TEMPLATE = 'Create%sController';
 
     /**
+     * @param class-string $classFullyQualifiedClassName
      * @throws ConfigurationException
      */
     public function configure(string $classFullyQualifiedClassName): ControllerConfiguration
@@ -36,6 +37,10 @@ class CreateControllerConfigurator extends BaseControllerConfigurator implements
         return $builder->build();
     }
 
+    /**
+     * @param class-string $classFullyQualifiedClassName
+     * @throws ConfigurationException
+     */
     public function createMethodConfiguration(string $classFullyQualifiedClassName): MethodConfiguration
     {
         $entityClassName = FQCNHelper::transformFQCNToShortClassName($classFullyQualifiedClassName);
@@ -49,6 +54,7 @@ class CreateControllerConfigurator extends BaseControllerConfigurator implements
     }
 
     /**
+     * @param class-string $classFullyQualifiedClassName
      * @throws ConfigurationException
      */
     protected function configureUseStatements(
@@ -66,6 +72,7 @@ class CreateControllerConfigurator extends BaseControllerConfigurator implements
     }
 
     /**
+     * @param class-string $classFullyQualifiedClassName
      * @throws ConfigurationException
      */
     protected function configureOpenApiDocs(
@@ -100,6 +107,9 @@ class CreateControllerConfigurator extends BaseControllerConfigurator implements
         ));
     }
 
+    /**
+     * @param class-string $classFullyQualifiedClassName
+     */
     protected function configureMethodBody(string $classFullyQualifiedClassName): string
     {
         $className = FQCNHelper::transformFQCNToShortClassName($classFullyQualifiedClassName);
