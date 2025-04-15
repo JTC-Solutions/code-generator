@@ -12,6 +12,8 @@ services:
       $projectBaseNamespace: 'Project'
       $errorResponseClass: 'App\ErrorJson'
 
+  ## Generators
+
   JtcSolutions\CodeGenerator\Service\Generator\Controller\CreateControllerGenerator:
     public: true
 
@@ -28,4 +30,40 @@ services:
     public: true
 
   JtcSolutions\CodeGenerator\Service\Generator\Dto\DtoGenerator:
+    public: true
+
+  ## Configurators
+
+  JtcSolutions\CodeGenerator\Service\Configurator\Controller\CreateControllerConfigurator:
+    public: true
+
+  JtcSolutions\CodeGenerator\Service\Configurator\Controller\DeleteControllerConfigurator:
+    public: true
+
+  JtcSolutions\CodeGenerator\Service\Configurator\Controller\DetailControllerConfigurator:
+    public: true
+
+  JtcSolutions\CodeGenerator\Service\Configurator\Controller\ListControllerConfigurator:
+    public: true
+
+  JtcSolutions\CodeGenerator\Service\Configurator\Controller\UpdateControllerConfigurator:
+    public: true
+
+  JtcSolutions\CodeGenerator\Service\Configurator\Dto\DtoConfigurator:
+    public: true
+
+  ## Renderers
+
+  JtcSolutions\CodeGenerator\Service\CodeRenderer\Controller\ControllerCodeRenderer:
+    public: true
+
+  JtcSolutions\CodeGenerator\Service\CodeRenderer\Dto\DtoCodeRenderer:
+    public: true
+
+  ## Writer
+
+  JtcSolutions\CodeGenerator\Service\Writer\ControllerClassWriter:
+    public: true
+
+  JtcSolutions\CodeGenerator\Service\Writer\DtoClassWriter:
     public: true
