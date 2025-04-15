@@ -20,6 +20,7 @@
         </testsuite>
         <testsuite name="Functional">
             <directory suffix="Test.php">./tests/Functional</directory>
+            <exclude>tests/Functional/BaseFunctionalTest.php</exclude>
         </testsuite>
     </testsuites>
 </phpunit>

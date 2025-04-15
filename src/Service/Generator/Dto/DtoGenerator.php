@@ -2,8 +2,6 @@
 
 namespace JtcSolutions\CodeGenerator\Service\Generator\Dto;
 
-use JtcSolutions\CodeGenerator\Dto\Configuration\Dto\DtoConfiguration;
-use JtcSolutions\CodeGenerator\Dto\Context;
 use JtcSolutions\CodeGenerator\Service\CodeRenderer\Dto\DtoCodeRenderer;
 use JtcSolutions\CodeGenerator\Service\Configurator\Dto\DtoConfigurator;
 use JtcSolutions\CodeGenerator\Service\Writer\DtoClassWriter;
@@ -21,7 +19,7 @@ class DtoGenerator
     public function generate(
         string $classFullyQualifiedClassName,
         string $prefix = '',
-        string $suffix = ''
+        string $suffix = '',
     ): void {
         $configuration = $this->configurator->configure($classFullyQualifiedClassName, $prefix, $suffix);
         $code = $this->codeRenderer->renderCode($configuration);

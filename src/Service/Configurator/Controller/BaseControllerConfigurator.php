@@ -4,9 +4,9 @@ namespace JtcSolutions\CodeGenerator\Service\Configurator\Controller;
 
 use Exception;
 use JtcSolutions\CodeGenerator\Dto\Configuration\Controller\Method\MethodConfiguration;
-use JtcSolutions\CodeGenerator\Dto\Context;
 use JtcSolutions\CodeGenerator\Exception\ConfigurationException;
 use JtcSolutions\CodeGenerator\Service\Builder\Configuration\ControllerConfigurationBuilder;
+use JtcSolutions\CodeGenerator\Service\Provider\ContextProvider;
 use JtcSolutions\Helpers\Helper\FQCNHelper;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,11 +17,16 @@ abstract class BaseControllerConfigurator
 
     protected const bool CALL_PARENT_CONSTRUCTOR = false;
 
+    public function __construct(
+        protected readonly ContextProvider $contextProvider,
+    ) {
+    }
+
     /**
      * @throws ConfigurationException
      * @throws Exception
      */
-    protected function createBuilder(Context $context): ControllerConfigurationBuilder
+    protected function createBuilder(string $classFullyQualifiedClassName): ControllerConfigurationBuilder
     {
         if (static::CONTROLLER_NAME_TEMPLATE === '') {
             throw new Exception(
@@ -33,47 +38,45 @@ abstract class BaseControllerConfigurator
             );
         }
 
-        $entityClassName = FQCNHelper::transformFQCNToEntityName($context->entityFQCN, false);
+        $entityClassName = FQCNHelper::transformFQCNToShortClassName($classFullyQualifiedClassName);
 
         $builder = new ControllerConfigurationBuilder(
             className: sprintf(static::CONTROLLER_NAME_TEMPLATE, $entityClassName),
-            namespace: $context->controllerNamespace,
-            method: $this->createMethodConfiguration($context),
+            namespace: $this->contextProvider->getControllerNamespace(),
+            method: $this->createMethodConfiguration($classFullyQualifiedClassName),
             callParent: static::CALL_PARENT_CONSTRUCTOR,
-            constructorBody: $this->configureConstructorBody($context)
+            constructorBody: $this->configureConstructorBody($classFullyQualifiedClassName),
         );
 
-        if ($context->extendedClasses === []) {
+        if ($this->contextProvider->getExtendedClasses() === []) {
             $builder->addExtendedClass(AbstractController::class);
         } else {
-            foreach ($context->extendedClasses as $extendedClass) {
+            foreach ($this->contextProvider->getExtendedClasses() as $extendedClass) {
                 $builder->addExtendedClass($extendedClass);
             }
         }
 
-        $this->configureUseStatements($builder, $context);
+        $this->configureUseStatements($builder, $classFullyQualifiedClassName);
 
         return $builder;
     }
 
-    protected function configureConstructorBody(Context $context): ?string
+    /**
+     * @throws ConfigurationException
+     */
+    protected function configureUseStatements(
+        ControllerConfigurationBuilder $builder,
+        string $classFullyQualifiedClassName,
+    ): void {
+        $builder->addUseStatement("OpenApi\Attributes", 'OA');
+        $builder->addUseStatement(Response::class);
+        $builder->addUseStatement($this->contextProvider->getErrorResponseClass());
+    }
+
+    protected function configureConstructorBody(string $classFullyQualifiedClassName): ?string
     {
         return null;
     }
 
-    abstract protected function createMethodConfiguration(Context $context): MethodConfiguration|null;
-
-    /**
-     * @throws ConfigurationException
-     */
-    protected function configureUseStatements(ControllerConfigurationBuilder $builder, Context $context): void
-    {
-        $builder->addUseStatement("OpenApi\Attributes", 'OA');
-        $builder->addUseStatement(Response::class);
-        $builder->addUseStatement($context->errorResponseClass);
-
-        foreach ($context->defaultUseStatements as $defaultUseStatement) {
-            $builder->addUseStatement($defaultUseStatement);
-        }
-    }
+    abstract protected function createMethodConfiguration(string $classFullyQualifiedClassName): MethodConfiguration|null;
 }

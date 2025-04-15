@@ -2,7 +2,6 @@
 
 namespace JtcSolutions\CodeGenerator\Service\Builder\Configuration;
 
-use;
 use JtcSolutions\CodeGenerator\Dto\Configuration\Controller\ControllerConfiguration;
 use JtcSolutions\CodeGenerator\Dto\Configuration\Controller\Method\MethodArgumentConfiguration;
 use JtcSolutions\CodeGenerator\Dto\Configuration\Controller\Method\MethodConfiguration;
@@ -53,7 +52,7 @@ class ControllerConfigurationBuilder extends BaseConfigurationBuilder
         protected readonly string $namespace,
         protected readonly ?MethodConfiguration $method = null,
         protected readonly bool $callParent = false,
-        protected readonly ?string $constructorBody = null
+        protected readonly ?string $constructorBody = null,
     ) {
     }
 
@@ -104,7 +103,7 @@ class ControllerConfigurationBuilder extends BaseConfigurationBuilder
             $this->addUseStatement($extendedClass);
         }
 
-        $extendedClassName = FQCNHelper::transformFQCNToEntityName($extendedClass, false);
+        $extendedClassName = FQCNHelper::transformFQCNToShortClassName($extendedClass, false);
 
         /** @var array<int,string> $result */
         $result = $this->addItem(self::EXTENDED_CLASS, $extendedClassName, $this->extends, $order);
@@ -149,7 +148,7 @@ class ControllerConfigurationBuilder extends BaseConfigurationBuilder
             $this->addUseStatement($constructorParam->argumentType);
         }
 
-        $paramTypeClassName = FQCNHelper::transformFQCNToEntityName($constructorParam->argumentType, false);
+        $paramTypeClassName = FQCNHelper::transformFQCNToShortClassName($constructorParam->argumentType);
 
         $parsed = new MethodArgumentConfiguration($constructorParam->argumentName, $paramTypeClassName);
 

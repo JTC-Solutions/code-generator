@@ -4,7 +4,6 @@ namespace JtcSolutions\CodeGenerator\Service\Configurator\Dto;
 
 use JtcSolutions\CodeGenerator\Dto\Configuration\Dto\DtoConfiguration;
 use JtcSolutions\CodeGenerator\Dto\Configuration\UseStatementConfiguration;
-use JtcSolutions\CodeGenerator\Dto\Context;
 use JtcSolutions\CodeGenerator\Service\Provider\ContextProvider;
 use JtcSolutions\Helpers\Helper\FQCNHelper;
 
@@ -18,7 +17,7 @@ class DtoConfigurator
     public function configure(
         string $classFullyQualifiedClassName,
         string $prefix = '',
-        string $suffix = ''
+        string $suffix = '',
     ): DtoConfiguration {
         $className = FQCNHelper::transformFQCNToShortClassName($classFullyQualifiedClassName);
         $dtoClassName = $prefix . $className . $suffix;
@@ -33,7 +32,7 @@ class DtoConfigurator
             $interfaces[] = FQCNHelper::transformFQCNToShortClassName($dtoInterface);
         }
 
-        $dtoNamespace = $this->contextProvider->dtoNamespaceTemplate; // TODO: evaluate ?
+        $dtoNamespace = $this->contextProvider->getDtoNamespace();
 
         return new DtoConfiguration(
             namespace: $dtoNamespace,

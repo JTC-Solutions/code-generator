@@ -2,7 +2,6 @@
 
 namespace JtcSolutions\CodeGenerator\Service\Writer;
 
-use JtcSolutions\CodeGenerator\Dto\Context;
 use JtcSolutions\CodeGenerator\Exception\TemplateNotValidPhpCodeException;
 use PhpParser\Error;
 use PhpParser\ParserFactory;
@@ -10,17 +9,17 @@ use PhpParser\ParserFactory;
 class ControllerClassWriter extends BaseClassWriter implements IControllerClassWriter
 {
     public function write(
-        Context $context,
+        string $classFullyQualifiedClassName,
         string $className,
         string $code,
     ): string {
-        $filepath = sprintf('%s/%s.php', $context->controllerPath, $className);
+        $filepath = sprintf('%s/%s.php', $this->contextProvider->getControllerPath(), $className);
 
         $parser = (new ParserFactory())->createForNewestSupportedVersion();
         try {
             $parser->parse($code);
         } catch (Error $e) {
-            throw TemplateNotValidPhpCodeException::create($className, $context->entityFQCN, $e);
+            throw TemplateNotValidPhpCodeException::create($className, $classFullyQualifiedClassName, $e);
         }
 
         $this->dumpFile($filepath, $code);

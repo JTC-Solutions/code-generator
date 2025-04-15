@@ -2,7 +2,6 @@
 
 namespace JtcSolutions\CodeGenerator\Service\Factory;
 
-use;
 use JtcSolutions\CodeGenerator\Dto\Configuration\Controller\OpenApiDoc\OpenApiDocResponseConfiguration;
 use JtcSolutions\CodeGenerator\Dto\Configuration\Controller\OpenApiDoc\OpenApiDocTagConfiguration;
 use JtcSolutions\Helpers\Helper\FQCNHelper;
@@ -32,7 +31,7 @@ class OpenApiDocConfigurationFactory
      */
     public function createTag(string $name): OpenApiDocTagConfiguration
     {
-        $className = FQCNHelper::transformFQCNToEntityName($name, false);
+        $className = FQCNHelper::transformFQCNToShortClassName($name);
         $classNameSnakeCase = StringUtils::toSnakeCase($className);
 
         return new OpenApiDocTagConfiguration($classNameSnakeCase);
@@ -48,7 +47,7 @@ class OpenApiDocConfigurationFactory
         string $type,
         array $groups,
     ): OpenApiDocResponseConfiguration {
-        $model = FQCNHelper::transformFQCNToEntityName($type, false);
+        $model = FQCNHelper::transformFQCNToShortClassName($type, false);
 
         return new OpenApiDocResponseConfiguration(
             response: $responseCode,
@@ -77,7 +76,7 @@ class OpenApiDocConfigurationFactory
         string $type,
         array $groups,
     ): OpenApiDocResponseConfiguration {
-        $model = FQCNHelper::transformFQCNToEntityName($type, false);
+        $model = FQCNHelper::transformFQCNToShortClassName($type, false);
 
         return new OpenApiDocResponseConfiguration(
             response: $responseCode,

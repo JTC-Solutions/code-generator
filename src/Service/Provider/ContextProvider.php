@@ -22,8 +22,31 @@ class ContextProvider
         return FQCNHelper::convertNamespaceToFilepath($this->dtoNamespaceTemplate, $this->projectBaseNamespace, $this->projectDir);
     }
 
+    public function getControllerPath(): string
+    {
+        return FQCNHelper::convertNamespaceToFilepath($this->controllerNamespaceTemplate, $this->projectBaseNamespace, $this->projectDir);
+    }
+
     public function getDtoNamespace(): string
     {
-        return $this->dtoNamespaceTemplate; // TODO: Fix
+        return $this->dtoNamespaceTemplate; // TODO: Fix, add evaluate
+    }
+
+    public function getControllerNamespace(): string
+    {
+        return $this->controllerNamespaceTemplate; // TODO: Fix, add evaluate
+    }
+
+    public function getExtendedClasses(): array
+    {
+        return $this->extendedClasses;
+    }
+
+    /**
+     * @return class-string
+     */
+    public function getErrorResponseClass(): string
+    {
+        return $this->errorResponseClass;
     }
 }

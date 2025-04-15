@@ -2,11 +2,11 @@
 
 namespace JtcSolutions\CodeGenerator\Service\Generator\Controller;
 
-use JtcSolutions\CodeGenerator\Dto\Context;
+use JtcSolutions\CodeGenerator\Service\CodeRenderer\Controller\ControllerCodeRenderer;
 use JtcSolutions\CodeGenerator\Service\Configurator\Controller\CreateControllerConfigurator;
 use JtcSolutions\CodeGenerator\Service\Generator\Dto\DtoGenerator;
 use JtcSolutions\CodeGenerator\Service\Provider\ContextProvider;
-use JtcSolutions\Helpers\Helper\FQCNHelper;
+use JtcSolutions\CodeGenerator\Service\Writer\ControllerClassWriter;
 
 class CreateControllerGenerator extends BaseControllerGenerator
 {
@@ -15,10 +15,12 @@ class CreateControllerGenerator extends BaseControllerGenerator
     public function __construct(
         protected readonly DtoGenerator $dtoGenerator,
         protected readonly ContextProvider $contextProvider,
-        protected readonly CreateControllerConfigurator $configurator,
+        CreateControllerConfigurator $configurator,
+        ControllerClassWriter $classWriter,
+        ControllerCodeRenderer $codeRenderer,
     ) {
+        parent::__construct($configurator, $classWriter, $codeRenderer);
     }
-
 
     public function generate(string $classFullyQualifiedClassName): void
     {
@@ -26,13 +28,8 @@ class CreateControllerGenerator extends BaseControllerGenerator
         $dtoNamespace = $this->contextProvider->getDtoNamespace();
         $dtoNamespace = str_replace('.php', '', $dtoNamespace);
 
-        // TODO: pass additional namespaces ?
+        // TODO: add dto namespace use statements
 
         parent::generate($classFullyQualifiedClassName);
-    }
-
-    protected function createConfigurator(): CreateControllerConfigurator
-    {
-        return new CreateControllerConfigurator();
     }
 }

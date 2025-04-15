@@ -23,7 +23,7 @@ class MethodAttributeConfigurationFactory
     public static function createDetailRouteAttribute(
         string $entity,
     ): RouteAttributeConfiguration {
-        $className = FQCNHelper::transformFQCNToEntityName($entity, false);
+        $className = FQCNHelper::transformFQCNToShortClassName($entity, false);
         $kebabCase = StringUtils::toKebabCase($className);
         $snakeCase = StringUtils::toSnakeCase($className);
 
@@ -37,7 +37,7 @@ class MethodAttributeConfigurationFactory
     public static function createListRouteAttribute(
         string $entity,
     ): RouteAttributeConfiguration {
-        $className = FQCNHelper::transformFQCNToEntityName($entity, false);
+        $className = FQCNHelper::transformFQCNToShortClassName($entity, false);
         $kebabCase = StringUtils::toKebabCase($className);
         $snakeCase = StringUtils::toSnakeCase($className);
 
@@ -51,7 +51,7 @@ class MethodAttributeConfigurationFactory
     public static function createDeleteRouteAttribute(
         string $entity,
     ): RouteAttributeConfiguration {
-        $className = FQCNHelper::transformFQCNToEntityName($entity, false);
+        $className = FQCNHelper::transformFQCNToShortClassName($entity, false);
         $kebabCase = StringUtils::toKebabCase($className);
         $snakeCase = StringUtils::toSnakeCase($className);
 
@@ -65,7 +65,7 @@ class MethodAttributeConfigurationFactory
     public static function createCreateRouteAttribute(
         string $entity,
     ): RouteAttributeConfiguration {
-        $className = FQCNHelper::transformFQCNToEntityName($entity, false);
+        $className = FQCNHelper::transformFQCNToShortClassName($entity, false);
         $kebabCase = StringUtils::toKebabCase($className);
         $snakeCase = StringUtils::toSnakeCase($className);
 
@@ -79,7 +79,7 @@ class MethodAttributeConfigurationFactory
     public static function createUpdateRouteAttribute(
         string $entity,
     ): RouteAttributeConfiguration {
-        $className = FQCNHelper::transformFQCNToEntityName($entity, false);
+        $className = FQCNHelper::transformFQCNToShortClassName($entity, false);
         $kebabCase = StringUtils::toKebabCase($className);
         $snakeCase = StringUtils::toSnakeCase($className);
 

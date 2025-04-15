@@ -11,6 +11,10 @@ parameters:
     parallel:
         processTimeout: 120.0
     ignoreErrors:
+    excludePaths:
+        # symfony configuration is unfriendly with phpstan
+        - src/DependencyInjection/
+        - src/JtcSolutionsCodeGeneratorBundle.php
 
 services:
     errorFormatter.compact:

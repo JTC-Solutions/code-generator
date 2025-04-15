@@ -5,25 +5,24 @@ namespace JtcSolutions\CodeGenerator\Service\CodeRenderer\Controller;
 use JtcSolutions\CodeGenerator\Dto\Configuration\Controller\ControllerConfiguration;
 use JtcSolutions\CodeGenerator\Service\CodeRenderer\BaseRenderer;
 
-/** @property ControllerConfiguration $configuration */
 abstract class BaseControllerRenderer extends BaseRenderer
 {
-    protected function addOpenApiDoc(): void
+    protected function addOpenApiDoc(ControllerConfiguration $configuration): void
     {
-        foreach ($this->configuration->openApiDocs as $doc) {
+        foreach ($configuration->openApiDocs as $doc) {
             $this->code .= $doc->render() . "\n"; // TODO: Maybe add open api render that will handle it
         }
     }
 
-    protected function addConstructor(): void
+    protected function addConstructor(ControllerConfiguration $configuration): void
     {
-        if ($this->configuration->constructorParams !== []) {
+        if ($configuration->constructorParams !== []) {
             $this->code .= "    public function __construct(\n";
 
             $paramStrings = [];
             $paramNames = [];
 
-            foreach ($this->configuration->constructorParams as $param) {
+            foreach ($configuration->constructorParams as $param) {
                 $paramStrings[] = "        {$param->argumentType} \${$param->argumentName}";
                 $paramNames[] = "\${$param->argumentName}";
             }
@@ -31,54 +30,54 @@ abstract class BaseControllerRenderer extends BaseRenderer
             $this->code .= implode(",\n", $paramStrings) . "\n";
             $this->code .= "    ) {\n";
 
-            if ($this->configuration->callParent) {
-                $this->code .= "        parent::__construct(" . implode(", ", $paramNames) . ");\n";
+            if ($configuration->callParent) {
+                $this->code .= '        parent::__construct(' . implode(', ', $paramNames) . ");\n";
             }
 
-            if ($this->configuration->constructorBody !== null) {
-                $this->code .= "        {$this->configuration->constructorBody}\n";
+            if ($configuration->constructorBody !== null) {
+                $this->code .= "        {$configuration->constructorBody}\n";
             }
 
             $this->code .= "    }\n\n";
         }
     }
 
-    protected function addMethodAttributes(): void
+    protected function addMethodAttributes(ControllerConfiguration $configuration): void
     {
         if (
-            $this->configuration->methodConfiguration === null
-            || $this->configuration->methodConfiguration->attributes === []
+            $configuration->methodConfiguration === null
+            || $configuration->methodConfiguration->attributes === []
         ) {
             return;
         }
 
-        foreach ($this->configuration->methodConfiguration->attributes as $attribute) {
+        foreach ($configuration->methodConfiguration->attributes as $attribute) {
             $this->code .= '    ' . $attribute->render() . "\n";
         }
     }
 
-    protected function addMethodName(): void
+    protected function addMethodName(ControllerConfiguration $configuration): void
     {
         if (
-            $this->configuration->methodConfiguration === null
+            $configuration->methodConfiguration === null
         ) {
             return;
         }
 
-        $this->code .= "    public function {$this->configuration->methodConfiguration->name}(\n";
+        $this->code .= "    public function {$configuration->methodConfiguration->name}(\n";
     }
 
-    protected function addMethodArguments(): void
+    protected function addMethodArguments(ControllerConfiguration $configuration): void
     {
         if (
-            $this->configuration->methodConfiguration === null
+            $configuration->methodConfiguration === null
         ) {
             return;
         }
 
         $argStrings = [];
 
-        foreach ($this->configuration->methodConfiguration->arguments as $arg) {
+        foreach ($configuration->methodConfiguration->arguments as $arg) {
             $argStrings[] = "        {$arg->argumentType} \${$arg->argumentName}";
         }
 
@@ -86,16 +85,16 @@ abstract class BaseControllerRenderer extends BaseRenderer
             $this->code .= implode(",\n", $argStrings) . "\n";
         }
 
-        $this->code .= "    ): {$this->configuration->methodConfiguration->returnType} {\n";
+        $this->code .= "    ): {$configuration->methodConfiguration->returnType} {\n";
     }
 
-    protected function addMethodBody(): void
+    protected function addMethodBody(ControllerConfiguration $configuration): void
     {
-        if ($this->configuration->methodConfiguration === null) {
+        if ($configuration->methodConfiguration === null) {
             return;
         }
 
-        $methodLine = explode("\n", $this->configuration->methodConfiguration->methodBody);
+        $methodLine = explode("\n", $configuration->methodConfiguration->methodBody);
 
         foreach ($methodLine as $line) {
             $this->code .= "        {$line}\n";

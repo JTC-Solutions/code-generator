@@ -2,16 +2,24 @@
 
 namespace JtcSolutions\CodeGenerator\Service\Writer;
 
+use JtcSolutions\CodeGenerator\Service\Provider\ContextProvider;
+use PhpParser\Parser;
+use PhpParser\ParserFactory;
 use RuntimeException;
 use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
 use Symfony\Component\Filesystem\Filesystem;
 
 abstract class BaseClassWriter
 {
-    protected Filesystem $filesystem;
+    protected readonly Filesystem $filesystem;
+
+    protected readonly Parser $parser;
 
     public function __construct(
+        protected readonly ContextProvider $contextProvider,
+        protected readonly ParserFactory $parserFactory,
     ) {
+        $this->parser = $this->parserFactory->createForNewestSupportedVersion();
         $this->filesystem = new Filesystem();
     }
 

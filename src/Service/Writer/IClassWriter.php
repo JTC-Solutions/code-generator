@@ -2,8 +2,6 @@
 
 namespace JtcSolutions\CodeGenerator\Service\Writer;
 
-use JtcSolutions\CodeGenerator\Dto\Context;
-
 interface IClassWriter
 {
     public function write(

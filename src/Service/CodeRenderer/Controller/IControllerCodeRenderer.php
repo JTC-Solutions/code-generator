@@ -6,10 +6,5 @@ use JtcSolutions\CodeGenerator\Dto\Configuration\Controller\ControllerConfigurat
 
 interface IControllerCodeRenderer
 {
-    public function __construct(
-        ControllerConfiguration $configuration,
-        string $code = '',
-    );
-
-    public function renderCode(): string;
+    public function renderCode(ControllerConfiguration $configuration): string;
 }

@@ -11,9 +11,9 @@ abstract class BaseRenderer
 
     abstract protected function renderCode(IRenderableConfiguration $configuration): string;
 
-    protected function addNamespace(): void
+    protected function addNamespace(IRenderableConfiguration $configuration): void
     {
-        $this->code .= "namespace {$this->configuration->getNamespace()};\n\n";
+        $this->code .= "namespace {$configuration->getNamespace()};\n\n";
     }
 
     protected function addDeclareStrictTypes(): void
@@ -21,10 +21,10 @@ abstract class BaseRenderer
         $this->code = "<?php declare(strict_types = 1);\n\n";
     }
 
-    protected function addUseStatements(): void
+    protected function addUseStatements(IRenderableConfiguration $configuration): void
     {
         /** @var array<string, UseStatementConfiguration> $useStatements */
-        $useStatements = $this->configuration->getUseStatements();
+        $useStatements = $configuration->getUseStatements();
 
         if ($useStatements !== []) {
             // Array should be sorted by FQCN key in the builder before rendering
@@ -43,6 +43,7 @@ abstract class BaseRenderer
     }
 
     protected function addClassName(
+        IRenderableConfiguration $configuration,
         bool $readonly = false,
         bool $final = false,
         bool $abstract = false,
@@ -59,20 +60,20 @@ abstract class BaseRenderer
             $this->code .= 'readonly ';
         }
 
-        $this->code .= "class {$this->configuration->getClassName()}";
+        $this->code .= "class {$configuration->getClassName()}";
     }
 
-    protected function addExtendedClasses(): void
+    protected function addExtendedClasses(IRenderableConfiguration $configuration): void
     {
-        if ($this->configuration->getExtends() !== []) {
-            $this->code .= ' extends ' . implode(', ', $this->configuration->getExtends());
+        if ($configuration->getExtends() !== []) {
+            $this->code .= ' extends ' . implode(', ', $configuration->getExtends());
         }
     }
 
-    protected function addImplementedInterfaces(): void
+    protected function addImplementedInterfaces(IRenderableConfiguration $configuration): void
     {
-        if ($this->configuration->getInterfaces() !== []) {
-            $this->code .= ' implements ' . implode(', ', $this->configuration->getInterfaces());
+        if ($configuration->getInterfaces() !== []) {
+            $this->code .= ' implements ' . implode(', ', $configuration->getInterfaces());
         }
     }
 }

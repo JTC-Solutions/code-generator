@@ -1,10 +1,10 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace JtcSolutions\CodeGenerator;
 
 use JtcSolutions\CodeGenerator\DependencyInjection\JtcSolutionsCodeGeneratorExtension;
-use Symfony\Component\HttpKernel\Bundle\AbstractBundle;
 use Symfony\Component\DependencyInjection\Extension\ExtensionInterface;
+use Symfony\Component\HttpKernel\Bundle\AbstractBundle;
 
 class JtcSolutionsCodeGeneratorBundle extends AbstractBundle
 {
@@ -13,6 +13,7 @@ class JtcSolutionsCodeGeneratorBundle extends AbstractBundle
         if ($this->extension === null) {
             $this->extension = new JtcSolutionsCodeGeneratorExtension();
         }
+
         return $this->extension;
     }
 

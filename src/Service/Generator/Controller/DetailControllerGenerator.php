@@ -2,12 +2,17 @@
 
 namespace JtcSolutions\CodeGenerator\Service\Generator\Controller;
 
+use JtcSolutions\CodeGenerator\Service\CodeRenderer\Controller\ControllerCodeRenderer;
 use JtcSolutions\CodeGenerator\Service\Configurator\Controller\DetailControllerConfigurator;
+use JtcSolutions\CodeGenerator\Service\Writer\ControllerClassWriter;
 
 class DetailControllerGenerator extends BaseControllerGenerator
 {
-    protected function createConfigurator(): DetailControllerConfigurator
-    {
-        return new DetailControllerConfigurator();
+    public function __construct(
+        DetailControllerConfigurator $configurator,
+        ControllerClassWriter $classWriter,
+        ControllerCodeRenderer $codeRenderer,
+    ) {
+        parent::__construct($configurator, $classWriter, $codeRenderer);
     }
 }

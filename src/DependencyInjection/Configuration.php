@@ -1,9 +1,9 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace JtcSolutions\CodeGenerator\DependencyInjection;
 
-use Symfony\Component\Config\Definition\ConfigurationInterface;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
+use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 class Configuration implements ConfigurationInterface
 {
@@ -13,24 +13,23 @@ class Configuration implements ConfigurationInterface
 
         $treeBuilder->getRootNode()
             ->children()
-                ->arrayNode('global')
-                    ->children()
-                        ->scalarNode('controllerNamespaceTemplate')
-                            ->isRequired()
-                            ->cannotBeEmpty()
-                            ->info('Template for controller namespaces. Use %s for Domain and Entity.')
-                            ->example('App\%s\App\Api\%s')
-                        ->end()
-                        ->scalarNode('dtoNamespaceTemplate')
-                            ->isRequired()
-                            ->cannotBeEmpty()
-                            ->info('Template for DTO namespaces. Use %s for Domain and Entity.')
-                            ->example('App\%s\Domain\Dto\%s')
-                        ->end()
-                    ->end()
-                ->end() // global
+            ->arrayNode('global')
+            ->children()
+            ->scalarNode('controllerNamespaceTemplate')
+            ->isRequired()
+            ->cannotBeEmpty()
+            ->info('Template for controller namespaces. Use %s for Domain and Entity.')
+            ->example('App\%s\App\Api\%s')
             ->end()
-        ;
+            ->scalarNode('dtoNamespaceTemplate')
+            ->isRequired()
+            ->cannotBeEmpty()
+            ->info('Template for DTO namespaces. Use %s for Domain and Entity.')
+            ->example('App\%s\Domain\Dto\%s')
+            ->end()
+            ->end()
+            ->end() // global
+            ->end();
 
         return $treeBuilder;
     }

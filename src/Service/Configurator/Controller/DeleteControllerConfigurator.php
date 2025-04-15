@@ -5,7 +5,6 @@ namespace JtcSolutions\CodeGenerator\Service\Configurator\Controller;
 use JtcSolutions\CodeGenerator\Dto\Configuration\Controller\ControllerConfiguration;
 use JtcSolutions\CodeGenerator\Dto\Configuration\Controller\Method\MethodArgumentConfiguration;
 use JtcSolutions\CodeGenerator\Dto\Configuration\Controller\Method\MethodConfiguration;
-use JtcSolutions\CodeGenerator\Dto\Context;
 use JtcSolutions\CodeGenerator\Exception\ConfigurationException;
 use JtcSolutions\CodeGenerator\Service\Builder\Configuration\ControllerConfigurationBuilder;
 use JtcSolutions\CodeGenerator\Service\Builder\Configuration\MethodConfigurationBuilder;
@@ -24,21 +23,21 @@ class DeleteControllerConfigurator extends BaseControllerConfigurator implements
 
     protected const string CONTROLLER_NAME_TEMPLATE = 'Delete%sController';
 
-    public function configure(Context $context): ControllerConfiguration
+    public function configure(string $classFullyQualifiedClassName): ControllerConfiguration
     {
-        $builder = $this->createBuilder($context);
+        $builder = $this->createBuilder($classFullyQualifiedClassName);
 
-        $this->configureOpenApiDocs($builder, $context);
+        $this->configureOpenApiDocs($builder, $classFullyQualifiedClassName);
 
         return $builder->build();
     }
 
-    protected function createMethodConfiguration(Context $context): MethodConfiguration|null
+    protected function createMethodConfiguration(string $classFullyQualifiedClassName): MethodConfiguration|null
     {
-        $methodBuilder = new MethodConfigurationBuilder(static::METHOD_NAME, 'JsonResponse', $this->configureMethodBody($context->entityFQCN));
+        $methodBuilder = new MethodConfigurationBuilder(static::METHOD_NAME, 'JsonResponse', $this->configureMethodBody($classFullyQualifiedClassName));
         $methodBuilder
             ->addArgument(new MethodArgumentConfiguration('id', 'UuidInterface'))
-            ->addAttribute(MethodAttributeConfigurationFactory::createDeleteRouteAttribute($context->entityFQCN));
+            ->addAttribute(MethodAttributeConfigurationFactory::createDeleteRouteAttribute($classFullyQualifiedClassName));
 
         return $methodBuilder->build();
     }
@@ -46,9 +45,9 @@ class DeleteControllerConfigurator extends BaseControllerConfigurator implements
     /**
      * @throws ConfigurationException
      */
-    protected function configureUseStatements(ControllerConfigurationBuilder $builder, Context $context): void
+    protected function configureUseStatements(ControllerConfigurationBuilder $builder, string $classFullyQualifiedClassName): void
     {
-        parent::configureUseStatements($builder, $context);
+        parent::configureUseStatements($builder, $classFullyQualifiedClassName);
 
         $builder->addUseStatement(JsonResponse::class);
         $builder->addUseStatement(Route::class);
@@ -56,19 +55,19 @@ class DeleteControllerConfigurator extends BaseControllerConfigurator implements
         // TODO: Handle automatic adding of use statements
         $builder->addUseStatement(Model::class);
         $builder->addUseStatement(UuidInterface::class);
-        $builder->addUseStatement($context->entityFQCN);
+        $builder->addUseStatement($classFullyQualifiedClassName);
     }
 
     /**
      * @throws ConfigurationException
      */
-    protected function configureOpenApiDocs(ControllerConfigurationBuilder $builder, Context $context): void
+    protected function configureOpenApiDocs(ControllerConfigurationBuilder $builder, string $classFullyQualifiedClassName): void
     {
         $openApiDocFactory = new OpenApiDocConfigurationFactory();
 
-        $className = FQCNHelper::transformFQCNToEntityName($context->entityFQCN, false);
+        $className = FQCNHelper::transformFQCNToShortClassName($classFullyQualifiedClassName);
 
-        $builder->addOpenApiDoc($openApiDocFactory->createTag($context->entityFQCN));
+        $builder->addOpenApiDoc($openApiDocFactory->createTag($classFullyQualifiedClassName));
         $builder->addOpenApiDoc($openApiDocFactory->createEmptyResponse(
             responseCode: 'Response::HTTP_NO_CONTENT',
             description: "Delete of {$className}",
@@ -76,14 +75,14 @@ class DeleteControllerConfigurator extends BaseControllerConfigurator implements
         $builder->addOpenApiDoc($openApiDocFactory->createModelResponse(
             responseCode: 'Response::HTTP_BAD_REQUEST',
             description: 'Request is invalid',
-            type: $context->errorResponseClass,
+            type: $this->contextProvider->getErrorResponseClass(),
             groups: ['error'],
         ));
     }
 
-    protected function configureMethodBody(string $entity): string
+    protected function configureMethodBody(string $classFullyQualifiedClassName): string
     {
-        $className = FQCNHelper::transformFQCNToEntityName($entity, false);
+        $className = FQCNHelper::transformFQCNToShortClassName($classFullyQualifiedClassName);
         $lowercase = StringUtils::firstToLowercase($className);
 
         return <<<PHP

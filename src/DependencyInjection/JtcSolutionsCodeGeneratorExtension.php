@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 
 namespace JtcSolutions\CodeGenerator\DependencyInjection;
 
@@ -21,7 +22,6 @@ class JtcSolutionsCodeGeneratorExtension extends Extension
 
         $container->setParameter('jtc_solutions_code_generator.global.controller_namespace_template', $config['global']['controllerNamespaceTemplate']);
         $container->setParameter('jtc_solutions_code_generator.global.dto_namespace_template', $config['global']['dtoNamespaceTemplate']);
-
     }
 
     public function getAlias(): string
