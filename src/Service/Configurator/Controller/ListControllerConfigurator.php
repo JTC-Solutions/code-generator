@@ -59,6 +59,7 @@ class ListControllerConfigurator extends BaseControllerConfigurator implements I
         // TODO: Handle automatic adding of use statements
         $builder->addUseStatement(Model::class);
         $builder->addUseStatement($classFullyQualifiedClassName);
+        $builder->addUseStatement($this->contextProvider->paginationClass);
     }
 
     /**
@@ -71,6 +72,8 @@ class ListControllerConfigurator extends BaseControllerConfigurator implements I
 
         $className = FQCNHelper::transformFQCNToShortClassName($classFullyQualifiedClassName);
 
+        $paginationClassName = FQCNHelper::transformFQCNToShortClassName($this->contextProvider->getPaginationClass());
+
         $builder->addOpenApiDoc($openApiDocFactory->createTag($classFullyQualifiedClassName));
         $builder->addOpenApiDoc($openApiDocFactory->createJsonContentResponse(
             responseCode: 'Response::HTTP_OK',
@@ -80,7 +83,7 @@ class ListControllerConfigurator extends BaseControllerConfigurator implements I
                 StringUtils::firstToLowercase($className) . ':detail',
                 'reference',
             ],
-            paginationClass: $this->contextProvider->getPaginationClass()
+            paginationClass: $paginationClassName
         ));
         $builder->addOpenApiDoc($openApiDocFactory->createModelResponse(
             responseCode: 'Response::HTTP_BAD_REQUEST',
