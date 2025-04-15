@@ -80,6 +80,7 @@ class ListControllerConfigurator extends BaseControllerConfigurator implements I
                 StringUtils::firstToLowercase($className) . ':detail',
                 'reference',
             ],
+            paginationClass: $this->contextProvider->getPaginationClass()
         ));
         $builder->addOpenApiDoc($openApiDocFactory->createModelResponse(
             responseCode: 'Response::HTTP_BAD_REQUEST',

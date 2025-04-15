@@ -1,7 +1,13 @@
 jtc_solutions_code_generator:
   global:
-    controllerNamespaceTemplate: 'TestApp\%s\App\Api\%s'
-    dtoNamespaceTemplate: 'TestApp\Generated\Domain\Dto\%s'
-    errorResponseClass: 'TestApp\ErrorJson'
-    projectBaseNamespace: 'App'
-    projectDir: 'src'
+    namespace:
+      controllerNamespaceTemplate: 'TestApp\%s\App\Api\%s'
+      dtoNamespaceTemplate: 'TestApp\Generated\Domain\Dto\%s'
+
+    project:
+      projectBaseNamespace: 'App'
+      projectDir: 'src'
+
+    openApi:
+      errorResponseClass: 'TestApp\ErrorJson'
+      paginationClass: 'TestApp\Pagination'

@@ -19,11 +19,17 @@ class JtcSolutionsCodeGeneratorExtension extends Extension
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
 
-        $container->setParameter('jtc_solutions_code_generator.global.controller_namespace_template', $config['global']['controllerNamespaceTemplate']);
-        $container->setParameter('jtc_solutions_code_generator.global.dto_namespace_template', $config['global']['dtoNamespaceTemplate']);
-        $container->setParameter('jtc_solutions_code_generator.global.project_dir', $config['global']['projectDir']);
-        $container->setParameter('jtc_solutions_code_generator.global.project_base_namespace', $config['global']['projectBaseNamespace']);
-        $container->setParameter('jtc_solutions_code_generator.global.error_response_class', $config['global']['errorResponseClass']);
+        // namespaces
+        $container->setParameter('jtc_solutions_code_generator.global.controller_namespace_template', $config['global']['namespace']['controllerNamespaceTemplate']);
+        $container->setParameter('jtc_solutions_code_generator.global.dto_namespace_template', $config['global']['namespace']['dtoNamespaceTemplate']);
+
+        // project setting
+        $container->setParameter('jtc_solutions_code_generator.global.project_dir', $config['global']['project']['projectDir']);
+        $container->setParameter('jtc_solutions_code_generator.global.project_base_namespace', $config['global']['project']['projectBaseNamespace']);
+
+        // open api
+        $container->setParameter('jtc_solutions_code_generator.global.error_response_class', $config['global']['openApi']['errorResponseClass']);
+        $container->setParameter('jtc_solutions_code_generator.global.pagination_class', $config['global']['openApi']['paginationClass']);
     }
 
     public function getAlias(): string

@@ -11,6 +11,7 @@ services:
       $projectDir: '%jtc_solutions_code_generator.global.project_dir%'
       $projectBaseNamespace: '%jtc_solutions_code_generator.global.project_base_namespace%'
       $errorResponseClass: '%jtc_solutions_code_generator.global.error_response_class%'
+      $paginationClass: '%jtc_solutions_code_generator.global.pagination_class%'
 
   ## Generators
 

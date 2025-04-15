@@ -11,6 +11,7 @@ class ContextProvider
      * @param class-string[] $extendedClasses
      * @param class-string[] $dtoInterfaces
      * @param class-string $errorResponseClass
+     * @param class-string $paginationClass
      */
     public function __construct(
         private readonly string $controllerNamespaceTemplate,
@@ -21,6 +22,7 @@ class ContextProvider
         public array $extendedClasses = [],
         public array $dtoInterfaces = [],
         public ?string $dtoFullyQualifiedClassName = null,
+        public string $paginationClass,
     ) {
     }
 
@@ -74,5 +76,11 @@ class ContextProvider
     public function getErrorResponseClass(): string
     {
         return $this->errorResponseClass;
+    }
+
+    /** @return class-string */
+    public function getPaginationClass(): string
+    {
+        return $this->paginationClass;
     }
 }

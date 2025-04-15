@@ -20,7 +20,7 @@ class OpenApiDocConfigurationFactory
             ),
             new OA\Property(
                 property: \'metadata\',
-                ref: new Model(type: Pagination::class, groups: [\'reference\']),
+                ref: new Model(type: %s::class, groups: [\'reference\']),
             ),
         ],
         type: \'object\',
@@ -69,19 +69,26 @@ class OpenApiDocConfigurationFactory
     /**
      * @param string[] $groups
      * @param class-string|string $type
+     * @param class-string $paginationClass
      */
     public function createJsonContentResponse(
         string $responseCode,
         string $description,
         string $type,
         array $groups,
+        string $paginationClass
     ): OpenApiDocResponseConfiguration {
         $model = FQCNHelper::transformFQCNToShortClassName($type, false);
 
         return new OpenApiDocResponseConfiguration(
             response: $responseCode,
             description: $description,
-            content: sprintf(self::RESPONSE_JSON_CONTENT_TEMPLATE, $model, implode(', ', $groups)),
+            content: sprintf(
+                self::RESPONSE_JSON_CONTENT_TEMPLATE,
+                $model, // model
+                implode(', ', $groups), // serializer groups
+                $paginationClass
+            ),
         );
     }
 }
