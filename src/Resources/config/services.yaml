@@ -11,3 +11,6 @@ services:
       $projectDir: '%kernel.project_dir%'
       $projectBaseNamespace: 'Project'
       $errorResponseClass: 'App\ErrorJson'
+
+  JtcSolutions\CodeGenerator\Service\Generator\Controller\CreateControllerGenerator:
+    public: true
