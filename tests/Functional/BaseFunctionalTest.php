@@ -17,11 +17,11 @@ use Throwable;
 abstract class BaseFunctionalTest extends TestCase
 {
     // test configuration
-    protected const string DEFAULT_CLASS_FQCN = 'App\DomainName\Domain\Entity\EntityClass';
+    protected const string DEFAULT_CLASS_FQCN = 'App\DomainName\Domain\Entity\EntityName';
 
-    protected const string CONTROLLER_NAMESPACE_TEMPLATE = 'App\DomainName\App\Api\EntityName';
+    protected const string CONTROLLER_NAMESPACE_TEMPLATE = 'App\%s\App\Api\%s';
 
-    protected const string DTO_NAMESPACE_TEMPLATE = 'App\DomainName\Domain\Dto\EntityName';
+    protected const string DTO_NAMESPACE_TEMPLATE = 'App\%s\Domain\Dto\%s';
 
     protected const string PROJECT_DIR = 'output';
 
@@ -33,7 +33,7 @@ abstract class BaseFunctionalTest extends TestCase
 
         // delete all generated files
         $fs = new Filesystem();
-        $fs->remove(__DIR__ . '/../../output');
+        //$fs->remove(__DIR__ . '/../../output');
     }
 
     protected function createDtoGenerator(): DtoGenerator

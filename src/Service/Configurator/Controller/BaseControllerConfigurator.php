@@ -42,7 +42,7 @@ abstract class BaseControllerConfigurator
 
         $builder = new ControllerConfigurationBuilder(
             className: sprintf(static::CONTROLLER_NAME_TEMPLATE, $entityClassName),
-            namespace: $this->contextProvider->getControllerNamespace(),
+            namespace: $this->contextProvider->getControllerNamespace($classFullyQualifiedClassName),
             method: $this->createMethodConfiguration($classFullyQualifiedClassName),
             callParent: static::CALL_PARENT_CONSTRUCTOR,
             constructorBody: $this->configureConstructorBody($classFullyQualifiedClassName),

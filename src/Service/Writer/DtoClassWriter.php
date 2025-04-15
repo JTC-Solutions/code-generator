@@ -12,7 +12,7 @@ class DtoClassWriter extends BaseClassWriter implements IClassWriter
         string $className,
         string $code,
     ): string {
-        $filepath = sprintf('%s/%s.php', $this->contextProvider->getDtoPath(), $className);
+        $filepath = sprintf('%s/%s.php', $this->contextProvider->getDtoPath($classFullyQualifiedClassName), $className);
 
         try {
             $this->parser->parse($code);

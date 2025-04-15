@@ -32,7 +32,7 @@ class DtoConfigurator
             $interfaces[] = FQCNHelper::transformFQCNToShortClassName($dtoInterface);
         }
 
-        $dtoNamespace = $this->contextProvider->getDtoNamespace();
+        $dtoNamespace = $this->contextProvider->getDtoNamespace($classFullyQualifiedClassName);
 
         return new DtoConfiguration(
             namespace: $dtoNamespace,

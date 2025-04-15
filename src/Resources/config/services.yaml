@@ -11,6 +11,3 @@ services:
       $projectDir: '%kernel.project_dir%'
       $projectBaseNamespace: 'Project'
       $errorResponseClass: 'App\ErrorJson'
-
-  JtcSolutions\CodeGenerator\Service\Writer\IControllerClassWriter:
-    alias: JtcSolutions\CodeGenerator\Service\Writer\ControllerClassWriter

@@ -14,7 +14,7 @@ class CreateControllerGeneratorTest extends BaseFunctionalTest
 
         $generator->generate(self::DEFAULT_CLASS_FQCN);
 
-        self::assertFileExists(__DIR__ . '/../../output/DomainName/App/Api/EntityName/CreateEntityClassController.php');
+        self::assertFileExists(__DIR__ . '/../../output/DomainName/App/Api/EntityName/CreateEntityNameController.php');
     }
 
     protected function createCreateControllerGenerator(): CreateControllerGenerator

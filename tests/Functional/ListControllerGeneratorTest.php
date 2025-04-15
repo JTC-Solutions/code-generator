@@ -13,7 +13,7 @@ class ListControllerGeneratorTest extends BaseFunctionalTest
 
         $generator->generate(self::DEFAULT_CLASS_FQCN);
 
-        self::assertFileExists(__DIR__ . '/../../output/DomainName/App/Api/EntityName/ListEntityClassController.php');
+        self::assertFileExists(__DIR__ . '/../../output/DomainName/App/Api/EntityName/ListEntityNameController.php');
     }
 
     protected function createListControllerGenerator(): ListControllerGenerator

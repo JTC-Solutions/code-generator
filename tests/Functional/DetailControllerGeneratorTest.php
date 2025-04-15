@@ -14,7 +14,7 @@ class DetailControllerGeneratorTest extends BaseFunctionalTest
 
         $generator->generate(self::DEFAULT_CLASS_FQCN);
 
-        self::assertFileExists(__DIR__ . '/../../output/DomainName/App/Api/EntityName/DetailEntityClassController.php');
+        self::assertFileExists(__DIR__ . '/../../output/DomainName/App/Api/EntityName/DetailEntityNameController.php');
     }
 
     protected function createDetailControllerGenerator(): DetailControllerGenerator

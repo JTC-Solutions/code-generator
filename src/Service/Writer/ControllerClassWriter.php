@@ -13,7 +13,7 @@ class ControllerClassWriter extends BaseClassWriter implements IControllerClassW
         string $className,
         string $code,
     ): string {
-        $filepath = sprintf('%s/%s.php', $this->contextProvider->getControllerPath(), $className);
+        $filepath = sprintf('%s/%s.php', $this->contextProvider->getControllerPath($classFullyQualifiedClassName), $className);
 
         $parser = (new ParserFactory())->createForNewestSupportedVersion();
         try {

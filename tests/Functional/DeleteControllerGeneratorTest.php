@@ -13,7 +13,7 @@ class DeleteControllerGeneratorTest extends BaseFunctionalTest
 
         $generator->generate(self::DEFAULT_CLASS_FQCN);
 
-        self::assertFileExists(__DIR__ . '/../../output/DomainName/App/Api/EntityName/DeleteEntityClassController.php');
+        self::assertFileExists(__DIR__ . '/../../output/DomainName/App/Api/EntityName/DeleteEntityNameController.php');
     }
 
     protected function createDeleteControllerGenerator(): DeleteControllerGenerator
