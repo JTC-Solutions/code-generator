@@ -16,7 +16,7 @@ class GenerateCrudCommand extends Command
     /** @param BaseControllerGenerator[] $controllerGenerators */ // TODO: Add interface
     public function __construct(
         #[AutowireIterator('jtc_solutions.controller_generator')]
-        private readonly array $controllerGenerators, // TODO: Handle dynamic ability to remove or add custom generators
+        private readonly iterable $controllerGenerators, // TODO: Handle dynamic ability to remove or add custom generators
     ) {
         parent::__construct();
     }
