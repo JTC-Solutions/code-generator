@@ -32,6 +32,18 @@ class Configuration implements ConfigurationInterface
                             ->cannotBeEmpty()
                             ->info('FQCN of class that will be used as error DTO.')
                             ->example('App\Shared\Dto\ErrorResponse')
+                        ->end()
+                        ->scalarNode('projectBaseNamespace')
+                            ->isRequired()
+                            ->cannotBeEmpty()
+                            ->info('Project base namespace that is used also for path and storing generated files.')
+                            ->example('App')
+                        ->end()
+                        ->scalarNode('projectDir')
+                            ->isRequired()
+                            ->cannotBeEmpty()
+                            ->info('Default project dir.')
+                            ->example('project or src')
                     ->end()
                 ->end() // global
             ->end();

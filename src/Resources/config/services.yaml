@@ -8,9 +8,9 @@ services:
     arguments:
       $controllerNamespaceTemplate: '%jtc_solutions_code_generator.global.controller_namespace_template%'
       $dtoNamespaceTemplate: '%jtc_solutions_code_generator.global.dto_namespace_template%'
-      $projectDir: '%kernel.project_dir%'
-      $projectBaseNamespace: 'Project'
-      $errorResponseClass: 'App\ErrorJson'
+      $projectDir: '%jtc_solutions_code_generator.global.project_dir%'
+      $projectBaseNamespace: '%jtc_solutions_code_generator.global.project_base_namespace%'
+      $errorResponseClass: '%jtc_solutions_code_generator.global.error_response_class%'
 
   ## Generators
 

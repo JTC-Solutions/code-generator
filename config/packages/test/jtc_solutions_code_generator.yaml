@@ -3,3 +3,5 @@ jtc_solutions_code_generator:
     controllerNamespaceTemplate: 'TestApp\%s\App\Api\%s'
     dtoNamespaceTemplate: 'TestApp\Generated\Domain\Dto\%s'
     errorResponseClass: 'TestApp\ErrorJson'
+    projectBaseNamespace: 'App'
+    projectDir: 'src'
