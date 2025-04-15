@@ -77,3 +77,17 @@ services:
   ## Commands
   JtcSolutions\CodeGenerator\Command\GenerateCrudCommand:
     tags: ['console.command']
+
+  ## Property Type Detectors
+
+  JtcSolutions\CodeGenerator\Service\PropertyMapper\PropertyTypeDetector\DateTimePropertyTypeDetector:
+    tags: [ 'jtc_solutions.property_type_detector' ]
+
+  JtcSolutions\CodeGenerator\Service\PropertyMapper\PropertyTypeDetector\UuidInterfacePropertyTypeDetector:
+    tags: [ 'jtc_solutions.property_type_detector' ]
+
+  JtcSolutions\CodeGenerator\Service\PropertyMapper\PropertyTypeDetector\EntityPropertyTypeDetector:
+    tags: [ 'jtc_solutions.property_type_detector' ]
+    arguments:
+      $entityInterface: '%jtc_solutions_code_generator.global.entity_interface%'
+      $replacementClass: '%jtc_solutions_code_generator.global.dto_entity_replacement%'

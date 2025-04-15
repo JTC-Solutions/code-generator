@@ -5,7 +5,6 @@ namespace JtcSolutions\CodeGenerator\Service\Generator\Controller;
 use JtcSolutions\CodeGenerator\Service\CodeRenderer\Controller\IControllerCodeRenderer;
 use JtcSolutions\CodeGenerator\Service\Configurator\Controller\IControllerConfigurator;
 use JtcSolutions\CodeGenerator\Service\Writer\IControllerClassWriter;
-use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 
 abstract class BaseControllerGenerator
 {

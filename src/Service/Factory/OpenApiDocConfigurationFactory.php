@@ -69,16 +69,18 @@ class OpenApiDocConfigurationFactory
     /**
      * @param string[] $groups
      * @param class-string|string $type
-     * @param class-string $paginationClass
+     * @param class-string $paginationFullyQualifiedClassName
      */
     public function createJsonContentResponse(
         string $responseCode,
         string $description,
         string $type,
         array $groups,
-        string $paginationClass
+        string $paginationFullyQualifiedClassName,
     ): OpenApiDocResponseConfiguration {
-        $model = FQCNHelper::transformFQCNToShortClassName($type, false);
+        $model = FQCNHelper::transformFQCNToShortClassName($type);
+
+        $paginationClassName = FQCNHelper::transformFQCNToShortClassName($paginationFullyQualifiedClassName);
 
         return new OpenApiDocResponseConfiguration(
             response: $responseCode,
@@ -87,7 +89,7 @@ class OpenApiDocConfigurationFactory
                 self::RESPONSE_JSON_CONTENT_TEMPLATE,
                 $model, // model
                 implode(', ', $groups), // serializer groups
-                $paginationClass
+                $paginationClassName,
             ),
         );
     }

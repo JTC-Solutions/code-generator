@@ -31,7 +31,7 @@ class UpdateControllerConfigurator extends BaseControllerConfigurator implements
         string $methodName = self::DEFAULT_METHOD_NAME,
         string $controllerNameTemplate = self::DEFAULT_CONTROLLER_NAME_TEMPLATE,
         bool $callParentConstructor = false,
-        protected readonly string $argumentName = self::DEFAULT_ARGUMENT_NAME
+        protected readonly string $argumentName = self::DEFAULT_ARGUMENT_NAME,
     ) {
         parent::__construct($contextProvider, $methodName, $controllerNameTemplate, $callParentConstructor);
     }
@@ -61,14 +61,17 @@ class UpdateControllerConfigurator extends BaseControllerConfigurator implements
         $methodBuilder = new MethodConfigurationBuilder(
             $this->methodName,
             $jsonResponseClassName,
-            $this->configureMethodBody($classFullyQualifiedClassName)
+            $this->configureMethodBody($classFullyQualifiedClassName),
         );
 
-        $dtoClassName = FQCNHelper::transformFQCNToShortClassName($this->contextProvider->dtoFullyQualifiedClassName);
+        if ($this->contextProvider->dtoFullyQualifiedClassName !== null) {
+            $dtoClassName = FQCNHelper::transformFQCNToShortClassName($this->contextProvider->dtoFullyQualifiedClassName);
+            $methodBuilder
+                ->addArgument(new MethodArgumentConfiguration($this->argumentName, $dtoClassName));
+        }
 
         $methodBuilder
             ->addArgument(new MethodArgumentConfiguration('id', $uuidClassName))
-            ->addArgument(new MethodArgumentConfiguration($this->argumentName, $dtoClassName))
             ->addAttribute(MethodAttributeConfigurationFactory::createUpdateRouteAttribute($classFullyQualifiedClassName));
 
         return $methodBuilder->build();

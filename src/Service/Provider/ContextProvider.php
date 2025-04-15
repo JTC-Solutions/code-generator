@@ -2,6 +2,7 @@
 
 namespace JtcSolutions\CodeGenerator\Service\Provider;
 
+use Exception;
 use JtcSolutions\Helpers\Helper\FQCNHelper;
 
 class ContextProvider
@@ -27,20 +28,12 @@ class ContextProvider
     ) {
     }
 
-    private function replaceVariables(string $template, string $classFullyQualifiedClassName): string
-    {
-        ['domain' => $domain, 'entity' => $entity] = FQCNHelper::extractDomainAndEntity($classFullyQualifiedClassName);
-
-        $namespace = str_replace('{domain}', $domain, $template);
-        return str_replace('{entity}', $entity, $namespace);
-    }
-
     public function getDtoPath(string $classFullyQualifiedClassName): string
     {
         return FQCNHelper::convertNamespaceToFilepath(
             $this->replaceVariables($this->dtoNamespaceTemplate, $classFullyQualifiedClassName),
             $this->projectBaseNamespace,
-            $this->projectDir
+            $this->projectDir,
         );
     }
 
@@ -49,7 +42,7 @@ class ContextProvider
         return FQCNHelper::convertNamespaceToFilepath(
             $this->replaceVariables($this->controllerNamespaceTemplate, $classFullyQualifiedClassName),
             $this->projectBaseNamespace,
-            $this->projectDir
+            $this->projectDir,
         );
     }
 
@@ -79,9 +72,26 @@ class ContextProvider
         return $this->errorResponseClass;
     }
 
-    /** @return class-string */
+    /**
+     * @return class-string
+     */
     public function getPaginationClass(): string
     {
         return $this->paginationClass;
+    }
+
+    /**
+     * @throws Exception
+     */
+    private function replaceVariables(string $template, string $classFullyQualifiedClassName): string
+    {
+        ['domain' => $domain, 'entity' => $entity] = FQCNHelper::extractDomainAndEntity($classFullyQualifiedClassName);
+
+        if ($domain === null || $entity === null) {
+            throw new Exception('Domain or Entity was detected as null, which is not supported!');
+        }
+
+        $namespace = str_replace('{domain}', $domain, $template);
+        return str_replace('{entity}', $entity, $namespace);
     }
 }

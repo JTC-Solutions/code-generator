@@ -6,10 +6,15 @@ use JtcSolutions\CodeGenerator\Service\CodeRenderer\Controller\ControllerCodeRen
 use JtcSolutions\CodeGenerator\Service\CodeRenderer\Dto\DtoCodeRenderer;
 use JtcSolutions\CodeGenerator\Service\Configurator\Dto\DtoConfigurator;
 use JtcSolutions\CodeGenerator\Service\Generator\Dto\DtoGenerator;
+use JtcSolutions\CodeGenerator\Service\PropertyMapper\ClassPropertyMapper;
+use JtcSolutions\CodeGenerator\Service\PropertyMapper\PropertyTypeDetector\DateTimePropertyTypeDetector;
+use JtcSolutions\CodeGenerator\Service\PropertyMapper\PropertyTypeDetector\EntityPropertyTypeDetector;
+use JtcSolutions\CodeGenerator\Service\PropertyMapper\PropertyTypeDetector\UuidInterfacePropertyTypeDetector;
 use JtcSolutions\CodeGenerator\Service\Provider\ContextProvider;
 use JtcSolutions\CodeGenerator\Service\Writer\ControllerClassWriter;
 use JtcSolutions\CodeGenerator\Service\Writer\DtoClassWriter;
-use PhpParser\ParserFactory;
+use JtcSolutions\CodeGenerator\Tests\Functional\TestEntityClass\EntityId;
+use JtcSolutions\CodeGenerator\Tests\Functional\TestEntityClass\EntityInterface;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Filesystem\Filesystem;
 use Throwable;
@@ -17,11 +22,11 @@ use Throwable;
 abstract class BaseFunctionalTest extends TestCase
 {
     // test configuration
-    protected const string DEFAULT_CLASS_FQCN = 'App\DomainName\Domain\Entity\EntityName';
+    protected const string DEFAULT_CLASS_FQCN = 'JtcSolutions\CodeGenerator\Tests\Functional\TestEntityClass\TestEntityClass';
 
-    protected const string CONTROLLER_NAMESPACE_TEMPLATE = 'App\%s\App\Api\%s';
+    protected const string CONTROLLER_NAMESPACE_TEMPLATE = 'App\{domain}\App\Api\{entity}';
 
-    protected const string DTO_NAMESPACE_TEMPLATE = 'App\%s\Domain\Dto\%s';
+    protected const string DTO_NAMESPACE_TEMPLATE = 'App\{domain}\Domain\Dto\{entity}';
 
     protected const string PROJECT_DIR = 'output';
 
@@ -49,7 +54,6 @@ abstract class BaseFunctionalTest extends TestCase
     {
         return new DtoClassWriter(
             contextProvider: $this->createContextProvider(),
-            parserFactory: new ParserFactory(),
         );
     }
 
@@ -62,6 +66,7 @@ abstract class BaseFunctionalTest extends TestCase
                 projectDir: static::PROJECT_DIR,
                 projectBaseNamespace: 'App',
                 errorResponseClass: Throwable::class,
+                paginationClass: 'App\Pagination',
                 extendedClasses: [],
                 dtoInterfaces: [],
             );
@@ -74,6 +79,20 @@ abstract class BaseFunctionalTest extends TestCase
     {
         return new DtoConfigurator(
             contextProvider: $this->createContextProvider(),
+            classPropertyMapper: $this->createClassPropertyMapper(),
+        );
+    }
+
+    protected function createClassPropertyMapper(): ClassPropertyMapper
+    {
+        $propertyTypeDetectors = [
+            new DateTimePropertyTypeDetector(),
+            new UuidInterfacePropertyTypeDetector(),
+            new EntityPropertyTypeDetector(EntityInterface::class, EntityId::class),
+        ];
+
+        return new ClassPropertyMapper(
+            propertyTypeDetectors: $propertyTypeDetectors,
         );
     }
 
@@ -91,7 +110,6 @@ abstract class BaseFunctionalTest extends TestCase
     {
         return new ControllerClassWriter(
             contextProvider: $this->createContextProvider(),
-            parserFactory: new ParserFactory(),
         );
     }
 }

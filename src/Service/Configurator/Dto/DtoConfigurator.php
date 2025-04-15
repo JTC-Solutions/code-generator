@@ -3,7 +3,8 @@
 namespace JtcSolutions\CodeGenerator\Service\Configurator\Dto;
 
 use JtcSolutions\CodeGenerator\Dto\Configuration\Dto\DtoConfiguration;
-use JtcSolutions\CodeGenerator\Dto\Configuration\UseStatementConfiguration;
+use JtcSolutions\CodeGenerator\Service\Builder\Configuration\DtoConfigurationBuilder;
+use JtcSolutions\CodeGenerator\Service\PropertyMapper\ClassPropertyMapper;
 use JtcSolutions\CodeGenerator\Service\Provider\ContextProvider;
 use JtcSolutions\Helpers\Helper\FQCNHelper;
 
@@ -11,6 +12,7 @@ class DtoConfigurator
 {
     public function __construct(
         private readonly ContextProvider $contextProvider,
+        private readonly ClassPropertyMapper $classPropertyMapper,
     ) {
     }
 
@@ -22,23 +24,21 @@ class DtoConfigurator
         $className = FQCNHelper::transformFQCNToShortClassName($classFullyQualifiedClassName);
         $dtoClassName = $prefix . $className . $suffix;
 
-        $useStatements = [];
-        foreach ($this->contextProvider->dtoInterfaces as $dtoInterface) {
-            $useStatements[] = new UseStatementConfiguration($dtoInterface);
-        }
-
-        $interfaces = [];
-        foreach ($this->contextProvider->dtoInterfaces as $dtoInterface) {
-            $interfaces[] = FQCNHelper::transformFQCNToShortClassName($dtoInterface);
-        }
-
-        $dtoNamespace = $this->contextProvider->getDtoNamespace($classFullyQualifiedClassName);
-
-        return new DtoConfiguration(
-            namespace: $dtoNamespace,
+        $builder = new DtoConfigurationBuilder(
             className: $dtoClassName,
-            useStatements: $useStatements,
-            interfaces: $interfaces,
+            namespace: $this->contextProvider->getDtoNamespace($classFullyQualifiedClassName),
         );
+
+        foreach ($this->contextProvider->dtoInterfaces as $dtoInterface) {
+            $builder->addUseStatement($dtoInterface);
+            $builder->addInterface(FQCNHelper::transformFQCNToShortClassName($dtoInterface));
+        }
+
+        $propertyMap = $this->classPropertyMapper->getPropertyMap($classFullyQualifiedClassName);
+        foreach ($propertyMap as $property) {
+            $builder->addProperty($property);
+        }
+
+        return $builder->build();
     }
 }

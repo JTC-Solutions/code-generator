@@ -28,7 +28,7 @@ class DeleteControllerConfigurator extends BaseControllerConfigurator implements
         ContextProvider $contextProvider,
         string $methodName = self::DEFAULT_METHOD_NAME,
         string $controllerNameTemplate = self::DEFAULT_CONTROLLER_NAME_TEMPLATE,
-        bool $callParentConstructor = false
+        bool $callParentConstructor = false,
     ) {
         parent::__construct($contextProvider, $methodName, $controllerNameTemplate, $callParentConstructor);
     }

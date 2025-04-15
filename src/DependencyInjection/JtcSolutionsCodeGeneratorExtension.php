@@ -26,6 +26,8 @@ class JtcSolutionsCodeGeneratorExtension extends Extension
         // project setting
         $container->setParameter('jtc_solutions_code_generator.global.project_dir', $config['global']['project']['projectDir']);
         $container->setParameter('jtc_solutions_code_generator.global.project_base_namespace', $config['global']['project']['projectBaseNamespace']);
+        $container->setParameter('jtc_solutions_code_generator.global.entity_interface', $config['global']['project']['entityInterface']);
+        $container->setParameter('jtc_solutions_code_generator.global.dto_entity_replacement', $config['global']['project']['dtoEntityReplacement']);
 
         // open api
         $container->setParameter('jtc_solutions_code_generator.global.error_response_class', $config['global']['openApi']['errorResponseClass']);

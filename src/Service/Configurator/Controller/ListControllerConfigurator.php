@@ -26,7 +26,7 @@ class ListControllerConfigurator extends BaseControllerConfigurator implements I
         ContextProvider $contextProvider,
         string $methodName = self::DEFAULT_METHOD_NAME,
         string $controllerNameTemplate = self::DEFAULT_CONTROLLER_NAME_TEMPLATE,
-        bool $callParentConstructor = false
+        bool $callParentConstructor = false,
     ) {
         parent::__construct($contextProvider, $methodName, $controllerNameTemplate, $callParentConstructor);
     }
@@ -82,8 +82,6 @@ class ListControllerConfigurator extends BaseControllerConfigurator implements I
 
         $className = FQCNHelper::transformFQCNToShortClassName($classFullyQualifiedClassName);
 
-        $paginationClassName = FQCNHelper::transformFQCNToShortClassName($this->contextProvider->getPaginationClass());
-
         $builder->addOpenApiDoc($openApiDocFactory->createTag($classFullyQualifiedClassName));
         $builder->addOpenApiDoc($openApiDocFactory->createJsonContentResponse(
             responseCode: 'Response::HTTP_OK',
@@ -93,7 +91,7 @@ class ListControllerConfigurator extends BaseControllerConfigurator implements I
                 StringUtils::firstToLowercase($className) . ':detail',
                 'reference',
             ],
-            paginationClass: $paginationClassName
+            paginationFullyQualifiedClassName: $this->contextProvider->getPaginationClass(),
         ));
         $builder->addOpenApiDoc($openApiDocFactory->createModelResponse(
             responseCode: 'Response::HTTP_BAD_REQUEST',

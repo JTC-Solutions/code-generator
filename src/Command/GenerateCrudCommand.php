@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace JtcSolutions\CodeGenerator\Command;
 
@@ -13,15 +13,17 @@ use Symfony\Component\DependencyInjection\Attribute\AutowireIterator;
 #[AsCommand('jtc-solutions:generate-crud')]
 class GenerateCrudCommand extends Command
 {
-    /** @param BaseControllerGenerator[] $controllerGenerators */ // TODO: Add interface
+    /**
+     * @param BaseControllerGenerator[] $controllerGenerators
+     */
     public function __construct(
         #[AutowireIterator('jtc_solutions.controller_generator')]
-        private readonly iterable $controllerGenerators, // TODO: Handle dynamic ability to remove or add custom generators
+        private readonly iterable $controllerGenerators,
     ) {
         parent::__construct();
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setDescription('Generate CRUD Controllers for given class. Works only on Domain Driven Design architecture.')

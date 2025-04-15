@@ -30,7 +30,7 @@ class DetailControllerConfigurator extends BaseControllerConfigurator implements
         string $methodName = self::DEFAULT_METHOD_NAME,
         string $controllerNameTemplate = self::DEFAULT_CONTROLLER_NAME_TEMPLATE,
         bool $callParentConstructor = false,
-        protected readonly string $argumentName = self::DEFAULT_ARGUMENT_NAME
+        protected readonly string $argumentName = self::DEFAULT_ARGUMENT_NAME,
     ) {
         parent::__construct($contextProvider, $methodName, $controllerNameTemplate, $callParentConstructor);
     }

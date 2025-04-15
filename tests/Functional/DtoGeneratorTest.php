@@ -10,6 +10,6 @@ class DtoGeneratorTest extends BaseFunctionalTest
 
         $generator->generate(self::DEFAULT_CLASS_FQCN);
 
-        self::assertFileExists(__DIR__ . '/../../output/DomainName/Domain/Dto/EntityName/EntityName.php');
+        self::assertFileExists(__DIR__ . '/../../output/CodeGenerator/Domain/Dto/TestEntityClass/TestEntityClass.php');
     }
 }
