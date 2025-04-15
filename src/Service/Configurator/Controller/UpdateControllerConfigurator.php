@@ -55,12 +55,20 @@ class UpdateControllerConfigurator extends BaseControllerConfigurator implements
      */
     public function createMethodConfiguration(string $classFullyQualifiedClassName): MethodConfiguration
     {
-        $entityClassName = FQCNHelper::transformFQCNToShortClassName($classFullyQualifiedClassName);
+        $jsonResponseClassName = FQCNHelper::transformFQCNToShortClassName(JsonResponse::class);
+        $uuidClassName = FQCNHelper::transformFQCNToShortClassName(UuidInterface::class);
 
-        $methodBuilder = new MethodConfigurationBuilder($this->methodName, 'JsonResponse', $this->configureMethodBody($classFullyQualifiedClassName));
+        $methodBuilder = new MethodConfigurationBuilder(
+            $this->methodName,
+            $jsonResponseClassName,
+            $this->configureMethodBody($classFullyQualifiedClassName)
+        );
+
+        $dtoClassName = FQCNHelper::transformFQCNToShortClassName($this->contextProvider->dtoFullyQualifiedClassName);
+
         $methodBuilder
-            ->addArgument(new MethodArgumentConfiguration('id', 'UuidInterface'))
-            ->addArgument(new MethodArgumentConfiguration($this->argumentName, $entityClassName . 'UpdateRequest')) // TODO: here and on create is manually name
+            ->addArgument(new MethodArgumentConfiguration('id', $uuidClassName))
+            ->addArgument(new MethodArgumentConfiguration($this->argumentName, $dtoClassName))
             ->addAttribute(MethodAttributeConfigurationFactory::createUpdateRouteAttribute($classFullyQualifiedClassName));
 
         return $methodBuilder->build();
@@ -78,7 +86,6 @@ class UpdateControllerConfigurator extends BaseControllerConfigurator implements
         $builder->addUseStatement(Route::class);
         $builder->addUseStatement(UuidInterface::class);
 
-        // TODO: Handle automatic adding of use statements
         $builder->addUseStatement(Model::class);
         $builder->addUseStatement($classFullyQualifiedClassName);
     }

@@ -12,4 +12,3 @@ jtc_solutions_code_generator:
       errorResponseClass: 'TestApp\ErrorJson'
       paginationClass: 'TestApp\Pagination'
 
-
