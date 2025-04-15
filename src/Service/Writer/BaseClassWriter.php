@@ -17,9 +17,9 @@ abstract class BaseClassWriter
 
     public function __construct(
         protected readonly ContextProvider $contextProvider,
-        protected readonly ParserFactory $parserFactory,
     ) {
-        $this->parser = $this->parserFactory->createForNewestSupportedVersion();
+        $parserFactory = new ParserFactory();
+        $this->parser = $parserFactory->createForNewestSupportedVersion();
         $this->filesystem = new Filesystem();
     }
 
