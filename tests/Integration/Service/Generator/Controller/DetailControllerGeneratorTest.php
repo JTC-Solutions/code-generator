@@ -2,10 +2,13 @@
 
 namespace JtcSolutions\CodeGenerator\Tests\Integration\Service\Generator\Controller;
 
-use JtcSolutions\CodeGenerator\CodeGenerator\Dto\Context; //
-use JtcSolutions\CodeGenerator\CodeGenerator\Service\Generator\Controller\DetailControllerGenerator; //
+use JtcSolutions\CodeGenerator\Dto\Context;
+use JtcSolutions\CodeGenerator\Service\Generator\Controller\DetailControllerGenerator;
 use PHPUnit\Framework\TestCase;
 use Throwable;
+
+//
+//
 
 class DetailControllerGeneratorTest extends TestCase
 {

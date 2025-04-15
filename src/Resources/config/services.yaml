@@ -1,0 +1,16 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: false
+
+  JtcSolutions\CodeGenerator\Service\Provider\ContextProvider:
+    arguments:
+      $controllerNamespaceTemplate: '%jtc_solutions_code_generator.global.controller_namespace_template%'
+      $dtoNamespaceTemplate: '%jtc_solutions_code_generator.global.dto_namespace_template%'
+      $projectDir: '%kernel.project_dir%'
+      $projectBaseNamespace: 'Project'
+      $errorResponseClass: 'App\ErrorJson'
+
+  JtcSolutions\CodeGenerator\Service\Writer\IControllerClassWriter:
+    alias: JtcSolutions\CodeGenerator\Service\Writer\ControllerClassWriter

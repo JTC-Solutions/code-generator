@@ -18,8 +18,8 @@
         <testsuite name="Integration">
             <directory suffix="Test.php">./tests/Integration</directory>
         </testsuite>
-        <testsuite name="Debug">
-            <directory suffix="Test.php">./tests/Debug</directory>
+        <testsuite name="Functional">
+            <directory suffix="Test.php">./tests/Functional</directory>
         </testsuite>
     </testsuites>
 </phpunit>

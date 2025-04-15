@@ -2,12 +2,15 @@
 
 namespace JtcSolutions\CodeGenerator\Tests\Unit\Service\Builder\Configuration;
 
-use JtcSolutions\CodeGenerator\CodeGenerator\Dto\Configuration\Controller\Method\MethodArgumentConfiguration;
-use JtcSolutions\CodeGenerator\CodeGenerator\Exception\ConfigurationException;
-use JtcSolutions\CodeGenerator\CodeGenerator\MoveToOtherPackage\BaseController; // Example Base class
-use JtcSolutions\CodeGenerator\CodeGenerator\Service\Builder\Configuration\ControllerConfigurationBuilder;
+use JtcSolutions\CodeGenerator\CodeGenerator\MoveToOtherPackage\BaseController;
+use JtcSolutions\CodeGenerator\Dto\Configuration\Controller\Method\MethodArgumentConfiguration;
+use JtcSolutions\CodeGenerator\Exception\ConfigurationException;
+use JtcSolutions\CodeGenerator\Service\Builder\Configuration\ControllerConfigurationBuilder;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\HttpFoundation\JsonResponse; // Example dependency
+use Symfony\Component\HttpFoundation\JsonResponse;
+
+// Example Base class
+// Example dependency
 
 class ControllerConfigurationBuilderTest extends TestCase
 {

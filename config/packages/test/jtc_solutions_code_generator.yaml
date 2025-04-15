@@ -1,0 +1,5 @@
+jtc_solutions_code_generator:
+  global:
+    controllerNamespaceTemplate: 'TestApp\Generated\App\Api\%s'
+    dtoNamespaceTemplate: 'TestApp\Generated\Domain\Dto\%s'
+    errorResponseClass: 'TestApp\ErrorJson'

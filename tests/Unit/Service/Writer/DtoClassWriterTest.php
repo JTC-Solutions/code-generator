@@ -2,14 +2,16 @@
 
 namespace JtcSolutions\CodeGenerator\Tests\Unit\Service\Writer;
 
-use JtcSolutions\CodeGenerator\CodeGenerator\Dto\Context;
-use JtcSolutions\CodeGenerator\CodeGenerator\Exception\TemplateNotValidPhpCodeException;
-use JtcSolutions\CodeGenerator\CodeGenerator\Service\Writer\DtoClassWriter; // Use the updated DtoClassWriter
+use JtcSolutions\CodeGenerator\Dto\Context;
+use JtcSolutions\CodeGenerator\Exception\TemplateNotValidPhpCodeException;
+use JtcSolutions\CodeGenerator\Service\Writer\DtoClassWriter;
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamDirectory;
 use PhpParser\Error as ParserError;
 use PHPUnit\Framework\TestCase;
 use Throwable;
+
+// Use the updated DtoClassWriter
 
 class DtoClassWriterTest extends TestCase
 {

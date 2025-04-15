@@ -2,8 +2,8 @@
 
 namespace JtcSolutions\CodeGenerator\Tests\Unit\Service\Factory;
 
-use JtcSolutions\CodeGenerator\CodeGenerator\Dto\Configuration\Controller\Method\Attribute\RouteAttributeConfiguration;
-use JtcSolutions\CodeGenerator\CodeGenerator\Service\Factory\MethodAttributeConfigurationFactory;
+use JtcSolutions\CodeGenerator\Dto\Configuration\Controller\Method\Attribute\RouteAttributeConfiguration;
+use JtcSolutions\CodeGenerator\Service\Factory\MethodAttributeConfigurationFactory;
 use PHPUnit\Framework\TestCase;
 
 class MethodAttributeConfigurationFactoryTest extends TestCase

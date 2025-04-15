@@ -2,14 +2,14 @@
 
 namespace JtcSolutions\CodeGenerator\Tests\Unit\Service\CodeRenderer\Controller;
 
-use JtcSolutions\CodeGenerator\CodeGenerator\Dto\Configuration\Controller\ControllerConfiguration;
-use JtcSolutions\CodeGenerator\CodeGenerator\Dto\Configuration\Controller\Method\Attribute\RouteAttributeConfiguration;
-use JtcSolutions\CodeGenerator\CodeGenerator\Dto\Configuration\Controller\Method\MethodArgumentConfiguration;
-use JtcSolutions\CodeGenerator\CodeGenerator\Dto\Configuration\Controller\Method\MethodConfiguration;
-use JtcSolutions\CodeGenerator\CodeGenerator\Dto\Configuration\Controller\OpenApiDoc\OpenApiDocTagConfiguration;
-use JtcSolutions\CodeGenerator\CodeGenerator\Dto\Configuration\UseStatementConfiguration;
 use JtcSolutions\CodeGenerator\CodeGenerator\MoveToOtherPackage\BaseController;
-use JtcSolutions\CodeGenerator\CodeGenerator\Service\CodeRenderer\Controller\ControllerCodeRenderer;
+use JtcSolutions\CodeGenerator\Dto\Configuration\Controller\ControllerConfiguration;
+use JtcSolutions\CodeGenerator\Dto\Configuration\Controller\Method\Attribute\RouteAttributeConfiguration;
+use JtcSolutions\CodeGenerator\Dto\Configuration\Controller\Method\MethodArgumentConfiguration;
+use JtcSolutions\CodeGenerator\Dto\Configuration\Controller\Method\MethodConfiguration;
+use JtcSolutions\CodeGenerator\Dto\Configuration\Controller\OpenApiDoc\OpenApiDocTagConfiguration;
+use JtcSolutions\CodeGenerator\Dto\Configuration\UseStatementConfiguration;
+use JtcSolutions\CodeGenerator\Service\CodeRenderer\Controller\ControllerCodeRenderer;
 use OpenApi\Attributes\Tag;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\UuidInterface;

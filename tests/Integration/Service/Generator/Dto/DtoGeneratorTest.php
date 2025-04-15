@@ -2,8 +2,8 @@
 
 namespace JtcSolutions\CodeGenerator\Tests\Integration\Service\Generator\Dto;
 
-use JtcSolutions\CodeGenerator\CodeGenerator\Dto\Context;
-use JtcSolutions\CodeGenerator\CodeGenerator\Service\Generator\Dto\DtoGenerator;
+use JtcSolutions\CodeGenerator\Dto\Context;
+use JtcSolutions\CodeGenerator\Service\Generator\Dto\DtoGenerator;
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamDirectory;
 use PHPUnit\Framework\TestCase;
