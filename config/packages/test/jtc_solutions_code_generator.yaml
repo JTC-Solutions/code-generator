@@ -11,3 +11,5 @@ jtc_solutions_code_generator:
     openApi:
       errorResponseClass: 'TestApp\ErrorJson'
       paginationClass: 'TestApp\Pagination'
+
+

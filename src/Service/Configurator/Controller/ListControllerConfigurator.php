@@ -9,6 +9,7 @@ use JtcSolutions\CodeGenerator\Service\Builder\Configuration\ControllerConfigura
 use JtcSolutions\CodeGenerator\Service\Builder\Configuration\MethodConfigurationBuilder;
 use JtcSolutions\CodeGenerator\Service\Factory\MethodAttributeConfigurationFactory;
 use JtcSolutions\CodeGenerator\Service\Factory\OpenApiDocConfigurationFactory;
+use JtcSolutions\CodeGenerator\Service\Provider\ContextProvider;
 use JtcSolutions\Helpers\Helper\FQCNHelper;
 use JtcSolutions\Helpers\Helper\StringUtils;
 use Nelmio\ApiDocBundle\Attribute\Model;
@@ -17,9 +18,18 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class ListControllerConfigurator extends BaseControllerConfigurator implements IControllerConfigurator
 {
-    protected const string METHOD_NAME = 'list';
+    protected const string DEFAULT_METHOD_NAME = 'list';
 
-    protected const string CONTROLLER_NAME_TEMPLATE = 'List%sController';
+    protected const string DEFAULT_CONTROLLER_NAME_TEMPLATE = 'List%sController';
+
+    public function __construct(
+        ContextProvider $contextProvider,
+        string $methodName = self::DEFAULT_METHOD_NAME,
+        string $controllerNameTemplate = self::DEFAULT_CONTROLLER_NAME_TEMPLATE,
+        bool $callParentConstructor = false
+    ) {
+        parent::__construct($contextProvider, $methodName, $controllerNameTemplate, $callParentConstructor);
+    }
 
     /**
      * @throws ConfigurationException
@@ -39,7 +49,7 @@ class ListControllerConfigurator extends BaseControllerConfigurator implements I
      */
     public function createMethodConfiguration(string $classFullyQualifiedClassName): MethodConfiguration
     {
-        $methodBuilder = new MethodConfigurationBuilder(self::METHOD_NAME, 'JsonResponse', $this->configureMethodBody($classFullyQualifiedClassName));
+        $methodBuilder = new MethodConfigurationBuilder($this->methodName, 'JsonResponse', $this->configureMethodBody($classFullyQualifiedClassName));
         $methodBuilder
             ->addAttribute(MethodAttributeConfigurationFactory::createListRouteAttribute($classFullyQualifiedClassName));
         return $methodBuilder->build();

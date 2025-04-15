@@ -10,6 +10,7 @@ use JtcSolutions\CodeGenerator\Service\Builder\Configuration\ControllerConfigura
 use JtcSolutions\CodeGenerator\Service\Builder\Configuration\MethodConfigurationBuilder;
 use JtcSolutions\CodeGenerator\Service\Factory\MethodAttributeConfigurationFactory;
 use JtcSolutions\CodeGenerator\Service\Factory\OpenApiDocConfigurationFactory;
+use JtcSolutions\CodeGenerator\Service\Provider\ContextProvider;
 use JtcSolutions\Helpers\Helper\FQCNHelper;
 use JtcSolutions\Helpers\Helper\StringUtils;
 use Nelmio\ApiDocBundle\Attribute\Model;
@@ -19,11 +20,21 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class UpdateControllerConfigurator extends BaseControllerConfigurator implements IControllerConfigurator
 {
-    protected const string METHOD_NAME = 'update';
+    protected const string DEFAULT_METHOD_NAME = 'update';
 
-    protected const string ARGUMENT_NAME = 'request';
+    protected const string DEFAULT_ARGUMENT_NAME = 'request';
 
-    protected const string CONTROLLER_NAME_TEMPLATE = 'Update%sController';
+    protected const string DEFAULT_CONTROLLER_NAME_TEMPLATE = 'Update%sController';
+
+    public function __construct(
+        ContextProvider $contextProvider,
+        string $methodName = self::DEFAULT_METHOD_NAME,
+        string $controllerNameTemplate = self::DEFAULT_CONTROLLER_NAME_TEMPLATE,
+        bool $callParentConstructor = false,
+        protected readonly string $argumentName = self::DEFAULT_ARGUMENT_NAME
+    ) {
+        parent::__construct($contextProvider, $methodName, $controllerNameTemplate, $callParentConstructor);
+    }
 
     /**
      * @param class-string $classFullyQualifiedClassName
@@ -46,10 +57,10 @@ class UpdateControllerConfigurator extends BaseControllerConfigurator implements
     {
         $entityClassName = FQCNHelper::transformFQCNToShortClassName($classFullyQualifiedClassName);
 
-        $methodBuilder = new MethodConfigurationBuilder(self::METHOD_NAME, 'JsonResponse', $this->configureMethodBody($classFullyQualifiedClassName));
+        $methodBuilder = new MethodConfigurationBuilder($this->methodName, 'JsonResponse', $this->configureMethodBody($classFullyQualifiedClassName));
         $methodBuilder
             ->addArgument(new MethodArgumentConfiguration('id', 'UuidInterface'))
-            ->addArgument(new MethodArgumentConfiguration(self::ARGUMENT_NAME, $entityClassName . 'UpdateRequest')) // TODO: here and on create is manually name
+            ->addArgument(new MethodArgumentConfiguration($this->argumentName, $entityClassName . 'UpdateRequest')) // TODO: here and on create is manually name
             ->addAttribute(MethodAttributeConfigurationFactory::createUpdateRouteAttribute($classFullyQualifiedClassName));
 
         return $methodBuilder->build();

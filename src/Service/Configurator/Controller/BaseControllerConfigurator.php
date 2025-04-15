@@ -13,12 +13,11 @@ use Symfony\Component\HttpFoundation\Response;
 
 abstract class BaseControllerConfigurator
 {
-    protected const string CONTROLLER_NAME_TEMPLATE = '';
-
-    protected const bool CALL_PARENT_CONSTRUCTOR = false;
-
     public function __construct(
         protected readonly ContextProvider $contextProvider,
+        protected readonly string $methodName,
+        protected readonly string $controllerNameTemplate,
+        protected readonly bool $callParentConstructor,
     ) {
     }
 
@@ -28,23 +27,13 @@ abstract class BaseControllerConfigurator
      */
     protected function createBuilder(string $classFullyQualifiedClassName): ControllerConfigurationBuilder
     {
-        if (static::CONTROLLER_NAME_TEMPLATE === '') {
-            throw new Exception(
-                sprintf(
-                    'Class %s is extending %s but it does not have defined const CONTROLLER_NAME_TEMPLATE',
-                    static::class,
-                    self::class,
-                ),
-            );
-        }
-
         $entityClassName = FQCNHelper::transformFQCNToShortClassName($classFullyQualifiedClassName);
 
         $builder = new ControllerConfigurationBuilder(
-            className: sprintf(static::CONTROLLER_NAME_TEMPLATE, $entityClassName),
+            className: sprintf($this->controllerNameTemplate, $entityClassName),
             namespace: $this->contextProvider->getControllerNamespace($classFullyQualifiedClassName),
             method: $this->createMethodConfiguration($classFullyQualifiedClassName),
-            callParent: static::CALL_PARENT_CONSTRUCTOR,
+            callParent: $this->callParentConstructor,
             constructorBody: $this->configureConstructorBody($classFullyQualifiedClassName),
         );
 
