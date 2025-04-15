@@ -27,7 +27,8 @@ class ContextProvider
     public function getDtoPath(string $classFullyQualifiedClassName): string
     {
         ['domain' => $domain, 'entity' => $entity] = FQCNHelper::extractDomainAndEntity($classFullyQualifiedClassName);
-        $namespace = sprintf($this->dtoNamespaceTemplate, $domain, $entity);
+        $namespace = str_replace('{domain}', $domain, $this->dtoNamespaceTemplate);
+        $namespace = str_replace('{entity}', $entity, $namespace);
 
         return FQCNHelper::convertNamespaceToFilepath($namespace, $this->projectBaseNamespace, $this->projectDir);
     }
@@ -35,7 +36,8 @@ class ContextProvider
     public function getControllerPath(string $classFullyQualifiedClassName): string
     {
         ['domain' => $domain, 'entity' => $entity] = FQCNHelper::extractDomainAndEntity($classFullyQualifiedClassName);
-        $namespace = sprintf($this->controllerNamespaceTemplate, $domain, $entity);
+        $namespace = str_replace('{domain}', $domain, $this->controllerNamespaceTemplate);
+        $namespace = str_replace('{entity}', $entity, $namespace);
 
         return FQCNHelper::convertNamespaceToFilepath($namespace, $this->projectBaseNamespace, $this->projectDir);
     }
