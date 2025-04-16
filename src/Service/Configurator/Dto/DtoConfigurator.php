@@ -28,7 +28,7 @@ class DtoConfigurator
         private readonly ContextProvider $contextProvider,
         private readonly ClassPropertyMapper $classPropertyMapper,
         private readonly string $requestDtoInterface,
-        private readonly array $ignoredProperties
+        private readonly array $ignoredProperties,
     ) {
     }
 
@@ -64,7 +64,7 @@ class DtoConfigurator
 
         $propertyMap = $this->classPropertyMapper->getPropertyMap($classFullyQualifiedClassName);
         foreach ($propertyMap as $property) {
-            if (!in_array($property->name, $this->ignoredProperties, true)) {
+            if (! in_array($property->name, $this->ignoredProperties, true)) {
                 $builder->addProperty($property);
             }
         }

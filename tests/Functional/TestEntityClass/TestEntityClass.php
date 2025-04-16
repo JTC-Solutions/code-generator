@@ -14,4 +14,6 @@ class TestEntityClass implements EntityInterface
     public DateTimeImmutable $createdAt;
 
     public NestedEntityClass $nested;
+
+    public string $ignoredProperty;
 }

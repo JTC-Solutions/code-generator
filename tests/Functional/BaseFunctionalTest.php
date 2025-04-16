@@ -82,6 +82,7 @@ abstract class BaseFunctionalTest extends TestCase
             contextProvider: $this->createContextProvider(),
             classPropertyMapper: $this->createClassPropertyMapper(),
             requestDtoInterface: IRequestDto::class,
+            ignoredProperties: ['ignoredProperty'],
         );
     }
 
