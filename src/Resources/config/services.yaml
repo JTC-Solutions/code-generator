@@ -70,10 +70,10 @@ services:
 
   ## Writer
 
-  JtcSolutions\CodeGenerator\Service\Writer\ControllerClassWriter:
+  JtcSolutions\CodeGenerator\Service\Writer\Controller\ControllerClassWriter:
     public: true
 
-  JtcSolutions\CodeGenerator\Service\Writer\DtoClassWriter:
+  JtcSolutions\CodeGenerator\Service\Writer\Dto\DtoClassWriter:
     public: true
 
   ## Commands
