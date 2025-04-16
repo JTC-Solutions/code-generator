@@ -96,6 +96,10 @@ services:
     tags: [ 'jtc_solutions.property_type_detector' ]
     public: true
 
+  JtcSolutions\CodeGenerator\Service\PropertyMapper\PropertyTypeDetector\EnumPropertyTypeDetector:
+    tags: [ 'jtc_solutions.property_type_detector' ]
+    public: true
+
   JtcSolutions\CodeGenerator\Service\PropertyMapper\PropertyTypeDetector\EntityPropertyTypeDetector:
     tags: [ 'jtc_solutions.property_type_detector' ]
     public: true
