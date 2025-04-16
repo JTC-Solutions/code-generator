@@ -22,11 +22,13 @@ class DtoConfigurator
      * @param ContextProvider $contextProvider Provides context like namespaces and paths.
      * @param ClassPropertyMapper $classPropertyMapper Service to map properties from the entity class.
      * @param class-string $requestDtoInterface Default interface to be added to generated Request DTOs.
+     * @param string[] $ignoredProperties Properties that will be skipped in every dto
      */
     public function __construct(
         private readonly ContextProvider $contextProvider,
         private readonly ClassPropertyMapper $classPropertyMapper,
         private readonly string $requestDtoInterface,
+        private readonly array $ignoredProperties
     ) {
     }
 
@@ -62,7 +64,9 @@ class DtoConfigurator
 
         $propertyMap = $this->classPropertyMapper->getPropertyMap($classFullyQualifiedClassName);
         foreach ($propertyMap as $property) {
-            $builder->addProperty($property);
+            if (!in_array($property->name, $this->ignoredProperties, true)) {
+                $builder->addProperty($property);
+            }
         }
 
         return $builder->build();

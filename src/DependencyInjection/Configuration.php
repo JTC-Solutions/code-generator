@@ -63,6 +63,10 @@ class Configuration implements ConfigurationInterface
                                     ->info('Interface that will be given to entity request DTO')
                                     ->example('App\\Shared\\Domain\\Dto\\CRUD\\IEntityRequestBody')
                                 ->end()
+                                ->arrayNode('ignoredProperties')
+                                    ->scalarPrototype()->end()
+                                    ->info('Array of name for properties that should be ignored')
+                                    ->end()
                             ->end()
                         ->end() // project
                         ->arrayNode('openApi')

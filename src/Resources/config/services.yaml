@@ -37,6 +37,8 @@ services:
 
   JtcSolutions\CodeGenerator\Service\Generator\Dto\DtoGenerator:
     public: true
+    arguments:
+      $ignoredProperties: '%jtc_solutions_code_generator.global.ignored_properties%'
 
   ## Configurators
 

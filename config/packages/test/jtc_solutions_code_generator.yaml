@@ -9,6 +9,10 @@ jtc_solutions_code_generator:
       entityInterface: App\Shared\Domain\Entity\IEntity
       dtoEntityReplacement: App\Shared\Domain\EntityId
       requestDtoInterface: App\Shared\Domain\Dto\CRUD\IEntityRequestBody
+      ignoredProperties:
+        - "deletedAt"
+        - "updatedAt"
+        - "createdAt"
     openApi:
       errorResponseClass: App\Shared\Domain\Dto\ErrorRequestJsonResponse
       paginationClass: App\Shared\Domain\Dto\Pagination

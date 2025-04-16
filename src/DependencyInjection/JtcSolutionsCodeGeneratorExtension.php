@@ -29,6 +29,7 @@ class JtcSolutionsCodeGeneratorExtension extends Extension
         $container->setParameter('jtc_solutions_code_generator.global.entity_interface', $config['global']['project']['entityInterface']);
         $container->setParameter('jtc_solutions_code_generator.global.dto_entity_replacement', $config['global']['project']['dtoEntityReplacement']);
         $container->setParameter('jtc_solutions_code_generator.global.request_dto_interface', $config['global']['project']['requestDtoInterface']);
+        $container->setParameter('jtc_solutions_code_generator.global.ignored_properties', $config['global']['project']['ignoredProperties'] ?? []);
 
         // open api
         $container->setParameter('jtc_solutions_code_generator.global.error_response_class', $config['global']['openApi']['errorResponseClass']);
