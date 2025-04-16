@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace JtcSolutions\CodeGenerator\Service\PropertyMapper\PropertyTypeDetector;
 
@@ -10,7 +10,10 @@ class EnumPropertyTypeDetector implements IPropertyTypeDetector
 {
     public function detect(ReflectionProperty $property, ReflectionNamedType $type): string
     {
-        return $type->getName();
+        /** @var class-string $enumFQCN */
+        $enumFQCN = $type->getName();
+
+        return $enumFQCN;
     }
 
     public function supports(ReflectionProperty $property, ReflectionNamedType $type): bool
