@@ -18,6 +18,17 @@ abstract readonly class BaseConfiguration
     ) {
     }
 
+    /**
+     * @return class-string
+     */
+    public function getFullyQualifiedClassName(): string
+    {
+        /** @var class-string $con */
+        $con = $this->namespace . '\\' . $this->className;
+
+        return $con;
+    }
+
     public function getNamespace(): string
     {
         return $this->namespace;

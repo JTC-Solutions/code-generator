@@ -66,6 +66,7 @@ class DtoConfigurationBuilder extends BaseConfigurationBuilder
     }
 
     /**
+     * @param class-string $fqcn
      * @throws ConfigurationException
      */
     public function addUseStatement(string $fqcn, ?string $alias = null, ?int $order = null): self
@@ -86,6 +87,11 @@ class DtoConfigurationBuilder extends BaseConfigurationBuilder
      */
     public function addInterface(string $interface, ?int $order = null): self
     {
+        try {
+            $this->addUseStatement($interface);
+        } catch (ConfigurationException $e) {
+            // do nothing
+        }
         $interfaceClassName = FQCNHelper::transformFQCNToShortClassName($interface);
 
         /** @var array<int,string> $result */

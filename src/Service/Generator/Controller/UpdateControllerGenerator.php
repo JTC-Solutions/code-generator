@@ -18,17 +18,16 @@ class UpdateControllerGenerator extends BaseControllerGenerator
         UpdateControllerConfigurator $configurator,
         ControllerClassWriter $classWriter,
         ControllerCodeRenderer $codeRenderer,
+        protected readonly string $dtoNamePrefix = '',
+        protected readonly string $dtoNameSuffix = '',
     ) {
         parent::__construct($configurator, $classWriter, $codeRenderer);
     }
 
     public function generate(string $classFullyQualifiedClassName): void
     {
-        $this->dtoGenerator->generate($classFullyQualifiedClassName, '', static::DTO_SUFFIX);
+        $dtoFullyQualifiedClassName = $this->dtoGenerator->generate($classFullyQualifiedClassName, $this->dtoNamePrefix, $this->dtoNameSuffix);
 
-        $dtoClassName = DtoGenerator::getDtoClassName($classFullyQualifiedClassName, '', static::DTO_SUFFIX);
-        /** @var class-string $dtoFullyQualifiedClassName */
-        $dtoFullyQualifiedClassName = $this->contextProvider->getDtoNamespace($classFullyQualifiedClassName) . '\\' . $dtoClassName;
         $this->contextProvider->dtoFullyQualifiedClassName = $dtoFullyQualifiedClassName;
 
         parent::generate($classFullyQualifiedClassName);

@@ -15,6 +15,7 @@ use JtcSolutions\CodeGenerator\Service\Writer\ControllerClassWriter;
 use JtcSolutions\CodeGenerator\Service\Writer\DtoClassWriter;
 use JtcSolutions\CodeGenerator\Tests\Functional\TestEntityClass\EntityId;
 use JtcSolutions\CodeGenerator\Tests\Functional\TestEntityClass\EntityInterface;
+use JtcSolutions\CodeGenerator\Tests\Functional\TestEntityClass\IRequestDto;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Filesystem\Filesystem;
 use Throwable;
@@ -80,6 +81,7 @@ abstract class BaseFunctionalTest extends TestCase
         return new DtoConfigurator(
             contextProvider: $this->createContextProvider(),
             classPropertyMapper: $this->createClassPropertyMapper(),
+            requestDtoInterface: IRequestDto::class,
         );
     }
 

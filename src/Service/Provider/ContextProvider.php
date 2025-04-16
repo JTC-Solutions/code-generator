@@ -46,11 +46,17 @@ class ContextProvider
         );
     }
 
+    /**
+     * @throws Exception
+     */
     public function getDtoNamespace(string $classFullyQualifiedClassName): string
     {
         return $this->replaceVariables($this->dtoNamespaceTemplate, $classFullyQualifiedClassName);
     }
 
+    /**
+     * @throws Exception
+     */
     public function getControllerNamespace(string $classFullyQualifiedClassName): string
     {
         return $this->replaceVariables($this->controllerNamespaceTemplate, $classFullyQualifiedClassName);

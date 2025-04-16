@@ -3,6 +3,7 @@
 namespace JtcSolutions\CodeGenerator\Service\Configurator\Dto;
 
 use JtcSolutions\CodeGenerator\Dto\Configuration\Dto\DtoConfiguration;
+use JtcSolutions\CodeGenerator\Exception\ConfigurationException;
 use JtcSolutions\CodeGenerator\Service\Builder\Configuration\DtoConfigurationBuilder;
 use JtcSolutions\CodeGenerator\Service\PropertyMapper\ClassPropertyMapper;
 use JtcSolutions\CodeGenerator\Service\Provider\ContextProvider;
@@ -10,14 +11,21 @@ use JtcSolutions\Helpers\Helper\FQCNHelper;
 
 class DtoConfigurator
 {
-    /** @param class-string $requestDtoInterface */
+    /**
+     * @param class-string $requestDtoInterface
+     */
     public function __construct(
         private readonly ContextProvider $contextProvider,
         private readonly ClassPropertyMapper $classPropertyMapper,
-        private readonly string $requestDtoInterface
+        private readonly string $requestDtoInterface,
     ) {
     }
 
+    /**
+     * @param class-string $classFullyQualifiedClassName
+     * @throws \ReflectionException
+     * @throws ConfigurationException
+     */
     public function configure(
         string $classFullyQualifiedClassName,
         string $prefix = '',
@@ -31,11 +39,9 @@ class DtoConfigurator
             namespace: $this->contextProvider->getDtoNamespace($classFullyQualifiedClassName),
         );
 
-        $builder->addUseStatement($this->requestDtoInterface);
         $builder->addInterface($this->requestDtoInterface);
 
         foreach ($this->contextProvider->dtoInterfaces as $dtoInterface) {
-            $builder->addUseStatement($dtoInterface);
             $builder->addInterface($dtoInterface);
         }
 

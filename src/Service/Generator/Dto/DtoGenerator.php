@@ -5,7 +5,6 @@ namespace JtcSolutions\CodeGenerator\Service\Generator\Dto;
 use JtcSolutions\CodeGenerator\Service\CodeRenderer\Dto\DtoCodeRenderer;
 use JtcSolutions\CodeGenerator\Service\Configurator\Dto\DtoConfigurator;
 use JtcSolutions\CodeGenerator\Service\Writer\DtoClassWriter;
-use JtcSolutions\Helpers\Helper\FQCNHelper;
 
 class DtoGenerator
 {
@@ -16,26 +15,22 @@ class DtoGenerator
     ) {
     }
 
+    /**
+     * @param class-string $classFullyQualifiedClassName
+     * @return class-string DTO's FQCN
+     */
     public function generate(
         string $classFullyQualifiedClassName,
         string $prefix = '',
         string $suffix = '',
-    ): void {
+    ): string {
         $configuration = $this->configurator->configure($classFullyQualifiedClassName, $prefix, $suffix);
         $code = $this->codeRenderer->renderCode($configuration);
 
-        $dtoClassName = self::getDtoClassName($classFullyQualifiedClassName, $prefix, $suffix);
+        $dtoFullyQualifiedClassName = $configuration->getFullyQualifiedClassName();
 
-        $this->classWriter->write($classFullyQualifiedClassName, $dtoClassName, $code);
-    }
+        $this->classWriter->write($classFullyQualifiedClassName, $dtoFullyQualifiedClassName, $code);
 
-    public static function getDtoClassName(
-        string $classFullyQualifiedClassName,
-        string $prefix = '',
-        string $suffix = '',
-    ): string {
-        $className = FQCNHelper::transformFQCNToShortClassName($classFullyQualifiedClassName);
-
-        return $prefix . $className . $suffix;
+        return $dtoFullyQualifiedClassName;
     }
 }
