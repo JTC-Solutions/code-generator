@@ -1,7 +1,7 @@
 {
     "name": "jtc-solutions/code-generator",
     "description": "Package that helps generating CRUD, services and repository boilerplate.",
-    "type": "library",
+    "type": "symfony-bundle",
     "license": "proprietary",
     "autoload": {
         "psr-4": {
@@ -23,8 +23,7 @@
         "ramsey/uuid": "^4.7",
         "php": ">=8.3",
         "symfony/console": "^7.2",
-        "doctrine/orm": "^3.3",
-        "jtc-solutions/helpers": "^0.1.0",
+        "jtc-solutions/helpers": "^0.2.0",
         "symfony/http-foundation": "^7.2",
         "nelmio/api-doc-bundle": "^5.0",
         "nikic/php-parser": "^5.4",

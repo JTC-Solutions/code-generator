@@ -15,11 +15,9 @@
         <testsuite name="Unit">
             <directory suffix="Test.php">./tests/Unit</directory>
         </testsuite>
-        <testsuite name="Integration">
-            <directory suffix="Test.php">./tests/Integration</directory>
-        </testsuite>
-        <testsuite name="Debug">
-            <directory suffix="Test.php">./tests/Debug</directory>
+        <testsuite name="Functional">
+            <directory suffix="Test.php">./tests/Functional</directory>
+            <exclude>tests/Functional/BaseFunctionalTest.php</exclude>
         </testsuite>
     </testsuites>
 </phpunit>

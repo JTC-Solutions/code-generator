@@ -1,0 +1,103 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: false
+
+  JtcSolutions\CodeGenerator\Service\Provider\ContextProvider:
+    arguments:
+      $controllerNamespaceTemplate: '%jtc_solutions_code_generator.global.controller_namespace_template%'
+      $dtoNamespaceTemplate: '%jtc_solutions_code_generator.global.dto_namespace_template%'
+      $projectDir: '%jtc_solutions_code_generator.global.project_dir%'
+      $projectBaseNamespace: '%jtc_solutions_code_generator.global.project_base_namespace%'
+      $errorResponseClass: '%jtc_solutions_code_generator.global.error_response_class%'
+      $paginationClass: '%jtc_solutions_code_generator.global.pagination_class%'
+
+  ## Generators
+
+  JtcSolutions\CodeGenerator\Service\Generator\Controller\CreateControllerGenerator:
+    tags: ['jtc_solutions.controller_generator']
+    public: true
+
+  JtcSolutions\CodeGenerator\Service\Generator\Controller\DeleteControllerGenerator:
+    tags: ['jtc_solutions.controller_generator']
+    public: true
+
+  JtcSolutions\CodeGenerator\Service\Generator\Controller\DetailControllerGenerator:
+    tags: ['jtc_solutions.controller_generator']
+    public: true
+
+  JtcSolutions\CodeGenerator\Service\Generator\Controller\ListControllerGenerator:
+    tags: ['jtc_solutions.controller_generator']
+    public: true
+
+  JtcSolutions\CodeGenerator\Service\Generator\Controller\UpdateControllerGenerator:
+    tags: ['jtc_solutions.controller_generator']
+    public: true
+
+  JtcSolutions\CodeGenerator\Service\Generator\Dto\DtoGenerator:
+    public: true
+
+  ## Configurators
+
+  JtcSolutions\CodeGenerator\Service\Configurator\Controller\CreateControllerConfigurator:
+    public: true
+
+  JtcSolutions\CodeGenerator\Service\Configurator\Controller\DeleteControllerConfigurator:
+    public: true
+
+  JtcSolutions\CodeGenerator\Service\Configurator\Controller\DetailControllerConfigurator:
+    public: true
+
+  JtcSolutions\CodeGenerator\Service\Configurator\Controller\ListControllerConfigurator:
+    public: true
+
+  JtcSolutions\CodeGenerator\Service\Configurator\Controller\UpdateControllerConfigurator:
+    public: true
+
+  JtcSolutions\CodeGenerator\Service\Configurator\Dto\DtoConfigurator:
+    public: true
+    arguments:
+      $requestDtoInterface: '%jtc_solutions_code_generator.global.request_dto_interface%'
+
+  ## Renderers
+
+  JtcSolutions\CodeGenerator\Service\CodeRenderer\Controller\ControllerCodeRenderer:
+    public: true
+
+  JtcSolutions\CodeGenerator\Service\CodeRenderer\Dto\DtoCodeRenderer:
+    public: true
+
+  ## Writer
+
+  JtcSolutions\CodeGenerator\Service\Writer\Controller\ControllerClassWriter:
+    public: true
+
+  JtcSolutions\CodeGenerator\Service\Writer\Dto\DtoClassWriter:
+    public: true
+
+  ## Commands
+  JtcSolutions\CodeGenerator\Command\GenerateCrudCommand:
+    tags: ['console.command']
+
+  ## ClassPropertyMapper
+
+  JtcSolutions\CodeGenerator\Service\PropertyMapper\ClassPropertyMapper:
+    public: true
+
+  ## Property Type Detectors
+
+  JtcSolutions\CodeGenerator\Service\PropertyMapper\PropertyTypeDetector\DateTimePropertyTypeDetector:
+    tags: [ 'jtc_solutions.property_type_detector' ]
+    public: true
+
+  JtcSolutions\CodeGenerator\Service\PropertyMapper\PropertyTypeDetector\UuidInterfacePropertyTypeDetector:
+    tags: [ 'jtc_solutions.property_type_detector' ]
+    public: true
+
+  JtcSolutions\CodeGenerator\Service\PropertyMapper\PropertyTypeDetector\EntityPropertyTypeDetector:
+    tags: [ 'jtc_solutions.property_type_detector' ]
+    public: true
+    arguments:
+      $entityInterface: '%jtc_solutions_code_generator.global.entity_interface%'
+      $replacementClass: '%jtc_solutions_code_generator.global.dto_entity_replacement%'
