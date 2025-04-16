@@ -57,6 +57,8 @@ services:
 
   JtcSolutions\CodeGenerator\Service\Configurator\Dto\DtoConfigurator:
     public: true
+    arguments:
+      $requestDtoInterface: '%jtc_solutions_code_generator.global.request_dto_interface%'
 
   ## Renderers
 

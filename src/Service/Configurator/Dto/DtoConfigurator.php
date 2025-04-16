@@ -10,9 +10,11 @@ use JtcSolutions\Helpers\Helper\FQCNHelper;
 
 class DtoConfigurator
 {
+    /** @param class-string $requestDtoInterface */
     public function __construct(
         private readonly ContextProvider $contextProvider,
         private readonly ClassPropertyMapper $classPropertyMapper,
+        private readonly string $requestDtoInterface
     ) {
     }
 
@@ -29,9 +31,12 @@ class DtoConfigurator
             namespace: $this->contextProvider->getDtoNamespace($classFullyQualifiedClassName),
         );
 
+        $builder->addUseStatement($this->requestDtoInterface);
+        $builder->addInterface($this->requestDtoInterface);
+
         foreach ($this->contextProvider->dtoInterfaces as $dtoInterface) {
             $builder->addUseStatement($dtoInterface);
-            $builder->addInterface(FQCNHelper::transformFQCNToShortClassName($dtoInterface));
+            $builder->addInterface($dtoInterface);
         }
 
         $propertyMap = $this->classPropertyMapper->getPropertyMap($classFullyQualifiedClassName);

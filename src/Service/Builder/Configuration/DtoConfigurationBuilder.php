@@ -7,6 +7,7 @@ use JtcSolutions\CodeGenerator\Dto\Configuration\Dto\DtoPropertyConfiguration;
 use JtcSolutions\CodeGenerator\Dto\Configuration\UseStatementConfiguration;
 use JtcSolutions\CodeGenerator\Dto\MappedProperty\MappedProperty;
 use JtcSolutions\CodeGenerator\Exception\ConfigurationException;
+use JtcSolutions\Helpers\Helper\FQCNHelper;
 
 class DtoConfigurationBuilder extends BaseConfigurationBuilder
 {
@@ -80,12 +81,15 @@ class DtoConfigurationBuilder extends BaseConfigurationBuilder
     }
 
     /**
+     * @param class-string $interface
      * @throws ConfigurationException
      */
     public function addInterface(string $interface, ?int $order = null): self
     {
+        $interfaceClassName = FQCNHelper::transformFQCNToShortClassName($interface);
+
         /** @var array<int,string> $result */
-        $result = $this->addItem(self::INTERFACE, $interface, $this->interfaces, $order);
+        $result = $this->addItem(self::INTERFACE, $interfaceClassName, $this->interfaces, $order);
 
         $this->interfaces = $result;
 

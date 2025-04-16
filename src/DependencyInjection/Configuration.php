@@ -57,6 +57,12 @@ class Configuration implements ConfigurationInterface
                                     ->info('Class that replaces entities in dto generations')
                                     ->example('App\\Shared\\Domain\\Dto\\EntityId')
                                 ->end()
+                                ->scalarNode('requestDtoInterface')
+                                    ->isRequired()
+                                    ->cannotBeEmpty()
+                                    ->info('Interface that will be given to entity request DTO')
+                                    ->example('App\\Shared\\Domain\\Dto\\CRUD\\IEntityRequestBody')
+                                ->end()
                             ->end()
                         ->end() // project
                         ->arrayNode('openApi')
