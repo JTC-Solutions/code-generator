@@ -2,7 +2,7 @@
 
 namespace JtcSolutions\CodeGenerator\Service\PropertyMapper;
 
-use JtcSolutions\CodeGenerator\Dto\MappedProperty;
+use JtcSolutions\CodeGenerator\Dto\MappedProperty\MappedProperty;
 use JtcSolutions\Helpers\Helper\FQCNHelper;
 use ReflectionClass;
 use ReflectionException;
@@ -44,25 +44,20 @@ class ClassPropertyMapper
 
     private function getPropertyType(ReflectionProperty $property, ?ReflectionType $propertyType): MappedProperty
     {
-        if (
-            ! $propertyType instanceof ReflectionNamedType
-            //|| $propertyType === null
-        ) {
-            return new MappedProperty($property->getName(), 'mixed');
-        }
+        if ($propertyType instanceof ReflectionNamedType) {
+            if ($propertyType->isBuiltin() === true) {
+                return new MappedProperty($property->getName(), $propertyType->getName());
+            }
 
-        if ($propertyType->isBuiltin() === true) {
-            return new MappedProperty($property->getName(), $propertyType->getName());
-        }
-
-        foreach ($this->propertyTypeDetectors as $propertyTypeDetector) {
-            if ($propertyTypeDetector->supports($property, $propertyType)) {
-                $fullyQualifiedClassName = $propertyTypeDetector->detect($property, $propertyType);
-                return new MappedProperty(
-                    name: $property->getName(),
-                    type: FQCNHelper::transformFQCNToShortClassName($fullyQualifiedClassName),
-                    useStatement: $fullyQualifiedClassName,
-                );
+            foreach ($this->propertyTypeDetectors as $propertyTypeDetector) {
+                if ($propertyTypeDetector->supports($property, $propertyType)) {
+                    $fullyQualifiedClassName = $propertyTypeDetector->detect($property, $propertyType);
+                    return new MappedProperty(
+                        name: $property->getName(),
+                        type: FQCNHelper::transformFQCNToShortClassName($fullyQualifiedClassName),
+                        useStatement: $fullyQualifiedClassName,
+                    );
+                }
             }
         }
 

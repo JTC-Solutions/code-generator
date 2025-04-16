@@ -5,7 +5,7 @@ namespace JtcSolutions\CodeGenerator\Service\Builder\Configuration;
 use JtcSolutions\CodeGenerator\Dto\Configuration\Dto\DtoConfiguration;
 use JtcSolutions\CodeGenerator\Dto\Configuration\Dto\DtoPropertyConfiguration;
 use JtcSolutions\CodeGenerator\Dto\Configuration\UseStatementConfiguration;
-use JtcSolutions\CodeGenerator\Dto\MappedProperty;
+use JtcSolutions\CodeGenerator\Dto\MappedProperty\MappedProperty;
 use JtcSolutions\CodeGenerator\Exception\ConfigurationException;
 
 class DtoConfigurationBuilder extends BaseConfigurationBuilder

@@ -3,7 +3,7 @@
 namespace JtcSolutions\CodeGenerator\Tests\Unit\ClassPropertyMapper;
 
 use DateTimeImmutable;
-use JtcSolutions\CodeGenerator\Dto\MappedProperty;
+use JtcSolutions\CodeGenerator\Dto\MappedProperty\MappedProperty;
 use JtcSolutions\CodeGenerator\Service\PropertyMapper\ClassPropertyMapper;
 use JtcSolutions\CodeGenerator\Service\PropertyMapper\PropertyTypeDetector\DateTimePropertyTypeDetector;
 use JtcSolutions\CodeGenerator\Service\PropertyMapper\PropertyTypeDetector\EntityPropertyTypeDetector;
@@ -61,6 +61,7 @@ class ClassPropertyMapperTest extends TestCase
             new MappedProperty('untypedVar', 'mixed'),
             new MappedProperty('mixedVar', 'mixed'),
             new MappedProperty('standardObject', 'mixed'),
+            new MappedProperty('strings', 'array'),
         ];
 
         $actualMap = $this->mapper->getPropertyMap(ComplexClass::class);

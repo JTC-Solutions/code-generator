@@ -32,7 +32,7 @@ class DtoCodeRenderer extends BaseRenderer
         $this->code .= "    public function __construct(\n";
 
         foreach ($configuration->getProperties() as $property) {
-            $this->code .= sprintf("        public readonly %s \$%s,\n", $property->propertyType, $property->propertyName);
+            $this->code .= sprintf("        public %s \$%s,\n", $property->propertyType, $property->propertyName);
         }
 
         $this->code .= "    ) {}\n";

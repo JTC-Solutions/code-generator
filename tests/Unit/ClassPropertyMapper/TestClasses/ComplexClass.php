@@ -27,4 +27,9 @@ class ComplexClass implements EntityInterface
     public mixed $mixedVar;
 
     public stdClass $standardObject;
+
+    /**
+     * @var string[]
+     */
+    public array $strings;
 }
