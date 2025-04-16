@@ -5,11 +5,24 @@ namespace JtcSolutions\CodeGenerator\Service\CodeRenderer\Dto;
 use JtcSolutions\CodeGenerator\Dto\Configuration\Dto\DtoConfiguration;
 use JtcSolutions\CodeGenerator\Dto\Configuration\IRenderableConfiguration;
 use JtcSolutions\CodeGenerator\Service\CodeRenderer\BaseRenderer;
+use JtcSolutions\CodeGenerator\Service\CodeRenderer\ICodeRenderer;
+use TypeError;
 
-class DtoCodeRenderer extends BaseRenderer
+/**
+ * Concrete implementation for rendering Data Transfer Object (DTO) PHP code.
+ * Uses helper methods from BaseRenderer to assemble the code string.
+ * Generates DTOs with promoted constructor properties.
+ */
+class DtoCodeRenderer extends BaseRenderer implements ICodeRenderer
 {
     /**
-     * @param DtoConfiguration $configuration
+     * Renders the complete DTO PHP code string from the configuration.
+     * Orchestrates calls to helper methods in the correct order.
+     * DTOs are generated as readonly classes with promoted constructor properties.
+     *
+     * @param DtoConfiguration $configuration The DTO configuration DTO.
+     * @return string The generated PHP code for the DTO class.
+     * @throws TypeError If the provided configuration is not a DtoConfiguration instance.
      */
     public function renderCode(IRenderableConfiguration $configuration): string
     {
@@ -27,6 +40,12 @@ class DtoCodeRenderer extends BaseRenderer
         return $this->code;
     }
 
+    /**
+     * Adds the constructor with promoted properties based on the DTO configuration.
+     * Also adds the final closing brace for the class.
+     *
+     * @param DtoConfiguration $configuration The DTO configuration containing properties.
+     */
     protected function addConstructor(DtoConfiguration $configuration): void
     {
         $this->code .= "    public function __construct(\n";

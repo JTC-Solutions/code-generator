@@ -4,7 +4,7 @@ namespace JtcSolutions\CodeGenerator\Tests\Unit\Service\Writer;
 
 use JtcSolutions\CodeGenerator\Exception\TemplateNotValidPhpCodeException;
 use JtcSolutions\CodeGenerator\Service\Provider\ContextProvider;
-use JtcSolutions\CodeGenerator\Service\Writer\DtoClassWriter;
+use JtcSolutions\CodeGenerator\Service\Writer\Dto\DtoClassWriter;
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamDirectory;
 use PHPUnit\Framework\MockObject\MockObject;

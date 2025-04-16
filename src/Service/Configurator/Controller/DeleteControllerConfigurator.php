@@ -2,6 +2,7 @@
 
 namespace JtcSolutions\CodeGenerator\Service\Configurator\Controller;
 
+use Exception;
 use JtcSolutions\CodeGenerator\Dto\Configuration\Controller\ControllerConfiguration;
 use JtcSolutions\CodeGenerator\Dto\Configuration\Controller\Method\MethodArgumentConfiguration;
 use JtcSolutions\CodeGenerator\Dto\Configuration\Controller\Method\MethodConfiguration;
@@ -18,12 +19,29 @@ use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Attribute\Route;
 
+/**
+ * Configures a controller for deleting entities by ID.
+ * Sets up the 'delete' method, route, OpenAPI documentation, and necessary use statements.
+ * Requires an ID (UuidInterface) as an argument.
+ */
 class DeleteControllerConfigurator extends BaseControllerConfigurator implements IControllerConfigurator
 {
+    /**
+     * @const string Default name for the controller method.
+     */
     protected const string DEFAULT_METHOD_NAME = 'delete';
 
+    /**
+     * @const string Default template for the controller class name.
+     */
     protected const string DEFAULT_CONTROLLER_NAME_TEMPLATE = 'Delete%sController';
 
+    /**
+     * @param ContextProvider $contextProvider Provides context like namespaces, paths, and shared configuration.
+     * @param string $methodName The name for the 'delete' method.
+     * @param string $controllerNameTemplate Template for the controller class name.
+     * @param bool $callParentConstructor Whether to call parent::__construct in the generated controller.
+     */
     public function __construct(
         ContextProvider $contextProvider,
         string $methodName = self::DEFAULT_METHOD_NAME,
@@ -34,8 +52,12 @@ class DeleteControllerConfigurator extends BaseControllerConfigurator implements
     }
 
     /**
-     * @param class-string $classFullyQualifiedClassName
-     * @throws ConfigurationException
+     * Configures the 'delete' controller structure.
+     *
+     * @param class-string $classFullyQualifiedClassName The FQCN of the target entity.
+     * @return ControllerConfiguration The configured controller structure DTO.
+     * @throws ConfigurationException If configuration building fails.
+     * @throws Exception If FQCN parsing fails.
      */
     public function configure(string $classFullyQualifiedClassName): ControllerConfiguration
     {
@@ -47,8 +69,12 @@ class DeleteControllerConfigurator extends BaseControllerConfigurator implements
     }
 
     /**
-     * @param class-string $classFullyQualifiedClassName
-     * @throws ConfigurationException
+     * Creates the method configuration for the 'delete' action.
+     * Includes the ID (UuidInterface) argument and the Route attribute.
+     *
+     * @param class-string $classFullyQualifiedClassName The FQCN of the target entity.
+     * @return MethodConfiguration The configuration for the 'delete' method.
+     * @throws ConfigurationException If building the method configuration fails.
      */
     protected function createMethodConfiguration(string $classFullyQualifiedClassName): MethodConfiguration|null
     {
@@ -61,8 +87,12 @@ class DeleteControllerConfigurator extends BaseControllerConfigurator implements
     }
 
     /**
-     * @param class-string $classFullyQualifiedClassName
-     * @throws ConfigurationException
+     * Configures use statements specific to the 'delete' controller.
+     * Adds JsonResponse, Route, UuidInterface, Model, and the target entity class.
+     *
+     * @param ControllerConfigurationBuilder $builder The builder instance.
+     * @param class-string $classFullyQualifiedClassName The FQCN of the target entity.
+     * @throws ConfigurationException If adding use statements fails.
      */
     protected function configureUseStatements(ControllerConfigurationBuilder $builder, string $classFullyQualifiedClassName): void
     {
@@ -78,8 +108,13 @@ class DeleteControllerConfigurator extends BaseControllerConfigurator implements
     }
 
     /**
-     * @param class-string $classFullyQualifiedClassName
-     * @throws ConfigurationException
+     * Configures OpenAPI documentation attributes for the 'delete' action.
+     * Includes tags, success (204), bad request (400), and not found (404) responses.
+     *
+     * @param ControllerConfigurationBuilder $builder The builder instance.
+     * @param class-string $classFullyQualifiedClassName The FQCN of the target entity.
+     * @throws ConfigurationException If adding OpenAPI docs fails.
+     * @throws Exception If FQCN parsing fails.
      */
     protected function configureOpenApiDocs(ControllerConfigurationBuilder $builder, string $classFullyQualifiedClassName): void
     {
@@ -101,7 +136,11 @@ class DeleteControllerConfigurator extends BaseControllerConfigurator implements
     }
 
     /**
-     * @param class-string $classFullyQualifiedClassName
+     * Configures the method body for the 'delete' action.
+     * Provides a placeholder implementation returning HTTP_NO_CONTENT.
+     *
+     * @param class-string $classFullyQualifiedClassName The FQCN of the target entity.
+     * @return string The code snippet for the method body.
      */
     protected function configureMethodBody(string $classFullyQualifiedClassName): string
     {

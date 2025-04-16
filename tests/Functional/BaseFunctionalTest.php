@@ -11,8 +11,8 @@ use JtcSolutions\CodeGenerator\Service\PropertyMapper\PropertyTypeDetector\DateT
 use JtcSolutions\CodeGenerator\Service\PropertyMapper\PropertyTypeDetector\EntityPropertyTypeDetector;
 use JtcSolutions\CodeGenerator\Service\PropertyMapper\PropertyTypeDetector\UuidInterfacePropertyTypeDetector;
 use JtcSolutions\CodeGenerator\Service\Provider\ContextProvider;
-use JtcSolutions\CodeGenerator\Service\Writer\ControllerClassWriter;
-use JtcSolutions\CodeGenerator\Service\Writer\DtoClassWriter;
+use JtcSolutions\CodeGenerator\Service\Writer\Controller\ControllerClassWriter;
+use JtcSolutions\CodeGenerator\Service\Writer\Dto\DtoClassWriter;
 use JtcSolutions\CodeGenerator\Tests\Functional\TestEntityClass\EntityId;
 use JtcSolutions\CodeGenerator\Tests\Functional\TestEntityClass\EntityInterface;
 use JtcSolutions\CodeGenerator\Tests\Functional\TestEntityClass\IRequestDto;

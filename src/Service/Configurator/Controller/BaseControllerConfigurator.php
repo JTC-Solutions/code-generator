@@ -11,8 +11,18 @@ use JtcSolutions\Helpers\Helper\FQCNHelper;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * Abstract base class for controller configurators.
+ * Provides common functionality for building controller configurations.
+ */
 abstract class BaseControllerConfigurator
 {
+    /**
+     * @param ContextProvider $contextProvider Provides context like namespaces, paths, and shared configuration (e.g., DTO FQCN).
+     * @param string $methodName The name of the primary method in the generated controller (e.g., 'create', 'list').
+     * @param string $controllerNameTemplate A template string (using sprintf) for the controller class name (e.g., 'Create%sController').
+     * @param bool $callParentConstructor Whether the generated controller's constructor should call parent::__construct().
+     */
     public function __construct(
         protected readonly ContextProvider $contextProvider,
         protected readonly string $methodName,
@@ -22,8 +32,13 @@ abstract class BaseControllerConfigurator
     }
 
     /**
-     * @throws ConfigurationException
-     * @throws Exception
+     * Creates and initializes the ControllerConfigurationBuilder.
+     * Sets up namespace, class name, extends, and initial use statements.
+     *
+     * @param class-string $classFullyQualifiedClassName The FQCN of the target entity.
+     * @return ControllerConfigurationBuilder An initialized builder instance.
+     * @throws ConfigurationException If adding initial configuration (like extends or use statements) fails.
+     * @throws Exception If FQCN parsing fails.
      */
     protected function createBuilder(string $classFullyQualifiedClassName): ControllerConfigurationBuilder
     {
@@ -51,7 +66,11 @@ abstract class BaseControllerConfigurator
     }
 
     /**
-     * @throws ConfigurationException
+     * Configures common use statements required by most generated controllers.
+     *
+     * @param ControllerConfigurationBuilder $builder The builder instance to add use statements to.
+     * @param class-string $classFullyQualifiedClassName The FQCN of the target entity (unused in base, but available for overrides).
+     * @throws ConfigurationException If adding use statements fails.
      */
     protected function configureUseStatements(
         ControllerConfigurationBuilder $builder,
@@ -66,10 +85,25 @@ abstract class BaseControllerConfigurator
         }
     }
 
+    /**
+     * Configures the body content of the constructor, if any.
+     * Base implementation returns null (no body). Can be overridden by subclasses.
+     *
+     * @param class-string $classFullyQualifiedClassName The FQCN of the target entity.
+     * @return string|null The code snippet for the constructor body, or null if none.
+     */
     protected function configureConstructorBody(string $classFullyQualifiedClassName): ?string
     {
         return null;
     }
 
+    /**
+     * Abstract method to create the specific method configuration for the controller action.
+     * Subclasses must implement this to define the controller's main method (e.g., list(), create(), detail()).
+     *
+     * @param class-string $classFullyQualifiedClassName The FQCN of the target entity.
+     * @return MethodConfiguration|null The configuration for the controller's primary method, or null if no method should be generated.
+     * @throws ConfigurationException If building the method configuration fails.
+     */
     abstract protected function createMethodConfiguration(string $classFullyQualifiedClassName): MethodConfiguration|null;
 }

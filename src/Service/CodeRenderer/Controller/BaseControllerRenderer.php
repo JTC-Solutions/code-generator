@@ -5,8 +5,18 @@ namespace JtcSolutions\CodeGenerator\Service\CodeRenderer\Controller;
 use JtcSolutions\CodeGenerator\Dto\Configuration\Controller\ControllerConfiguration;
 use JtcSolutions\CodeGenerator\Service\CodeRenderer\BaseRenderer;
 
+/**
+ * Abstract base class specifically for rendering Controller classes.
+ * Provides helper methods for controller-specific elements like OpenAPI docs,
+ * constructors, and methods.
+ */
 abstract class BaseControllerRenderer extends BaseRenderer
 {
+    /**
+     * Adds OpenAPI attribute annotations (e.g., #[OA\Tag], #[OA\Response]) to the code string.
+     *
+     * @param ControllerConfiguration $configuration Configuration containing OpenAPI doc configurations.
+     */
     protected function addOpenApiDoc(ControllerConfiguration $configuration): void
     {
         foreach ($configuration->openApiDocs as $doc) {
@@ -14,6 +24,12 @@ abstract class BaseControllerRenderer extends BaseRenderer
         }
     }
 
+    /**
+     * Adds the constructor method to the code string if constructor parameters are defined.
+     * Handles promoted properties syntax and optional parent::__construct call.
+     *
+     * @param ControllerConfiguration $configuration Configuration containing constructor parameters and settings.
+     */
     protected function addConstructor(ControllerConfiguration $configuration): void
     {
         if ($configuration->constructorParams !== []) {
@@ -42,6 +58,11 @@ abstract class BaseControllerRenderer extends BaseRenderer
         }
     }
 
+    /**
+     * Adds method-level attributes (e.g., #[Route]) to the code string.
+     *
+     * @param ControllerConfiguration $configuration Configuration potentially containing method attributes.
+     */
     protected function addMethodAttributes(ControllerConfiguration $configuration): void
     {
         if (
@@ -56,6 +77,11 @@ abstract class BaseControllerRenderer extends BaseRenderer
         }
     }
 
+    /**
+     * Adds the method signature start (e.g., "public function myMethod(").
+     *
+     * @param ControllerConfiguration $configuration Configuration containing the method name.
+     */
     protected function addMethodName(ControllerConfiguration $configuration): void
     {
         if (
@@ -67,6 +93,12 @@ abstract class BaseControllerRenderer extends BaseRenderer
         $this->code .= "    public function {$configuration->methodConfiguration->name}(\n";
     }
 
+    /**
+     * Adds the method arguments and the closing parenthesis of the signature, plus the return type.
+     * Example: (Request $request, UuidInterface $id): JsonResponse {
+     *
+     * @param ControllerConfiguration $configuration Configuration containing method arguments and return type.
+     */
     protected function addMethodArguments(ControllerConfiguration $configuration): void
     {
         if (
@@ -88,6 +120,11 @@ abstract class BaseControllerRenderer extends BaseRenderer
         $this->code .= "    ): {$configuration->methodConfiguration->returnType} {\n";
     }
 
+    /**
+     * Adds the method body content, correctly indented, and the closing brace for the method and class.
+     *
+     * @param ControllerConfiguration $configuration Configuration containing the method body.
+     */
     protected function addMethodBody(ControllerConfiguration $configuration): void
     {
         if ($configuration->methodConfiguration === null) {

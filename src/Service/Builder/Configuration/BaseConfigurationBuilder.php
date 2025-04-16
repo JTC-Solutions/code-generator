@@ -5,12 +5,23 @@ namespace JtcSolutions\CodeGenerator\Service\Builder\Configuration;
 use JtcSolutions\CodeGenerator\Dto\Configuration\Controller\IConfiguration;
 use JtcSolutions\CodeGenerator\Exception\ConfigurationException;
 
+/**
+ * Abstract base class for configuration builders.
+ * Provides common functionality for adding items to configuration arrays,
+ * handling potential duplicates and ordering.
+ */
 abstract class BaseConfigurationBuilder
 {
     /**
-     * @param array<int,string>|array<int,IConfiguration> $existingItems
-     * @return array<int,string>|array<int,IConfiguration>
-     * @throws ConfigurationException
+     * Adds an item (string or IConfiguration object) to an array, handling duplicates and optional ordering.
+     *
+     * @template T of string|IConfiguration
+     * @param string $type A string identifying the type of item being added (e.g., 'useStatement', 'property') for error messages.
+     * @param T $item The item to add.
+     * @param array<int, T> $existingItems The array to add the item to.
+     * @param int|null $order Optional specific index/order for the item. If null, item is appended.
+     * @return array<int, T> The updated array with the item added.
+     * @throws ConfigurationException If the item already exists or the specified order index is already taken.
      */
     protected function addItem(
         string $type,
@@ -37,7 +48,14 @@ abstract class BaseConfigurationBuilder
     }
 
     /**
-     * @param array<int,string>|array<int,IConfiguration> $existingItems
+     * Checks if an item (string or IConfiguration object) already exists in an array.
+     * For strings, it checks using in_array.
+     * For IConfiguration objects, it checks based on their getIdentifier() method.
+     *
+     * @template T of string|IConfiguration
+     * @param T $item The item to check for.
+     * @param array<int, T> $existingItems The array to search within.
+     * @return bool True if the item exists, false otherwise.
      */
     protected function itemExists(
         string|IConfiguration $item,

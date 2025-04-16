@@ -2,6 +2,7 @@
 
 namespace JtcSolutions\CodeGenerator\Service\Configurator\Controller;
 
+use Exception;
 use JtcSolutions\CodeGenerator\Dto\Configuration\Controller\ControllerConfiguration;
 use JtcSolutions\CodeGenerator\Dto\Configuration\Controller\Method\MethodArgumentConfiguration;
 use JtcSolutions\CodeGenerator\Dto\Configuration\Controller\Method\MethodConfiguration;
@@ -17,14 +18,35 @@ use Nelmio\ApiDocBundle\Attribute\Model;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Attribute\Route;
 
+/**
+ * Configures a controller for fetching the details of a single entity.
+ * Sets up the 'detail' method, route (using parameter conversion for the entity),
+ * OpenAPI documentation, and necessary use statements.
+ */
 class DetailControllerConfigurator extends BaseControllerConfigurator implements IControllerConfigurator
 {
+    /**
+     * @const string Default name for the controller method.
+     */
     protected const string DEFAULT_METHOD_NAME = 'detail';
 
+    /**
+     * @const string Default name for the entity argument (from param converter).
+     */
     protected const string DEFAULT_ARGUMENT_NAME = 'entity';
 
+    /**
+     * @const string Default template for the controller class name.
+     */
     protected const string DEFAULT_CONTROLLER_NAME_TEMPLATE = 'Detail%sController';
 
+    /**
+     * @param ContextProvider $contextProvider Provides context like namespaces, paths, and shared configuration.
+     * @param string $methodName The name for the 'detail' method.
+     * @param string $controllerNameTemplate Template for the controller class name.
+     * @param bool $callParentConstructor Whether to call parent::__construct in the generated controller.
+     * @param string $argumentName The name for the entity argument injected via parameter conversion.
+     */
     public function __construct(
         ContextProvider $contextProvider,
         string $methodName = self::DEFAULT_METHOD_NAME,
@@ -36,8 +58,12 @@ class DetailControllerConfigurator extends BaseControllerConfigurator implements
     }
 
     /**
-     * @param class-string $classFullyQualifiedClassName
-     * @throws ConfigurationException
+     * Configures the 'detail' controller structure.
+     *
+     * @param class-string $classFullyQualifiedClassName The FQCN of the target entity.
+     * @return ControllerConfiguration The configured controller structure DTO.
+     * @throws ConfigurationException If configuration building fails.
+     * @throws Exception If FQCN parsing fails.
      */
     public function configure(string $classFullyQualifiedClassName): ControllerConfiguration
     {
@@ -49,8 +75,14 @@ class DetailControllerConfigurator extends BaseControllerConfigurator implements
     }
 
     /**
-     * @param class-string $classFullyQualifiedClassName
-     * @throws ConfigurationException
+     * Creates the method configuration for the 'detail' action.
+     * Includes the entity argument (type-hinted to the target entity class) and the Route attribute.
+     * Relies on Symfony's ParamConverter to fetch the entity based on the route parameter.
+     *
+     * @param class-string $classFullyQualifiedClassName The FQCN of the target entity.
+     * @return MethodConfiguration The configuration for the 'detail' method.
+     * @throws ConfigurationException If building the method configuration fails.
+     * @throws Exception If FQCN parsing fails.
      */
     public function createMethodConfiguration(string $classFullyQualifiedClassName): MethodConfiguration
     {
@@ -65,8 +97,12 @@ class DetailControllerConfigurator extends BaseControllerConfigurator implements
     }
 
     /**
-     * @param class-string $classFullyQualifiedClassName
-     * @throws ConfigurationException
+     * Configures use statements specific to the 'detail' controller.
+     * Adds JsonResponse, Route, Model, and the target entity class.
+     *
+     * @param ControllerConfigurationBuilder $builder The builder instance.
+     * @param class-string $classFullyQualifiedClassName The FQCN of the target entity.
+     * @throws ConfigurationException If adding use statements fails.
      */
     protected function configureUseStatements(ControllerConfigurationBuilder $builder, string $classFullyQualifiedClassName): void
     {
@@ -81,8 +117,13 @@ class DetailControllerConfigurator extends BaseControllerConfigurator implements
     }
 
     /**
-     * @param class-string $classFullyQualifiedClassName
-     * @throws ConfigurationException
+     * Configures OpenAPI documentation attributes for the 'detail' action.
+     * Includes tags, success (200), and not found (404) responses.
+     *
+     * @param ControllerConfigurationBuilder $builder The builder instance.
+     * @param class-string $classFullyQualifiedClassName The FQCN of the target entity.
+     * @throws ConfigurationException If adding OpenAPI docs fails.
+     * @throws Exception If FQCN parsing fails.
      */
     protected function configureOpenApiDocs(ControllerConfigurationBuilder $builder, string $classFullyQualifiedClassName): void
     {
@@ -109,7 +150,12 @@ class DetailControllerConfigurator extends BaseControllerConfigurator implements
     }
 
     /**
-     * @param class-string $classFullyQualifiedClassName
+     * Configures the method body for the 'detail' action.
+     * Provides a simple implementation that returns the injected entity.
+     *
+     * @param class-string $classFullyQualifiedClassName The FQCN of the target entity.
+     * @return string The code snippet for the method body.
+     * @throws Exception If FQCN parsing fails.
      */
     protected function configureMethodBody(string $classFullyQualifiedClassName): string
     {
