@@ -15,5 +15,7 @@ class TestEntityClass implements EntityInterface
 
     public NestedEntityClass $nested;
 
+    public NestedEntityClass $secondNested;
+
     public string $ignoredProperty;
 }

@@ -118,14 +118,18 @@ class ControllerConfigurationBuilder extends BaseConfigurationBuilder
      * @param string|null $alias Optional alias for the use statement.
      * @param int|null $order Optional order index for the use statement.
      * @return $this The builder instance for method chaining.
-     * @throws ConfigurationException If the use statement (by FQCN) already exists or the order index is taken.
      */
     public function addUseStatement(string $fqcn, ?string $alias = null, ?int $order = null): self
     {
         $statement = new UseStatementConfiguration($fqcn, $alias);
 
-        /** @var array<int, UseStatementConfiguration> $result */
-        $result = $this->addItem(self::USE_STATEMENT, $statement, $this->useStatements, $order);
+        /** We do not want to throw exception in case of duplicate use statements */
+        try {
+            /** @var array<int, UseStatementConfiguration> $result */
+            $result = $this->addItem(self::USE_STATEMENT, $statement, $this->useStatements, $order);
+        } catch (ConfigurationException $e) {
+            return $this;
+        }
 
         $this->useStatements = $result;
 

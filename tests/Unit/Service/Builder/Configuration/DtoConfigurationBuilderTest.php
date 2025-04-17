@@ -100,16 +100,6 @@ class DtoConfigurationBuilderTest extends TestCase
         $builder->addInterface(DummyInterface::class);
     }
 
-    public function testAddDuplicateUseStatementThrowsException(): void
-    {
-        $this->expectException(ConfigurationException::class);
-        $this->expectExceptionMessage('Attempted to add useStatements which already is set. Item JtcSolutions\CodeGenerator\Tests\Fixtures\DummyInterface is already set in existing');
-
-        $builder = new DtoConfigurationBuilder('TestDto', 'App\Test\Dto');
-        $builder->addUseStatement(DummyInterface::class);
-        $builder->addUseStatement(DummyInterface::class);
-    }
-
     public function testAddPropertyWithOrder(): void
     {
         $builder = new DtoConfigurationBuilder('MyDto', 'App\Test\Dto');
