@@ -80,6 +80,13 @@ class Configuration implements ConfigurationInterface
                                     ->example('App\{entity}\Domain\Dto\{domain}}')
                                     ->defaultValue('App\{domain}\Domain\Dto\{entity}')
                                 ->end()
+                                ->scalarNode('serviceNamespaceTemplate')
+                                    ->isRequired()
+                                    ->cannotBeEmpty()
+                                    ->info('Template for Service namespaces. Use {domain} or {entity} for Domain and Entity.')
+                                    ->example('App\{entity}\Domain\Dto\{domain}}')
+                                    ->defaultValue('App\{domain}\Domain\Service')
+                                ->end()
                             ->end()
                         ->end() // namespace
                         ->arrayNode('project')

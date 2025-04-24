@@ -3,6 +3,7 @@ jtc_solutions_code_generator:
     namespace:
       controllerNamespaceTemplate: 'App\{domain}\App\Api\{entity}'
       dtoNamespaceTemplate: 'App\{domain}\Domain\Dto\{entity}'
+      serviceNamespaceTemplate: 'App\{domain}\Domain\Service'
     project:
       projectBaseNamespace: 'App'
       projectDir: 'output'
