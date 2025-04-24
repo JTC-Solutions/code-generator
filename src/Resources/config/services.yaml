@@ -92,7 +92,7 @@ services:
   JtcSolutions\CodeGenerator\Command\GenerateCrudCommand:
     tags: ['console.command']
     arguments:
-      $serviceGenerator: @JtcSolutions\CodeGenerator\Service\Generator\Service\ServiceGenerator
+      $serviceGenerator: JtcSolutions\CodeGenerator\Service\Generator\Service\ServiceGenerator
 
   ## ClassPropertyMapper
 
