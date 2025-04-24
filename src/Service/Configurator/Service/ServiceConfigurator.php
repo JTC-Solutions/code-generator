@@ -56,6 +56,10 @@ class ServiceConfigurator
     {
         $className = FQCNHelper::transformFQCNToShortClassName($classFullyQualifiedClassName);
         $serviceClassName = $className . 'Service';
+        /** @var class-string $repositoryFQCN */
+        $repositoryFQCN = $this->contextProvider->repositoryFullyQualifiedClassName;
+
+        $repositoryClass = FQCNHelper::transformFQCNToShortClassName($repositoryFQCN);
 
         $builder = new ServiceConfigurationBuilder(
             className: $serviceClassName,
@@ -65,9 +69,10 @@ class ServiceConfigurator
         $builder
             ->addInterface(IEntityService::class)
             ->addExtendedClass(BaseEntityService::class)
-            ->addConstructorParam(new MethodArgumentConfiguration('repository', Configuration::class)) // TODO: Replace with generated repo
+            ->addConstructorParam(new MethodArgumentConfiguration('repository', $repositoryClass))
             ->addConstructorParam(new MethodArgumentConfiguration('entityManager', EntityManagerInterface::class, false, 'private', true));
 
+        $builder->addUseStatement($repositoryFQCN);
         $builder->addUseStatement($classFullyQualifiedClassName);
         $builder->addUseStatement(IEntity::class);
         $builder->addUseStatement(UuidInterface::class);

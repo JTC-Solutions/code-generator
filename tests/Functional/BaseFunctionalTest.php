@@ -4,6 +4,7 @@ namespace JtcSolutions\CodeGenerator\Tests\Functional;
 
 use JtcSolutions\CodeGenerator\Service\CodeRenderer\Controller\ControllerCodeRenderer;
 use JtcSolutions\CodeGenerator\Service\CodeRenderer\Dto\DtoCodeRenderer;
+use JtcSolutions\CodeGenerator\Service\CodeRenderer\Repository\RepositoryCodeRenderer;
 use JtcSolutions\CodeGenerator\Service\CodeRenderer\Service\ServiceCodeRenderer;
 use JtcSolutions\CodeGenerator\Service\Configurator\Controller\CreateControllerConfigurator;
 use JtcSolutions\CodeGenerator\Service\Configurator\Controller\DeleteControllerConfigurator;
@@ -11,6 +12,7 @@ use JtcSolutions\CodeGenerator\Service\Configurator\Controller\DetailControllerC
 use JtcSolutions\CodeGenerator\Service\Configurator\Controller\ListControllerConfigurator;
 use JtcSolutions\CodeGenerator\Service\Configurator\Controller\UpdateControllerConfigurator;
 use JtcSolutions\CodeGenerator\Service\Configurator\Dto\DtoConfigurator;
+use JtcSolutions\CodeGenerator\Service\Configurator\Repository\RepositoryConfigurator;
 use JtcSolutions\CodeGenerator\Service\Configurator\Service\ServiceConfigurator;
 use JtcSolutions\CodeGenerator\Service\Generator\Controller\CreateControllerGenerator;
 use JtcSolutions\CodeGenerator\Service\Generator\Controller\DeleteControllerGenerator;
@@ -18,6 +20,7 @@ use JtcSolutions\CodeGenerator\Service\Generator\Controller\DetailControllerGene
 use JtcSolutions\CodeGenerator\Service\Generator\Controller\ListControllerGenerator;
 use JtcSolutions\CodeGenerator\Service\Generator\Controller\UpdateControllerGenerator;
 use JtcSolutions\CodeGenerator\Service\Generator\Dto\DtoGenerator;
+use JtcSolutions\CodeGenerator\Service\Generator\Repository\RepositoryGenerator;
 use JtcSolutions\CodeGenerator\Service\Generator\Service\ServiceGenerator;
 use JtcSolutions\CodeGenerator\Service\PropertyMapper\ClassPropertyMapper;
 use JtcSolutions\CodeGenerator\Service\PropertyMapper\PropertyTypeDetector\DateTimePropertyTypeDetector;
@@ -26,6 +29,7 @@ use JtcSolutions\CodeGenerator\Service\PropertyMapper\PropertyTypeDetector\UuidI
 use JtcSolutions\CodeGenerator\Service\Provider\ContextProvider;
 use JtcSolutions\CodeGenerator\Service\Writer\Controller\ControllerClassWriter;
 use JtcSolutions\CodeGenerator\Service\Writer\Dto\DtoClassWriter;
+use JtcSolutions\CodeGenerator\Service\Writer\Repository\RepositoryClassWriter;
 use JtcSolutions\CodeGenerator\Service\Writer\Service\ServiceClassWriter;
 use JtcSolutions\CodeGenerator\Tests\Functional\TestEntityClass\EntityId;
 use JtcSolutions\CodeGenerator\Tests\Functional\TestEntityClass\EntityInterface;
@@ -47,6 +51,8 @@ abstract class BaseFunctionalTest extends TestCase
 
     protected const string SERVICE_NAMESPACE_TEMPLATE = 'App\{domain}\Domain\Service';
 
+    protected const string REPOSITORY_NAMESPACE_TEMPLATE = 'App\{domain}\Infrastructure';
+
     protected const string PROJECT_DIR = 'output';
 
     private ?ContextProvider $contextProvider = null;
@@ -66,7 +72,7 @@ abstract class BaseFunctionalTest extends TestCase
             classWriter: $this->createDtoClassWriter(),
             configurator: $this->createDtoConfigurator(),
             codeRenderer: $this->createDtoCodeRenderer(),
-            suffix: 'RequestBody'
+            suffix: 'RequestBody',
         );
     }
 
@@ -84,6 +90,7 @@ abstract class BaseFunctionalTest extends TestCase
                 controllerNamespaceTemplate: static::CONTROLLER_NAMESPACE_TEMPLATE,
                 dtoNamespaceTemplate: static::DTO_NAMESPACE_TEMPLATE,
                 serviceNamespaceTemplate: static::SERVICE_NAMESPACE_TEMPLATE,
+                repositoryNamespaceTemplate: static::REPOSITORY_NAMESPACE_TEMPLATE,
                 projectDir: static::PROJECT_DIR,
                 projectBaseNamespace: 'App',
                 errorResponseClass: Throwable::class,
@@ -249,5 +256,29 @@ abstract class BaseFunctionalTest extends TestCase
             contextProvider: $this->createContextProvider(),
             defaultParent: BaseEntityCRUDController::class,
         );
+    }
+
+    protected function createRepositoryGenerator(): RepositoryGenerator
+    {
+        return new RepositoryGenerator(
+            classWriter: $this->createRepositoryClassWriter(),
+            configurator: $this->createRepositoryConfigurator(),
+            codeRenderer: $this->createRepositoryCodeRenderer(),
+        );
+    }
+
+    protected function createRepositoryClassWriter(): RepositoryClassWriter
+    {
+        return new RepositoryClassWriter($this->createContextProvider());
+    }
+
+    protected function createRepositoryCodeRenderer(): RepositoryCodeRenderer
+    {
+        return new RepositoryCodeRenderer($this->createContextProvider());
+    }
+
+    protected function createRepositoryConfigurator(): RepositoryConfigurator
+    {
+        return new RepositoryConfigurator($this->createContextProvider());
     }
 }

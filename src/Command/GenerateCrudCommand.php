@@ -4,6 +4,7 @@ namespace JtcSolutions\CodeGenerator\Command;
 
 use JtcSolutions\CodeGenerator\Service\Generator\Controller\BaseControllerGenerator;
 use JtcSolutions\CodeGenerator\Service\Generator\Dto\DtoGenerator;
+use JtcSolutions\CodeGenerator\Service\Generator\Repository\RepositoryGenerator;
 use JtcSolutions\CodeGenerator\Service\Generator\Service\ServiceGenerator;
 use JtcSolutions\CodeGenerator\Service\Provider\ContextProvider;
 use JtcSolutions\Core\Entity\IEntity;
@@ -27,6 +28,7 @@ class GenerateCrudCommand extends Command
         private readonly ServiceGenerator $serviceGenerator,
         private readonly ContextProvider $contextProvider,
         private readonly DtoGenerator $dtoGenerator,
+        private readonly RepositoryGenerator $repositoryGenerator,
     ) {
         parent::__construct();
     }
@@ -55,6 +57,9 @@ class GenerateCrudCommand extends Command
 
         $dtoFullyQualifiedClassName = $this->dtoGenerator->generate($targetClass);
         $this->contextProvider->dtoFullyQualifiedClassName = $dtoFullyQualifiedClassName;
+
+        $repositoryFullyQualifiedClassName = $this->repositoryGenerator->generate($targetClass);
+        $this->contextProvider->repositoryFullyQualifiedClassName = $repositoryFullyQualifiedClassName;
 
         if ($withService === true) {
             $serviceFullyQualifiedClassName = $this->serviceGenerator->generate($targetClass);

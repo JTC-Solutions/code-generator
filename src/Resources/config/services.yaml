@@ -42,6 +42,9 @@ services:
   JtcSolutions\CodeGenerator\Service\Generator\Service\ServiceGenerator:
     public: true
 
+  JtcSolutions\CodeGenerator\Service\Generator\Repository\RepositoryGenerator:
+    public: true
+
   ## Configurators
 
   JtcSolutions\CodeGenerator\Service\Configurator\Controller\CreateControllerConfigurator:
@@ -80,6 +83,9 @@ services:
     arguments:
       $ignoredProperties: '%jtc_solutions_code_generator.global.ignored_properties%'
 
+  JtcSolutions\CodeGenerator\Service\Configurator\Repository\RepositoryConfigurator:
+    public: true
+
   ## Renderers
 
   JtcSolutions\CodeGenerator\Service\CodeRenderer\Controller\ControllerCodeRenderer:
@@ -91,6 +97,9 @@ services:
   JtcSolutions\CodeGenerator\Service\CodeRenderer\Service\ServiceCodeRenderer:
     public: true
 
+  JtcSolutions\CodeGenerator\Service\CodeRenderer\Repository\RepositoryCodeRenderer:
+    public: true
+
   ## Writer
 
   JtcSolutions\CodeGenerator\Service\Writer\Controller\ControllerClassWriter:
@@ -100,6 +109,9 @@ services:
     public: true
 
   JtcSolutions\CodeGenerator\Service\Writer\Service\ServiceClassWriter:
+    public: true
+
+  JtcSolutions\CodeGenerator\Service\Writer\Repository\RepositoryClassWriter:
     public: true
 
   ## Commands

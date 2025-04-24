@@ -69,6 +69,7 @@ class ContextProviderTest extends TestCase
             controllerNamespaceTemplate: self::CONTROLLER_TPL,
             dtoNamespaceTemplate: self::DTO_TPL,
             serviceNamespaceTemplate: self::SERVICE_TPL,
+            repositoryNamespaceTemplate: 'App\Repository',
             projectDir: self::PROJECT_DIR,
             projectBaseNamespace: self::BASE_NAMESPACE,
             errorResponseClass: self::ERROR_CLASS,

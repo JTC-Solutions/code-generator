@@ -16,6 +16,7 @@ class ContextProvider
      * @param string $controllerNamespaceTemplate Template for controller namespaces (e.g., 'App\UI\{domain}\{entity}Controller').
      * @param string $dtoNamespaceTemplate Template for DTO namespaces (e.g., 'App\Application\Dto\{domain}\{entity}').
      * @param string $serviceNamespaceTemplate Template for service namespaces (e.g., 'App\Application\Service\{domain}\{entity}Service').
+     * @param string $repositoryNamespaceTemplate Template for repository namespaces (e.g., 'App\Application\Repository\{domain}\{entity}Repository').
      * @param string $projectDir The root directory of the source code (e.g., '%kernel.project_dir%/src').
      * @param string $projectBaseNamespace The base namespace corresponding to the project directory (e.g., 'App').
      * @param class-string $errorResponseClass FQCN of the standard error response DTO.
@@ -29,6 +30,7 @@ class ContextProvider
         private readonly string $controllerNamespaceTemplate,
         private readonly string $dtoNamespaceTemplate,
         private readonly string $serviceNamespaceTemplate,
+        private readonly string $repositoryNamespaceTemplate,
         public readonly string $projectDir,
         public readonly string $projectBaseNamespace,
         public readonly string $errorResponseClass,
@@ -38,6 +40,7 @@ class ContextProvider
         public array $dtoInterfaces = [],
         public ?string $dtoFullyQualifiedClassName = null,
         public ?string $serviceFullyQualifiedClassName = null,
+        public ?string $repositoryFullyQualifiedClassName = null,
     ) {
     }
 
@@ -53,6 +56,23 @@ class ContextProvider
     {
         return FQCNHelper::convertNamespaceToFilepath(
             $this->replaceVariables($this->serviceNamespaceTemplate, $classFullyQualifiedClassName),
+            $this->projectBaseNamespace,
+            $this->projectDir,
+        );
+    }
+
+    /**
+     * Calculates the absolute filesystem path for a Repository based on the entity FQCN and configured templates.
+     *
+     * @param class-string $classFullyQualifiedClassName The FQCN of the related entity.
+     *
+     * @return string The absolute path to the directory where the Repository should be placed
+     * @throws Exception If namespace/path conversion or variable replacement fails.
+     */
+    public function getRepositoryPath(string $classFullyQualifiedClassName): string
+    {
+        return FQCNHelper::convertNamespaceToFilepath(
+            $this->replaceVariables($this->repositoryNamespaceTemplate, $classFullyQualifiedClassName),
             $this->projectBaseNamespace,
             $this->projectDir,
         );
@@ -100,6 +120,18 @@ class ContextProvider
     public function getDtoNamespace(string $classFullyQualifiedClassName): string
     {
         return $this->replaceVariables($this->dtoNamespaceTemplate, $classFullyQualifiedClassName);
+    }
+
+    /**
+     * Calculates the target namespace for a Repository based on the entity FQCN and configured template.
+     *
+     * @param class-string $classFullyQualifiedClassName The FQCN of the related entity.
+     * @return string The calculated Repository namespace.
+     * @throws Exception If variable replacement fails.
+     */
+    public function getRepositoryNamespace(string $classFullyQualifiedClassName): string
+    {
+        return $this->replaceVariables($this->repositoryNamespaceTemplate, $classFullyQualifiedClassName);
     }
 
     /**
