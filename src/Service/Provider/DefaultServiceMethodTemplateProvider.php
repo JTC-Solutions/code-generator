@@ -221,7 +221,7 @@ PHP;
 
         $code = <<<PHP
         if (\$id instanceof {$className}) {
-            \$this->entityManager->remove(\${$classVariableName});
+            \$this->entityManager->remove(\$id);
             return;
         }
 
