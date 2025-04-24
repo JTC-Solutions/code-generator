@@ -8,6 +8,7 @@ use JtcSolutions\CodeGenerator\Service\Generator\Repository\RepositoryGenerator;
 use JtcSolutions\CodeGenerator\Service\Generator\Service\ServiceGenerator;
 use JtcSolutions\CodeGenerator\Service\Provider\ContextProvider;
 use JtcSolutions\Core\Entity\IEntity;
+use JtcSolutions\Helpers\Helper\FQCNHelper;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -69,7 +70,7 @@ class GenerateCrudCommand extends Command
 
         foreach ($this->controllerGenerators as $controllerGenerator) {
             $controllerGenerator->generate($targetClass);
-            $io->success(sprintf('Controller Generator %s ran successfully.', $controllerGenerator::class));
+            $io->success(sprintf('Controller Generator %s ran successfully.', FQCNHelper::transformFQCNToShortClassName($controllerGenerator::class)));
         }
 
         return Command::SUCCESS;
