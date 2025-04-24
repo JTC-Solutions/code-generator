@@ -27,6 +27,7 @@ class CompleteBundleTest extends BaseFunctionalTest
             ],
             serviceGenerator: $this->createServiceGenerator(),
             contextProvider: $this->createContextProvider(),
+            dtoGenerator: $this->createDtoGenerator(),
         )]);
         $command = $app->find('jtc-solutions:generate-crud');
         $commandTester = new CommandTester($command);

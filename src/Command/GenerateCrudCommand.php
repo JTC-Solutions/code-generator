@@ -3,6 +3,7 @@
 namespace JtcSolutions\CodeGenerator\Command;
 
 use JtcSolutions\CodeGenerator\Service\Generator\Controller\BaseControllerGenerator;
+use JtcSolutions\CodeGenerator\Service\Generator\Dto\DtoGenerator;
 use JtcSolutions\CodeGenerator\Service\Generator\Service\ServiceGenerator;
 use JtcSolutions\CodeGenerator\Service\Provider\ContextProvider;
 use JtcSolutions\Core\Entity\IEntity;
@@ -25,6 +26,7 @@ class GenerateCrudCommand extends Command
         private readonly iterable $controllerGenerators,
         private readonly ServiceGenerator $serviceGenerator,
         private readonly ContextProvider $contextProvider,
+        private readonly DtoGenerator $dtoGenerator,
     ) {
         parent::__construct();
     }
@@ -50,6 +52,9 @@ class GenerateCrudCommand extends Command
         }
 
         $io = new SymfonyStyle($input, $output);
+
+        $dtoFullyQualifiedClassName = $this->dtoGenerator->generate($targetClass);
+        $this->contextProvider->dtoFullyQualifiedClassName = $dtoFullyQualifiedClassName;
 
         if ($withService === true) {
             $serviceFullyQualifiedClassName = $this->serviceGenerator->generate($targetClass);

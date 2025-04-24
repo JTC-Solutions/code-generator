@@ -66,6 +66,7 @@ abstract class BaseFunctionalTest extends TestCase
             classWriter: $this->createDtoClassWriter(),
             configurator: $this->createDtoConfigurator(),
             codeRenderer: $this->createDtoCodeRenderer(),
+            suffix: 'RequestBody'
         );
     }
 
@@ -166,13 +167,10 @@ abstract class BaseFunctionalTest extends TestCase
     protected function createCreateControllerGenerator(): CreateControllerGenerator
     {
         return new CreateControllerGenerator(
-            dtoGenerator: $this->createDtoGenerator(),
             contextProvider: $this->createContextProvider(),
             configurator: $this->createCreateControllerConfigurator(),
             classWriter: $this->createControllerClassWriter(),
             codeRenderer: $this->createControllerCodeRenderer(),
-            dtoNamePrefix: 'Create',
-            dtoNameSuffix: 'RequestBody',
         );
     }
 
@@ -238,13 +236,10 @@ abstract class BaseFunctionalTest extends TestCase
     protected function createUpdateControllerGenerator(): UpdateControllerGenerator
     {
         return new UpdateControllerGenerator(
-            dtoGenerator: $this->createDtoGenerator(),
             contextProvider: $this->createContextProvider(),
             configurator: $this->createUpdateControllerConfigurator(),
             classWriter: $this->createControllerClassWriter(),
             codeRenderer: $this->createControllerCodeRenderer(),
-            dtoNamePrefix: 'Update',
-            dtoNameSuffix: 'RequestBody',
         );
     }
 

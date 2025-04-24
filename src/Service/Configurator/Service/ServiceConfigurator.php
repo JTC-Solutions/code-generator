@@ -204,7 +204,6 @@ class ServiceConfigurator
         string $classFullyQualifiedClassName,
         array $properties,
     ): void {
-        $requestDtoInterface = FQCNHelper::transformFQCNToShortClassName(IEntityRequestBody::class);
         $entityInterface = FQCNHelper::transformFQCNToShortClassName(IEntity::class);
 
         $mapDataAndCallCreateMethod = new MethodConfigurationBuilder(
@@ -237,7 +236,6 @@ class ServiceConfigurator
         string $classFullyQualifiedClassName,
         array $properties,
     ): void {
-        $requestDtoInterface = FQCNHelper::transformFQCNToShortClassName(IEntityRequestBody::class);
         $entityInterface = FQCNHelper::transformFQCNToShortClassName(IEntity::class);
         $uuidInterface = FQCNHelper::transformFQCNToShortClassName(UuidInterface::class);
 
