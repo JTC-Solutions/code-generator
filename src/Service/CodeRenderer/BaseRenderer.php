@@ -179,30 +179,24 @@ abstract class BaseRenderer
     protected function addMethodArguments(MethodConfiguration $configuration): void
     {
         $argStrings = [];
-        $totalArgs = count($configuration->arguments); // Keep track of total for trailing comma
-        $currentArgIndex = 0; // Keep track of current index
+        $totalArgs = count($configuration->arguments);
+        $currentArgIndex = 0;
 
         foreach ($configuration->arguments as $arg) {
             $currentArgIndex++;
-            $argumentLine = ''; // Start building the line(s) for this argument
+            $argumentLine = '';
 
-            // --- START Minimal Change ---
-            // Check if the attribute should be rendered BEFORE the argument line
             if ($arg->mapRequestPayloadAttribute) {
-                // Add the attribute, indented, with a newline
                 $argumentLine .= "        #[MapRequestPayload]\n";
             }
-            // --- END Minimal Change ---
 
-            // Append the original argument definition line, indented
-            $argumentLine .= "        {$arg->argumentType} \${$arg->argumentName}";
+            $argumentLine .= "        {$arg->getType()} \${$arg->argumentName}";
 
-            // Add comma if it's not the last argument
             if ($currentArgIndex < $totalArgs) {
                 $argumentLine .= ',';
             }
 
-            $argStrings[] = $argumentLine; // Add the potentially multi-line string to the array
+            $argStrings[] = $argumentLine;
         }
 
 

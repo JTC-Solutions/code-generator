@@ -28,6 +28,7 @@ readonly class MethodArgumentConfiguration implements IConfiguration
         public bool $mapRequestPayloadAttribute = false,
         public ?string $propertyType = null, // public, private, protected, null to not promote
         public ?bool $readonly = null, // if the property should be readonly or not
+        public ?bool $nullable = false,
     ) {
     }
 
@@ -41,5 +42,15 @@ readonly class MethodArgumentConfiguration implements IConfiguration
     public function getIdentifier(): string
     {
         return self::class . '_' . $this->argumentName;
+    }
+
+    public function getType(): string
+    {
+        // in mixed we cannot return '?' at the start
+        if ($this->nullable === false || $this->argumentType === 'mixed') {
+            return $this->argumentType;
+        }
+
+        return '?' . $this->argumentType;
     }
 }

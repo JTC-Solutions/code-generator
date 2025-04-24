@@ -9,6 +9,7 @@ readonly class DtoPropertyConfiguration implements IConfiguration
     public function __construct(
         public string $propertyName,
         public string $propertyType,
+        public bool $nullable = false,
     ) {
     }
 

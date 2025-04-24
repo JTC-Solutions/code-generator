@@ -52,7 +52,12 @@ class DtoCodeRenderer extends BaseRenderer implements ICodeRenderer
         $this->code .= "    public function __construct(\n";
 
         foreach ($configuration->getProperties() as $property) {
-            $this->code .= sprintf("        public %s \$%s,\n", $property->propertyType, $property->propertyName);
+            $type = $property->propertyType;
+            if ($property->nullable === true) {
+                $type = '?' . $type;
+            }
+
+            $this->code .= sprintf("        public %s \$%s,\n", $type, $property->propertyName);
         }
 
         $this->code .= "    ) {}\n";

@@ -287,6 +287,7 @@ class ServiceConfigurator
                 $arguments[] = new MethodArgumentConfiguration(
                     argumentName: $property->name,
                     argumentType: $property->type,
+                    nullable: $property->nullable,
                 );
             }
         }

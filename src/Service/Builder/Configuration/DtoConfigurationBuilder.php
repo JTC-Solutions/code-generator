@@ -80,7 +80,7 @@ class DtoConfigurationBuilder extends BaseClassConfigurationBuilder
      */
     public function addProperty(MappedProperty $property, ?int $order = null): self
     {
-        $propertyConfiguration = new DtoPropertyConfiguration($property->name, $property->type);
+        $propertyConfiguration = new DtoPropertyConfiguration($property->name, $property->type, $property->nullable);
         if ($property->useStatement !== null) {
             $this->addUseStatement($property->useStatement);
         }
