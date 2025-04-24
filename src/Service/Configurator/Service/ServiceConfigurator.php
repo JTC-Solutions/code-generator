@@ -20,6 +20,7 @@ use JtcSolutions\Core\Service\BaseEntityService;
 use JtcSolutions\Core\Service\IEntityService;
 use JtcSolutions\Helpers\Helper\FQCNHelper;
 use JtcSolutions\Helpers\Helper\StringUtils;
+use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use ReflectionException;
 
@@ -70,6 +71,9 @@ class ServiceConfigurator
         $builder->addUseStatement($classFullyQualifiedClassName);
         $builder->addUseStatement(IEntity::class);
         $builder->addUseStatement(UuidInterface::class);
+        $builder->addUseStatement(Uuid::class);
+        $builder->addUseStatement(IEntityRequestBody::class);
+        $builder->addUseStatement(EntityManagerInterface::class);
 
         $arguments = $this->getMethodArguments($classFullyQualifiedClassName);
 
