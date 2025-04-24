@@ -240,9 +240,6 @@ class ServiceConfigurator
         $requestDtoInterface = FQCNHelper::transformFQCNToShortClassName(IEntityRequestBody::class);
         $entityInterface = FQCNHelper::transformFQCNToShortClassName(IEntity::class);
         $uuidInterface = FQCNHelper::transformFQCNToShortClassName(UuidInterface::class);
-        $className = FQCNHelper::transformFQCNToShortClassName($classFullyQualifiedClassName);
-        $classVariableName = StringUtils::firstToLowercase($className);
-        $classIdVariableName = $classVariableName . 'Id';
 
         $mapDataAndCallUpdateMethod = new MethodConfigurationBuilder(
             name: 'mapDataAndCallUpdate',
@@ -252,7 +249,7 @@ class ServiceConfigurator
 
         $mapDataAndCallUpdateMethod->addArgument(
             new MethodArgumentConfiguration(
-                argumentName: $classIdVariableName,
+                argumentName: 'entityId',
                 argumentType: sprintf('%s|%s', $uuidInterface, $entityInterface),
             ),
         );

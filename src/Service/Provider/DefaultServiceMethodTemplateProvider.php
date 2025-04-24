@@ -162,7 +162,6 @@ PHP;
     ): string {
         $className = FQCNHelper::transformFQCNToShortClassName($classFullyQualifiedClassName);
         $classVariableName = StringUtils::firstToLowercase($className);
-        $classIdVariableName = $classVariableName . 'Id';
 
         $arguments = [];
 
@@ -186,10 +185,10 @@ PHP;
         // 4. Construct the full method body including the if/else block and the call
         // Note the use of \$ for escaping variable names within the HEREDOC
         $code = <<<PHP
-        if (\${$classIdVariableName} instanceof UuidInterface) {
-            \${$classVariableName} = \$this->ensureEntityExists(['id' => \${$classIdVariableName}]);
+        if (\${'entityId'} instanceof UuidInterface) {
+            \${$classVariableName} = \$this->ensureEntityExists(['id' => \${'entityId'}]);
         } else {
-            \${$classVariableName} = \${$classIdVariableName};
+            \${$classVariableName} = \${'entityId'};
         }
 
         return \$this->update(
