@@ -216,7 +216,7 @@ class ServiceConfigurator
         $mapDataAndCallCreateMethod->addArgument(
             new MethodArgumentConfiguration(
                 argumentName: 'requestBody',
-                argumentType: $requestDtoInterface,
+                argumentType: $this->contextProvider->dtoFullyQualifiedClassName,
             ),
         );
 
@@ -257,7 +257,7 @@ class ServiceConfigurator
         $mapDataAndCallUpdateMethod->addArgument(
             new MethodArgumentConfiguration(
                 argumentName: 'requestBody',
-                argumentType: $requestDtoInterface,
+                argumentType: $this->contextProvider->dtoFullyQualifiedClassName,
             ),
         );
 

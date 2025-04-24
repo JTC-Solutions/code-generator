@@ -185,10 +185,10 @@ PHP;
         // 4. Construct the full method body including the if/else block and the call
         // Note the use of \$ for escaping variable names within the HEREDOC
         $code = <<<PHP
-        if (\${'entityId'} instanceof UuidInterface) {
-            \${$classVariableName} = \$this->ensureEntityExists(['id' => \${'entityId'}]);
+        if (\$entityId instanceof UuidInterface) {
+            \${$classVariableName} = \$this->ensureEntityExists(['id' => \$entityId]);
         } else {
-            \${$classVariableName} = \${'entityId'};
+            \${$classVariableName} = \$entityId;
         }
 
         return \$this->update(
