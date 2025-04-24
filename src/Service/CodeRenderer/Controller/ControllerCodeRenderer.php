@@ -38,10 +38,9 @@ class ControllerCodeRenderer extends BaseControllerRenderer implements IControll
             return $this->code;
         }
 
-        $this->addMethodAttributes($configuration);
-        $this->addMethodName($configuration);
-        $this->addMethodArguments($configuration);
-        $this->addMethodBody($configuration);
+        $this->addMethod($configuration->methodConfiguration);
+
+        $this->code .= "}\n";
 
         return $this->code;
     }

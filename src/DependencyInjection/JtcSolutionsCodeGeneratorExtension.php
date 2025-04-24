@@ -34,6 +34,11 @@ class JtcSolutionsCodeGeneratorExtension extends Extension
         // open api
         $container->setParameter('jtc_solutions_code_generator.global.error_response_class', $config['global']['openApi']['errorResponseClass']);
         $container->setParameter('jtc_solutions_code_generator.global.pagination_class', $config['global']['openApi']['paginationClass']);
+
+        foreach ($config['controllers'] as $controllerType => $controllerConfig) {
+            $parentParamName = sprintf('jtc_solutions_code_generator.controllers.%s.parent', $controllerType);
+            $container->setParameter($parentParamName, $controllerConfig['parent']);
+        }
     }
 
     public function getAlias(): string

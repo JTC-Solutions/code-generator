@@ -37,12 +37,13 @@ class DtoCodeRenderer extends BaseRenderer implements ICodeRenderer
 
         $this->addConstructor($configuration);
 
+        $this->code .= "}\n";
+
         return $this->code;
     }
 
     /**
      * Adds the constructor with promoted properties based on the DTO configuration.
-     * Also adds the final closing brace for the class.
      *
      * @param DtoConfiguration $configuration The DTO configuration containing properties.
      */
@@ -55,6 +56,5 @@ class DtoCodeRenderer extends BaseRenderer implements ICodeRenderer
         }
 
         $this->code .= "    ) {}\n";
-        $this->code .= "}\n";
     }
 }

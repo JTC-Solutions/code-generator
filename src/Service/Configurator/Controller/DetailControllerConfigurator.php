@@ -46,15 +46,17 @@ class DetailControllerConfigurator extends BaseControllerConfigurator implements
      * @param string $controllerNameTemplate Template for the controller class name.
      * @param bool $callParentConstructor Whether to call parent::__construct in the generated controller.
      * @param string $argumentName The name for the entity argument injected via parameter conversion.
+     * @param class-string $defaultParent class of configured parent class.
      */
     public function __construct(
         ContextProvider $contextProvider,
+        string $defaultParent,
         string $methodName = self::DEFAULT_METHOD_NAME,
         string $controllerNameTemplate = self::DEFAULT_CONTROLLER_NAME_TEMPLATE,
         bool $callParentConstructor = false,
         protected readonly string $argumentName = self::DEFAULT_ARGUMENT_NAME,
     ) {
-        parent::__construct($contextProvider, $methodName, $controllerNameTemplate, $callParentConstructor);
+        parent::__construct($contextProvider, $methodName, $controllerNameTemplate, $callParentConstructor, $defaultParent);
     }
 
     /**

@@ -39,14 +39,16 @@ class ListControllerConfigurator extends BaseControllerConfigurator implements I
      * @param string $methodName The name for the 'list' method.
      * @param string $controllerNameTemplate Template for the controller class name.
      * @param bool $callParentConstructor Whether to call parent::__construct in the generated controller.
+     * @param class-string $defaultParent class of configured parent class.
      */
     public function __construct(
         ContextProvider $contextProvider,
+        string $defaultParent,
         string $methodName = self::DEFAULT_METHOD_NAME,
         string $controllerNameTemplate = self::DEFAULT_CONTROLLER_NAME_TEMPLATE,
         bool $callParentConstructor = false,
     ) {
-        parent::__construct($contextProvider, $methodName, $controllerNameTemplate, $callParentConstructor);
+        parent::__construct($contextProvider, $methodName, $controllerNameTemplate, $callParentConstructor, $defaultParent);
     }
 
     /**

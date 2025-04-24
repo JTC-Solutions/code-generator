@@ -8,6 +8,7 @@ use JtcSolutions\CodeGenerator\Dto\Configuration\Controller\Method\MethodConfigu
 use JtcSolutions\CodeGenerator\Exception\ConfigurationException;
 
 /**
+ * @extends BaseConfigurationBuilder<MethodConfiguration>
  * Builder for creating MethodConfiguration objects.
  * Provides methods to define the method's name, return type, body, attributes, and arguments.
  */

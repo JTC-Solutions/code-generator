@@ -2,6 +2,7 @@
 
 namespace JtcSolutions\CodeGenerator\Service\CodeRenderer;
 
+use JtcSolutions\CodeGenerator\Dto\Configuration\Controller\Method\MethodConfiguration;
 use JtcSolutions\CodeGenerator\Dto\Configuration\IRenderableConfiguration;
 use JtcSolutions\CodeGenerator\Dto\Configuration\UseStatementConfiguration;
 
@@ -23,7 +24,15 @@ abstract class BaseRenderer
      * @param IRenderableConfiguration $configuration The configuration object to render.
      * @return string The fully rendered PHP code string.
      */
-    abstract protected function renderCode(IRenderableConfiguration $configuration): string;
+    abstract public function renderCode(IRenderableConfiguration $configuration): string;
+
+    public function addMethod(MethodConfiguration $methodConfiguration): void
+    {
+        $this->addMethodAttributes($methodConfiguration);
+        $this->addMethodName($methodConfiguration);
+        $this->addMethodArguments($methodConfiguration);
+        $this->addMethodBody($methodConfiguration);
+    }
 
     /**
      * Adds the namespace declaration to the code string.
@@ -133,5 +142,92 @@ abstract class BaseRenderer
         if ($configuration->getInterfaces() !== []) {
             $this->code .= ' implements ' . implode(', ', $configuration->getInterfaces());
         }
+    }
+
+    /**
+     * Adds method-level attributes (e.g., #[Route]) to the code string.
+     *
+     * @param MethodConfiguration $configuration Configuration potentially containing method attributes.
+     */
+    protected function addMethodAttributes(MethodConfiguration $configuration): void
+    {
+        if ($configuration->attributes === []) {
+            return;
+        }
+
+        foreach ($configuration->attributes as $attribute) {
+            $this->code .= '    ' . $attribute->render() . "\n";
+        }
+    }
+
+    /**
+     * Adds the method signature start (e.g., "public function myMethod(").
+     *
+     * @param MethodConfiguration $configuration Configuration containing the method name.
+     */
+    protected function addMethodName(MethodConfiguration $configuration): void
+    {
+        $this->code .= "    public function {$configuration->name}(\n";
+    }
+
+    /**
+     * Adds the method arguments and the closing parenthesis of the signature, plus the return type.
+     * Example: (Request $request, UuidInterface $id): JsonResponse {
+     *
+     * @param MethodConfiguration $configuration Configuration containing method arguments and return type.
+     */
+    protected function addMethodArguments(MethodConfiguration $configuration): void
+    {
+        $argStrings = [];
+        $totalArgs = count($configuration->arguments); // Keep track of total for trailing comma
+        $currentArgIndex = 0; // Keep track of current index
+
+        foreach ($configuration->arguments as $arg) {
+            $currentArgIndex++;
+            $argumentLine = ''; // Start building the line(s) for this argument
+
+            // --- START Minimal Change ---
+            // Check if the attribute should be rendered BEFORE the argument line
+            if ($arg->mapRequestPayloadAttribute) {
+                // Add the attribute, indented, with a newline
+                $argumentLine .= "        #[MapRequestPayload]\n";
+            }
+            // --- END Minimal Change ---
+
+            // Append the original argument definition line, indented
+            $argumentLine .= "        {$arg->argumentType} \${$arg->argumentName}";
+
+            // Add comma if it's not the last argument
+            if ($currentArgIndex < $totalArgs) {
+                $argumentLine .= ',';
+            }
+
+            $argStrings[] = $argumentLine; // Add the potentially multi-line string to the array
+        }
+
+
+        if ($argStrings !== []) {
+            // Join the argument strings (which might now contain newlines)
+            $this->code .= implode("\n", $argStrings) . "\n";
+        }
+
+        // Close the argument list and add return type
+        $this->code .= "    ): {$configuration->returnType} {\n";
+    }
+
+    /**
+     * Adds the method body content, correctly indented, and the closing brace for the method and class.
+     *
+     * @param MethodConfiguration $configuration Configuration containing the method body.
+     */
+    protected function addMethodBody(MethodConfiguration $configuration): void
+    {
+        $methodLine = explode("\n", $configuration->methodBody);
+
+        foreach ($methodLine as $line) {
+            $this->code .= "        {$line}\n";
+        }
+
+        $this->code .= "    }\n";
     }
 }

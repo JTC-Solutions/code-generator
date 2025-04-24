@@ -8,7 +8,6 @@ use JtcSolutions\CodeGenerator\Exception\ConfigurationException;
 use JtcSolutions\CodeGenerator\Service\Builder\Configuration\ControllerConfigurationBuilder;
 use JtcSolutions\CodeGenerator\Service\Provider\ContextProvider;
 use JtcSolutions\Helpers\Helper\FQCNHelper;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -22,12 +21,14 @@ abstract class BaseControllerConfigurator
      * @param string $methodName The name of the primary method in the generated controller (e.g., 'create', 'list').
      * @param string $controllerNameTemplate A template string (using sprintf) for the controller class name (e.g., 'Create%sController').
      * @param bool $callParentConstructor Whether the generated controller's constructor should call parent::__construct().
+     * @param class-string $defaultExtendedClass The default class to extend
      */
     public function __construct(
         protected readonly ContextProvider $contextProvider,
         protected readonly string $methodName,
         protected readonly string $controllerNameTemplate,
         protected readonly bool $callParentConstructor,
+        protected readonly string $defaultExtendedClass,
     ) {
     }
 
@@ -53,7 +54,7 @@ abstract class BaseControllerConfigurator
         );
 
         if ($this->contextProvider->getExtendedClasses() === []) {
-            $builder->addExtendedClass(AbstractController::class);
+            $builder->addExtendedClass($this->defaultExtendedClass);
         } else {
             foreach ($this->contextProvider->getExtendedClasses() as $extendedClass) {
                 $builder->addExtendedClass($extendedClass);
@@ -76,12 +77,17 @@ abstract class BaseControllerConfigurator
         ControllerConfigurationBuilder $builder,
         string $classFullyQualifiedClassName,
     ): void {
+        /** @phpstan-ignore-next-line */
         $builder->addUseStatement("OpenApi\Attributes", 'OA');
         $builder->addUseStatement(Response::class);
         $builder->addUseStatement($this->contextProvider->getErrorResponseClass());
 
         if ($this->contextProvider->dtoFullyQualifiedClassName !== null) {
             $builder->addUseStatement($this->contextProvider->dtoFullyQualifiedClassName);
+        }
+
+        if ($this->contextProvider->serviceFullyQualifiedClassName !== null) {
+            $builder->addUseStatement($this->contextProvider->serviceFullyQualifiedClassName);
         }
     }
 

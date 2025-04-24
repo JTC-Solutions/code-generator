@@ -16,6 +16,7 @@ use JtcSolutions\Helpers\Helper\FQCNHelper;
 use JtcSolutions\Helpers\Helper\StringUtils;
 use Nelmio\ApiDocBundle\Attribute\Model;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Attribute\Route;
 
 /**
@@ -45,15 +46,17 @@ class CreateControllerConfigurator extends BaseControllerConfigurator implements
      * @param string $controllerNameTemplate Template for the controller class name.
      * @param bool $callParentConstructor Whether to call parent::__construct in the generated controller.
      * @param string $argumentName The name for the DTO argument in the method signature.
+     * @param class-string $defaultParent class of configured parent class.
      */
     public function __construct(
         ContextProvider $contextProvider,
+        string $defaultParent,
         string $methodName = self::DEFAULT_METHOD_NAME,
         string $controllerNameTemplate = self::DEFAULT_CONTROLLER_NAME_TEMPLATE,
-        bool $callParentConstructor = false,
+        bool $callParentConstructor = true,
         protected readonly string $argumentName = self::DEFAULT_ARGUMENT_NAME,
     ) {
-        parent::__construct($contextProvider, $methodName, $controllerNameTemplate, $callParentConstructor);
+        parent::__construct($contextProvider, $methodName, $controllerNameTemplate, $callParentConstructor, $defaultParent);
     }
 
     /**
@@ -67,6 +70,10 @@ class CreateControllerConfigurator extends BaseControllerConfigurator implements
     public function configure(string $classFullyQualifiedClassName): ControllerConfiguration
     {
         $builder = $this->createBuilder($classFullyQualifiedClassName);
+
+        if ($this->contextProvider->serviceFullyQualifiedClassName !== null) {
+            $builder->addConstructorParam(new MethodArgumentConfiguration('service', $this->contextProvider->serviceFullyQualifiedClassName));
+        }
 
         $this->configureOpenApiDocs($builder, $classFullyQualifiedClassName);
 
@@ -95,7 +102,7 @@ class CreateControllerConfigurator extends BaseControllerConfigurator implements
         if ($this->contextProvider->dtoFullyQualifiedClassName !== null) {
             $dtoClassName = FQCNHelper::transformFQCNToShortClassName($this->contextProvider->dtoFullyQualifiedClassName);
             $methodBuilder
-                ->addArgument(new MethodArgumentConfiguration($this->argumentName, $dtoClassName));
+                ->addArgument(new MethodArgumentConfiguration($this->argumentName, $dtoClassName, true));
         }
 
         $methodBuilder
@@ -118,6 +125,7 @@ class CreateControllerConfigurator extends BaseControllerConfigurator implements
     ): void {
         parent::configureUseStatements($builder, $classFullyQualifiedClassName);
 
+        $builder->addUseStatement(MapRequestPayload::class);
         $builder->addUseStatement(JsonResponse::class);
         $builder->addUseStatement(Route::class);
 
@@ -181,9 +189,7 @@ class CreateControllerConfigurator extends BaseControllerConfigurator implements
         $lowercase = StringUtils::firstToLowercase($className);
 
         return <<<PHP
-            // TODO: Implement
-            
-            return \$this->json(\$entity, Response::HTTP_CREATED, [], ['groups' => ['{$lowercase}:detail', 'reference']]);
+            return \$this->handleCreate(\$request, ['{$lowercase}:detail', 'reference']);
         PHP;
     }
 }

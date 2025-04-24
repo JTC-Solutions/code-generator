@@ -2,11 +2,17 @@
 
 namespace JtcSolutions\CodeGenerator\Service\Generator\Controller;
 
+use Exception;
+use JtcSolutions\CodeGenerator\Exception\ConfigurationException;
+use JtcSolutions\CodeGenerator\Exception\TemplateNotValidPhpCodeException;
 use JtcSolutions\CodeGenerator\Service\CodeRenderer\Controller\ControllerCodeRenderer;
 use JtcSolutions\CodeGenerator\Service\Configurator\Controller\CreateControllerConfigurator;
 use JtcSolutions\CodeGenerator\Service\Generator\Dto\DtoGenerator;
 use JtcSolutions\CodeGenerator\Service\Provider\ContextProvider;
 use JtcSolutions\CodeGenerator\Service\Writer\Controller\ControllerClassWriter;
+use JtcSolutions\Core\Entity\IEntity;
+use ReflectionException;
+use RuntimeException;
 
 /**
  * Generates a controller responsible for creating an entity.
@@ -35,6 +41,14 @@ class CreateControllerGenerator extends BaseControllerGenerator
         parent::__construct($configurator, $classWriter, $codeRenderer);
     }
 
+    /**
+     * @param class-string<IEntity> $classFullyQualifiedClassName
+     * @throws ConfigurationException If DTO configuration fails.
+     * @throws RuntimeException If file writing fails.
+     * @throws TemplateNotValidPhpCodeException If generated DTO code is invalid PHP.
+     * @throws ReflectionException If reflection on the target class fails.
+     * @throws Exception For other general errors during generation.
+     */
     public function generate(string $classFullyQualifiedClassName): void
     {
         $dtoFullyQualifiedClassName = $this->dtoGenerator->generate($classFullyQualifiedClassName, $this->dtoNamePrefix, $this->dtoNameSuffix);
