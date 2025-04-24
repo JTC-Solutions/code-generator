@@ -23,6 +23,7 @@ class JtcSolutionsCodeGeneratorExtension extends Extension
         $container->setParameter('jtc_solutions_code_generator.global.controller_namespace_template', $config['global']['namespace']['controllerNamespaceTemplate']);
         $container->setParameter('jtc_solutions_code_generator.global.dto_namespace_template', $config['global']['namespace']['dtoNamespaceTemplate']);
         $container->setParameter('jtc_solutions_code_generator.global.service_namespace_template', $config['global']['namespace']['serviceNamespaceTemplate']);
+        $container->setParameter('jtc_solutions_code_generator.global.repository_namespace_template', $config['global']['namespace']['repositoryNamespaceTemplate']);
 
         // project setting
         $container->setParameter('jtc_solutions_code_generator.global.project_dir', $config['global']['project']['projectDir']);
