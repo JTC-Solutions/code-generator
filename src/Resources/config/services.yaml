@@ -72,12 +72,20 @@ services:
       $requestDtoInterface: '%jtc_solutions_code_generator.global.request_dto_interface%'
       $ignoredProperties: '%jtc_solutions_code_generator.global.ignored_properties%'
 
+  JtcSolutions\CodeGenerator\Service\Configurator\Service\ServiceConfigurator:
+    public: true
+    arguments:
+      $ignoredProperties: '%jtc_solutions_code_generator.global.ignored_properties%'
+
   ## Renderers
 
   JtcSolutions\CodeGenerator\Service\CodeRenderer\Controller\ControllerCodeRenderer:
     public: true
 
   JtcSolutions\CodeGenerator\Service\CodeRenderer\Dto\DtoCodeRenderer:
+    public: true
+
+  JtcSolutions\CodeGenerator\Service\CodeRenderer\Service\ServiceCodeRenderer:
     public: true
 
   ## Writer
@@ -88,11 +96,12 @@ services:
   JtcSolutions\CodeGenerator\Service\Writer\Dto\DtoClassWriter:
     public: true
 
+  JtcSolutions\CodeGenerator\Service\Writer\Service\ServiceClassWriter:
+    public: true
+
   ## Commands
   JtcSolutions\CodeGenerator\Command\GenerateCrudCommand:
     tags: ['console.command']
-    arguments:
-      $serviceGenerator: '@ServiceGenerator'
 
   ## ClassPropertyMapper
 
