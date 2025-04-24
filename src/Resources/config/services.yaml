@@ -18,32 +18,22 @@ services:
   JtcSolutions\CodeGenerator\Service\Generator\Controller\CreateControllerGenerator:
     tags: ['jtc_solutions.controller_generator']
     public: true
-    arguments:
-      $parent: '%jtc_solutions_code_generator.controllers.create.parent%'
 
   JtcSolutions\CodeGenerator\Service\Generator\Controller\DeleteControllerGenerator:
     tags: ['jtc_solutions.controller_generator']
     public: true
-    arguments:
-      $parent: '%jtc_solutions_code_generator.controllers.delete.parent%'
 
   JtcSolutions\CodeGenerator\Service\Generator\Controller\DetailControllerGenerator:
     tags: ['jtc_solutions.controller_generator']
     public: true
-    arguments:
-      $parent: '%jtc_solutions_code_generator.controllers.detail.parent%'
 
   JtcSolutions\CodeGenerator\Service\Generator\Controller\ListControllerGenerator:
     tags: ['jtc_solutions.controller_generator']
     public: true
-    arguments:
-      $parent: '%jtc_solutions_code_generator.controllers.list.parent%'
 
   JtcSolutions\CodeGenerator\Service\Generator\Controller\UpdateControllerGenerator:
     tags: ['jtc_solutions.controller_generator']
     public: true
-    arguments:
-      $parent: '%jtc_solutions_code_generator.controllers.update.parent%'
 
   JtcSolutions\CodeGenerator\Service\Generator\Dto\DtoGenerator:
     public: true
@@ -52,18 +42,28 @@ services:
 
   JtcSolutions\CodeGenerator\Service\Configurator\Controller\CreateControllerConfigurator:
     public: true
+    arguments:
+      $defaultParent: '%jtc_solutions_code_generator.controllers.create.parent'
 
   JtcSolutions\CodeGenerator\Service\Configurator\Controller\DeleteControllerConfigurator:
     public: true
+    arguments:
+      $defaultParent: '%jtc_solutions_code_generator.controllers.delete.parent'
 
   JtcSolutions\CodeGenerator\Service\Configurator\Controller\DetailControllerConfigurator:
     public: true
+    arguments:
+      $defaultParent: '%jtc_solutions_code_generator.controllers.detail.parent'
 
   JtcSolutions\CodeGenerator\Service\Configurator\Controller\ListControllerConfigurator:
     public: true
+    arguments:
+      $defaultParent: '%jtc_solutions_code_generator.controllers.list.parent'
 
   JtcSolutions\CodeGenerator\Service\Configurator\Controller\UpdateControllerConfigurator:
     public: true
+    arguments:
+      $defaultParent: '%jtc_solutions_code_generator.controllers.update.parent'
 
   JtcSolutions\CodeGenerator\Service\Configurator\Dto\DtoConfigurator:
     public: true
