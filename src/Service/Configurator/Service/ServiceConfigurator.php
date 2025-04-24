@@ -204,6 +204,7 @@ class ServiceConfigurator
         string $classFullyQualifiedClassName,
         array $properties,
     ): void {
+        $requestDtoInterface = FQCNHelper::transformFQCNToShortClassName(IEntityRequestBody::class);
         $entityInterface = FQCNHelper::transformFQCNToShortClassName(IEntity::class);
 
         $mapDataAndCallCreateMethod = new MethodConfigurationBuilder(
@@ -215,7 +216,7 @@ class ServiceConfigurator
         $mapDataAndCallCreateMethod->addArgument(
             new MethodArgumentConfiguration(
                 argumentName: 'requestBody',
-                argumentType: FQCNHelper::transformFQCNToShortClassName($this->contextProvider->dtoFullyQualifiedClassName),
+                argumentType: $requestDtoInterface,
             ),
         );
 
@@ -236,6 +237,7 @@ class ServiceConfigurator
         string $classFullyQualifiedClassName,
         array $properties,
     ): void {
+        $requestDtoInterface = FQCNHelper::transformFQCNToShortClassName(IEntityRequestBody::class);
         $entityInterface = FQCNHelper::transformFQCNToShortClassName(IEntity::class);
         $uuidInterface = FQCNHelper::transformFQCNToShortClassName(UuidInterface::class);
 
@@ -255,7 +257,7 @@ class ServiceConfigurator
         $mapDataAndCallUpdateMethod->addArgument(
             new MethodArgumentConfiguration(
                 argumentName: 'requestBody',
-                argumentType: FQCNHelper::transformFQCNToShortClassName($this->contextProvider->dtoFullyQualifiedClassName),
+                argumentType: $requestDtoInterface,
             ),
         );
 
