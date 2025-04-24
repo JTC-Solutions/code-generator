@@ -100,7 +100,7 @@ PHP;
 
         \$this->entityManager->flush();
 
-        return \${$className};
+        return \${$classVariableName};
 PHP;
         // Adjust indentation of the final return statement if the setter block was empty
         if (empty($setterCalls)) {

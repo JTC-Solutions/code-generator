@@ -172,10 +172,9 @@ class ServiceConfigurator
         string $classFullyQualifiedClassName,
         array $properties,
     ): void {
-        $className = FQCNHelper::transformFQCNToShortClassName($classFullyQualifiedClassName);
         $deleteMethod = new MethodConfigurationBuilder(
             name: 'delete',
-            returnType: $className,
+            returnType: 'void',
             body: DefaultServiceMethodTemplateProvider::provideDeleteMethodTemplate($classFullyQualifiedClassName, $properties),
         );
 
@@ -225,7 +224,7 @@ class ServiceConfigurator
     }
 
     /**
-     * Configures the 'mapDataAndUpdateCreate' method, which likely handles mapping from a request DTO before updating an entity.
+     * Configures the 'mapDataAndCallUpdate' method, which likely handles mapping from a request DTO before updating an entity.
      * Note: The method name might have a typo and should perhaps be 'mapDataAndCallUpdate'.
      *
      * @param ServiceConfigurationBuilder $builder The builder instance for the service configuration.
@@ -243,7 +242,7 @@ class ServiceConfigurator
         $uuidInterface = FQCNHelper::transformFQCNToShortClassName(UuidInterface::class);
 
         $mapDataAndCallUpdateMethod = new MethodConfigurationBuilder(
-            name: 'mapDataAndUpdateCreate',
+            name: 'mapDataAndCallUpdate',
             returnType: $entityInterface,
             body: DefaultServiceMethodTemplateProvider::provideMapDataAndCallUpdateMethodTemplate($classFullyQualifiedClassName, $properties),
         );
