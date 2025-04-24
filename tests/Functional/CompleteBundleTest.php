@@ -9,6 +9,7 @@ use JtcSolutions\CodeGenerator\Service\Generator\Controller\DetailControllerGene
 use JtcSolutions\CodeGenerator\Service\Generator\Controller\ListControllerGenerator;
 use JtcSolutions\CodeGenerator\Service\Generator\Controller\UpdateControllerGenerator;
 use JtcSolutions\CodeGenerator\Tests\Functional\TestEntityClass\TestEntityClass;
+use JtcSolutions\Helpers\Helper\FQCNHelper;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 
@@ -51,7 +52,7 @@ class CompleteBundleTest extends BaseFunctionalTest
 
         foreach ($controllerGenerators as $controllerClass => $generator) {
             self::assertStringContainsString(
-                needle: sprintf('%s ran', $generator),
+                needle: sprintf('%s ran', FQCNHelper::transformFQCNToShortClassName($generator)),
                 haystack: $output,
             );
             self::assertFileExists(sprintf(__DIR__ . '/../../output/CodeGenerator/App/Api/TestEntityClass/%s.php', $controllerClass));
