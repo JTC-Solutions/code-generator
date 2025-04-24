@@ -8,6 +8,8 @@ services:
     arguments:
       $controllerNamespaceTemplate: '%jtc_solutions_code_generator.global.controller_namespace_template%'
       $dtoNamespaceTemplate: '%jtc_solutions_code_generator.global.dto_namespace_template%'
+      $serviceNamespaceTemplate: '%jtc_solutions_code_generator.global.service_namespace_template%'
+      $repositoryNamespaceTemplate: '%jtc_solutions_code_generator.global.repository_namespace_template%'
       $projectDir: '%jtc_solutions_code_generator.global.project_dir%'
       $projectBaseNamespace: '%jtc_solutions_code_generator.global.project_base_namespace%'
       $errorResponseClass: '%jtc_solutions_code_generator.global.error_response_class%'
@@ -38,28 +40,52 @@ services:
   JtcSolutions\CodeGenerator\Service\Generator\Dto\DtoGenerator:
     public: true
 
+  JtcSolutions\CodeGenerator\Service\Generator\Service\ServiceGenerator:
+    public: true
+
+  JtcSolutions\CodeGenerator\Service\Generator\Repository\RepositoryGenerator:
+    public: true
+
   ## Configurators
 
   JtcSolutions\CodeGenerator\Service\Configurator\Controller\CreateControllerConfigurator:
     public: true
+    arguments:
+      $defaultParent: '%jtc_solutions_code_generator.controllers.create.parent%'
 
   JtcSolutions\CodeGenerator\Service\Configurator\Controller\DeleteControllerConfigurator:
     public: true
+    arguments:
+      $defaultParent: '%jtc_solutions_code_generator.controllers.delete.parent%'
 
   JtcSolutions\CodeGenerator\Service\Configurator\Controller\DetailControllerConfigurator:
     public: true
+    arguments:
+      $defaultParent: '%jtc_solutions_code_generator.controllers.detail.parent%'
 
   JtcSolutions\CodeGenerator\Service\Configurator\Controller\ListControllerConfigurator:
     public: true
+    arguments:
+      $defaultParent: '%jtc_solutions_code_generator.controllers.list.parent%'
 
   JtcSolutions\CodeGenerator\Service\Configurator\Controller\UpdateControllerConfigurator:
     public: true
+    arguments:
+      $defaultParent: '%jtc_solutions_code_generator.controllers.update.parent%'
 
   JtcSolutions\CodeGenerator\Service\Configurator\Dto\DtoConfigurator:
     public: true
     arguments:
       $requestDtoInterface: '%jtc_solutions_code_generator.global.request_dto_interface%'
       $ignoredProperties: '%jtc_solutions_code_generator.global.ignored_properties%'
+
+  JtcSolutions\CodeGenerator\Service\Configurator\Service\ServiceConfigurator:
+    public: true
+    arguments:
+      $ignoredProperties: '%jtc_solutions_code_generator.global.ignored_properties%'
+
+  JtcSolutions\CodeGenerator\Service\Configurator\Repository\RepositoryConfigurator:
+    public: true
 
   ## Renderers
 
@@ -69,12 +95,24 @@ services:
   JtcSolutions\CodeGenerator\Service\CodeRenderer\Dto\DtoCodeRenderer:
     public: true
 
+  JtcSolutions\CodeGenerator\Service\CodeRenderer\Service\ServiceCodeRenderer:
+    public: true
+
+  JtcSolutions\CodeGenerator\Service\CodeRenderer\Repository\RepositoryCodeRenderer:
+    public: true
+
   ## Writer
 
   JtcSolutions\CodeGenerator\Service\Writer\Controller\ControllerClassWriter:
     public: true
 
   JtcSolutions\CodeGenerator\Service\Writer\Dto\DtoClassWriter:
+    public: true
+
+  JtcSolutions\CodeGenerator\Service\Writer\Service\ServiceClassWriter:
+    public: true
+
+  JtcSolutions\CodeGenerator\Service\Writer\Repository\RepositoryClassWriter:
     public: true
 
   ## Commands

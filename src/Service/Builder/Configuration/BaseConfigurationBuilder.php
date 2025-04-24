@@ -3,15 +3,22 @@
 namespace JtcSolutions\CodeGenerator\Service\Builder\Configuration;
 
 use JtcSolutions\CodeGenerator\Dto\Configuration\Controller\IConfiguration;
+use JtcSolutions\CodeGenerator\Dto\Configuration\IRenderableConfiguration;
 use JtcSolutions\CodeGenerator\Exception\ConfigurationException;
 
 /**
+ * @template TConfiguration of IConfiguration|IRenderableConfiguration
  * Abstract base class for configuration builders.
  * Provides common functionality for adding items to configuration arrays,
  * handling potential duplicates and ordering.
  */
 abstract class BaseConfigurationBuilder
 {
+    /**
+     * returns the finished configuration
+     */
+    abstract public function build(): IRenderableConfiguration|IConfiguration;
+
     /**
      * Adds an item (string or IConfiguration object) to an array, handling duplicates and optional ordering.
      *

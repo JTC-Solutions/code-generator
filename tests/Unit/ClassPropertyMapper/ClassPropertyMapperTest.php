@@ -53,13 +53,13 @@ class ClassPropertyMapperTest extends TestCase
     {
         $expectedMap = [
             new MappedProperty('id', 'UuidInterface', UuidInterface::class),
-            new MappedProperty('description', 'string'),
+            new MappedProperty('description', 'string', null, true),
             new MappedProperty('createdAt', 'DateTimeImmutable', DateTimeImmutable::class),
-            new MappedProperty('updatedAt', 'DateTimeImmutable', DateTimeImmutable::class),
+            new MappedProperty('updatedAt', 'DateTimeImmutable', DateTimeImmutable::class, true),
             new MappedProperty('relatedObject', 'EntityId', EntityId::class),
             new MappedProperty('optionalRelation', 'mixed'),
             new MappedProperty('untypedVar', 'mixed'),
-            new MappedProperty('mixedVar', 'mixed'),
+            new MappedProperty('mixedVar', 'mixed', null, true),
             new MappedProperty('standardObject', 'mixed'),
             new MappedProperty('strings', 'array'),
         ];

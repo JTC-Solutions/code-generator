@@ -13,7 +13,6 @@ use JtcSolutions\CodeGenerator\Service\Factory\MethodAttributeConfigurationFacto
 use JtcSolutions\CodeGenerator\Service\Factory\OpenApiDocConfigurationFactory;
 use JtcSolutions\CodeGenerator\Service\Provider\ContextProvider;
 use JtcSolutions\Helpers\Helper\FQCNHelper;
-use JtcSolutions\Helpers\Helper\StringUtils;
 use Nelmio\ApiDocBundle\Attribute\Model;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -41,14 +40,16 @@ class DeleteControllerConfigurator extends BaseControllerConfigurator implements
      * @param string $methodName The name for the 'delete' method.
      * @param string $controllerNameTemplate Template for the controller class name.
      * @param bool $callParentConstructor Whether to call parent::__construct in the generated controller.
+     * @param class-string $defaultParent class of configured parent class.
      */
     public function __construct(
         ContextProvider $contextProvider,
+        string $defaultParent,
         string $methodName = self::DEFAULT_METHOD_NAME,
         string $controllerNameTemplate = self::DEFAULT_CONTROLLER_NAME_TEMPLATE,
-        bool $callParentConstructor = false,
+        bool $callParentConstructor = true,
     ) {
-        parent::__construct($contextProvider, $methodName, $controllerNameTemplate, $callParentConstructor);
+        parent::__construct($contextProvider, $methodName, $controllerNameTemplate, $callParentConstructor, $defaultParent);
     }
 
     /**
@@ -62,6 +63,10 @@ class DeleteControllerConfigurator extends BaseControllerConfigurator implements
     public function configure(string $classFullyQualifiedClassName): ControllerConfiguration
     {
         $builder = $this->createBuilder($classFullyQualifiedClassName);
+
+        if ($this->contextProvider->serviceFullyQualifiedClassName !== null) {
+            $builder->addConstructorParam(new MethodArgumentConfiguration('service', $this->contextProvider->serviceFullyQualifiedClassName));
+        }
 
         $this->configureOpenApiDocs($builder, $classFullyQualifiedClassName);
 
@@ -144,13 +149,8 @@ class DeleteControllerConfigurator extends BaseControllerConfigurator implements
      */
     protected function configureMethodBody(string $classFullyQualifiedClassName): string
     {
-        $className = FQCNHelper::transformFQCNToShortClassName($classFullyQualifiedClassName);
-        $lowercase = StringUtils::firstToLowercase($className);
-
-        return <<<PHP
-            // TODO: Implement
-            
-            return \$this->json(\$entity, Response::HTTP_CREATED, [], ['groups' => ['{$lowercase}:detail', 'reference']]);
+        return <<<'PHP'
+            return $this->handleDelete($id);
         PHP;
     }
 }

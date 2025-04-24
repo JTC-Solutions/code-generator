@@ -8,6 +8,7 @@ use JtcSolutions\CodeGenerator\Exception\TemplateNotValidPhpCodeException;
 use JtcSolutions\CodeGenerator\Service\CodeRenderer\Controller\IControllerCodeRenderer;
 use JtcSolutions\CodeGenerator\Service\Configurator\Controller\IControllerConfigurator;
 use JtcSolutions\CodeGenerator\Service\Writer\Controller\IControllerClassWriter;
+use JtcSolutions\Core\Entity\IEntity;
 use ReflectionException;
 use RuntimeException;
 
@@ -32,7 +33,7 @@ abstract class BaseControllerGenerator
     /**
      * Generates the controller class file based on the target entity class.
      *
-     * @param class-string $classFullyQualifiedClassName The fully qualified class name of the target entity.
+     * @param class-string<IEntity> $classFullyQualifiedClassName The fully qualified class name of the target entity.
      * @throws ConfigurationException If configuration fails (e.g., duplicate items).
      * @throws RuntimeException If file writing fails.
      * @throws TemplateNotValidPhpCodeException If generated code is invalid PHP.

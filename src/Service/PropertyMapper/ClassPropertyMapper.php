@@ -46,16 +46,18 @@ class ClassPropertyMapper
     {
         if ($propertyType instanceof ReflectionNamedType) {
             if ($propertyType->isBuiltin() === true) {
-                return new MappedProperty($property->getName(), $propertyType->getName());
+                return new MappedProperty($property->getName(), $propertyType->getName(), null, $propertyType->allowsNull());
             }
 
             foreach ($this->propertyTypeDetectors as $propertyTypeDetector) {
                 if ($propertyTypeDetector->supports($property, $propertyType)) {
                     $fullyQualifiedClassName = $propertyTypeDetector->detect($property, $propertyType);
+
                     return new MappedProperty(
                         name: $property->getName(),
                         type: FQCNHelper::transformFQCNToShortClassName($fullyQualifiedClassName),
                         useStatement: $fullyQualifiedClassName,
+                        nullable: $propertyType->allowsNull(),
                     );
                 }
             }

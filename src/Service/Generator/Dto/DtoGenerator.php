@@ -26,6 +26,8 @@ class DtoGenerator
         protected readonly DtoClassWriter $classWriter,
         protected readonly DtoConfigurator $configurator,
         protected readonly DtoCodeRenderer $codeRenderer,
+        protected readonly string $prefix = '',
+        protected readonly string $suffix = '',
     ) {
     }
 
@@ -33,8 +35,6 @@ class DtoGenerator
      * Generates a DTO class file based on the target entity class.
      *
      * @param class-string $classFullyQualifiedClassName The fully qualified class name of the entity to base the DTO on.
-     * @param string $prefix Optional prefix for the generated DTO class name.
-     * @param string $suffix Optional suffix for the generated DTO class name.
      * @return class-string The fully qualified class name of the generated DTO.
      * @throws ConfigurationException If DTO configuration fails.
      * @throws RuntimeException If file writing fails.
@@ -44,10 +44,8 @@ class DtoGenerator
      */
     public function generate(
         string $classFullyQualifiedClassName,
-        string $prefix = '',
-        string $suffix = '',
     ): string {
-        $configuration = $this->configurator->configure($classFullyQualifiedClassName, $prefix, $suffix);
+        $configuration = $this->configurator->configure($classFullyQualifiedClassName, $this->prefix, $this->suffix);
         $code = $this->codeRenderer->renderCode($configuration);
 
         $dtoFullyQualifiedClassName = $configuration->getFullyQualifiedClassName();

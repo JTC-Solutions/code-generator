@@ -17,6 +17,8 @@ class ContextProviderTest extends TestCase
 
     private const DTO_TPL = 'App\Application\Dto\{domain}\{entity}';
 
+    private const SERVICE_TPL = 'App\Application\Service\{domain}\{entity}Service';
+
     private const ERROR_CLASS = 'App\Shared\ErrorDto';
 
     private const PAGEN_CLASS = 'App\Shared\PaginationDto';
@@ -66,6 +68,8 @@ class ContextProviderTest extends TestCase
         return new ContextProvider(
             controllerNamespaceTemplate: self::CONTROLLER_TPL,
             dtoNamespaceTemplate: self::DTO_TPL,
+            serviceNamespaceTemplate: self::SERVICE_TPL,
+            repositoryNamespaceTemplate: 'App\Repository',
             projectDir: self::PROJECT_DIR,
             projectBaseNamespace: self::BASE_NAMESPACE,
             errorResponseClass: self::ERROR_CLASS,

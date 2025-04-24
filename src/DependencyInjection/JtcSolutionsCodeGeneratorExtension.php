@@ -22,6 +22,8 @@ class JtcSolutionsCodeGeneratorExtension extends Extension
         // namespaces
         $container->setParameter('jtc_solutions_code_generator.global.controller_namespace_template', $config['global']['namespace']['controllerNamespaceTemplate']);
         $container->setParameter('jtc_solutions_code_generator.global.dto_namespace_template', $config['global']['namespace']['dtoNamespaceTemplate']);
+        $container->setParameter('jtc_solutions_code_generator.global.service_namespace_template', $config['global']['namespace']['serviceNamespaceTemplate']);
+        $container->setParameter('jtc_solutions_code_generator.global.repository_namespace_template', $config['global']['namespace']['repositoryNamespaceTemplate']);
 
         // project setting
         $container->setParameter('jtc_solutions_code_generator.global.project_dir', $config['global']['project']['projectDir']);
@@ -34,6 +36,11 @@ class JtcSolutionsCodeGeneratorExtension extends Extension
         // open api
         $container->setParameter('jtc_solutions_code_generator.global.error_response_class', $config['global']['openApi']['errorResponseClass']);
         $container->setParameter('jtc_solutions_code_generator.global.pagination_class', $config['global']['openApi']['paginationClass']);
+
+        foreach ($config['controllers'] as $controllerType => $controllerConfig) {
+            $parentParamName = sprintf('jtc_solutions_code_generator.controllers.%s.parent', $controllerType);
+            $container->setParameter($parentParamName, $controllerConfig['parent']);
+        }
     }
 
     public function getAlias(): string

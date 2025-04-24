@@ -11,6 +11,7 @@ class MappedProperty
         public string $name,
         public string $type,
         public ?string $useStatement = null,
+        public bool $nullable = false,
     ) {
     }
 }

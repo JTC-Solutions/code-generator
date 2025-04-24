@@ -1,5 +1,5 @@
 # JTC Solutions Code Generator Bundle
-Symfony bundle that helps generate boilerplate code for CRUD Controllers (List, Detail, Create, Update, Delete) and associated Request DTOs based on your Entities.
+Symfony bundle that helps generate boilerplate code for CRUD Controllers (List, Detail, Create, Update, Delete), DTOs, Repositories and Services.
 
 Designed primarily for Domain-Driven Design structured applications.
 
@@ -26,16 +26,18 @@ Create a configuration file (e.g., `config/packages/dev/jtc_solutions_code_gener
 # config/packages/dev/jtc_solutions_code_generator.yaml
 jtc_solutions_code_generator:
     global:
+        # Supported variables are {domain} and {entity}
+        # Example: App\Domain\Catalog\Entity\Product -> domain=Catalog, entity=Product
         namespace:
             # Template for generated controller namespaces.
-            # Placeholders: {domain}, {entity} (extracted from target entity FQCN)
-            # Example: App\Domain\Catalog\Entity\Product -> domain=Catalog, entity=Product
-            controllerNamespaceTemplate: 'App\UI\Controller\{domain}\{entity}' # Required
-
+            controllerNamespaceTemplate: 'App\{domain}\App\Api\{entity}'
             # Template for generated DTO namespaces.
-            # Placeholders: {domain}, {entity}
-            dtoNamespaceTemplate: 'App\Application\Dto\{domain}\{entity}' # Required
-
+            dtoNamespaceTemplate: 'App\{domain}\Domain\Dto\{entity}'   
+            # Template for generated Service namespace.
+            serviceNamespaceTemplate: 'App\{domain}\Domain\Service\{entity}'
+            # Template for generated Repository namespace.
+            repositoryNamespaceTemplate: 'App\{domain}\Infrastructure\Repository'
+            
         project:
             # Project source directory relative to kernel.project_dir
             # Example: 'src' or '.' if source is in the root
@@ -43,30 +45,51 @@ jtc_solutions_code_generator:
 
             # Base namespace corresponding to the projectDir
             # Example: 'App' for 'src/...'
-            projectBaseNamespace: 'App' # Required
+            projectBaseNamespace: 'project' # Required
 
             # Fully qualified class name (FQCN) of the interface that all your entities implement.
             # Used by the DTO generator to identify entity properties.
-            entityInterface: 'App\Domain\Shared\Entity\IEntity' # Required
+            entityInterface: JtcSolutions\Core\Entity\IEntity # Required
 
             # Fully qualified class name (FQCN) of the class to use as a type hint
             # in DTOs when an entity property is detected.
             # Example: A property 'product' of type Product (implements IEntity)
             # will become 'product' of type EntityId in the DTO.
-            dtoEntityReplacement: 'App\Domain\Shared\Dto\EntityId' # Required
+            dtoEntityReplacement: JtcSolutions\Core\Dto\EntityId
 
             # Fully qualified class name (FQCN) of an interface that generated
             # Request DTOs (for Create/Update) should implement.
-            requestDtoInterface: 'App\Application\Dto\IRequestDto' # Required
+            requestDtoInterface: JtcSolutions\Core\Dto\IEntityRequestBody
+            
+            # Properties that will be skipped and ignored for generations
+            # useful for common properties that you do not want in your DTOs and service such as entity Id, or timestamps.
+            ignoredProperties:
+              - "id"
+              - "createdAt"
+              - "createdBy"
 
         openApi:
             # Fully qualified class name (FQCN) of the DTO used for error responses
             # in generated OpenAPI documentation.
-            errorResponseClass: 'App\UI\Dto\ErrorResponse' # Required
+            errorResponseClass: JtcSolutions\Core\Dto\ErrorRequestJsonResponse
 
             # Fully qualified class name (FQCN) of the DTO used for pagination metadata
             # in generated OpenAPI documentation for list endpoints.
-            paginationClass: 'App\UI\Dto\PaginationMetadata' # Required
+            paginationClass: JtcSolutions\Core\Dto\Pagination
+    
+    # Configuration for controllers.
+    # - "parent" is default extended class
+    controllers:
+        create:
+          parent: JtcSolutions\Core\Controller\BaseEntityCRUDController
+        update:
+          parent: JtcSolutions\Core\Controller\BaseEntityCRUDController
+        delete:
+          parent: JtcSolutions\Core\Controller\BaseEntityCRUDController
+        detail:
+          parent: JtcSolutions\Core\Controller\BaseController
+        list:
+          parent: JtcSolutions\Core\Controller\BaseController
 ```
 #### Placeholders
 - `{domain}`: Extracted from the entity's namespace (e.g., `Catalog` from `App\Catalog\Domain\Entity\Product`).

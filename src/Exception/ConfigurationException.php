@@ -42,4 +42,12 @@ class ConfigurationException extends Exception
             ),
         );
     }
+
+    /**
+     * @param non-empty-string $message
+     */
+    public static function invalidConfigurationCombination(string $message): self
+    {
+        return new self($message);
+    }
 }

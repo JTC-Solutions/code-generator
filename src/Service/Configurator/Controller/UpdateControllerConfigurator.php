@@ -3,6 +3,7 @@
 namespace JtcSolutions\CodeGenerator\Service\Configurator\Controller;
 
 use Exception;
+use JtcSolutions\CodeGenerator\DependencyInjection\Configuration;
 use JtcSolutions\CodeGenerator\Dto\Configuration\Controller\ControllerConfiguration;
 use JtcSolutions\CodeGenerator\Dto\Configuration\Controller\Method\MethodArgumentConfiguration;
 use JtcSolutions\CodeGenerator\Dto\Configuration\Controller\Method\MethodConfiguration;
@@ -17,6 +18,7 @@ use JtcSolutions\Helpers\Helper\StringUtils;
 use Nelmio\ApiDocBundle\Attribute\Model;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Attribute\Route;
 
 /**
@@ -47,15 +49,17 @@ class UpdateControllerConfigurator extends BaseControllerConfigurator implements
      * @param string $controllerNameTemplate Template for the controller class name.
      * @param bool $callParentConstructor Whether to call parent::__construct in the generated controller.
      * @param string $argumentName The name for the DTO argument in the method signature.
+     * @param class-string $defaultParent class of configured parent class.
      */
     public function __construct(
         ContextProvider $contextProvider,
+        string $defaultParent,
         string $methodName = self::DEFAULT_METHOD_NAME,
         string $controllerNameTemplate = self::DEFAULT_CONTROLLER_NAME_TEMPLATE,
-        bool $callParentConstructor = false,
+        bool $callParentConstructor = true,
         protected readonly string $argumentName = self::DEFAULT_ARGUMENT_NAME,
     ) {
-        parent::__construct($contextProvider, $methodName, $controllerNameTemplate, $callParentConstructor);
+        parent::__construct($contextProvider, $methodName, $controllerNameTemplate, $callParentConstructor, $defaultParent);
     }
 
     /**
@@ -69,6 +73,10 @@ class UpdateControllerConfigurator extends BaseControllerConfigurator implements
     public function configure(string $classFullyQualifiedClassName): ControllerConfiguration
     {
         $builder = $this->createBuilder($classFullyQualifiedClassName);
+
+        if ($this->contextProvider->serviceFullyQualifiedClassName !== null) {
+            $builder->addConstructorParam(new MethodArgumentConfiguration('service', $this->contextProvider->serviceFullyQualifiedClassName));
+        }
 
         $this->configureOpenApiDocs($builder, $classFullyQualifiedClassName);
 
@@ -95,15 +103,15 @@ class UpdateControllerConfigurator extends BaseControllerConfigurator implements
             $this->configureMethodBody($classFullyQualifiedClassName),
         );
 
-        if ($this->contextProvider->dtoFullyQualifiedClassName !== null) {
-            $dtoClassName = FQCNHelper::transformFQCNToShortClassName($this->contextProvider->dtoFullyQualifiedClassName);
-            $methodBuilder
-                ->addArgument(new MethodArgumentConfiguration($this->argumentName, $dtoClassName));
-        }
-
         $methodBuilder
             ->addArgument(new MethodArgumentConfiguration('id', $uuidClassName))
             ->addAttribute(MethodAttributeConfigurationFactory::createUpdateRouteAttribute($classFullyQualifiedClassName));
+
+        if ($this->contextProvider->dtoFullyQualifiedClassName !== null) {
+            $dtoClassName = FQCNHelper::transformFQCNToShortClassName($this->contextProvider->dtoFullyQualifiedClassName);
+            $methodBuilder
+                ->addArgument(new MethodArgumentConfiguration($this->argumentName, $dtoClassName, true));
+        }
 
         return $methodBuilder->build();
     }
@@ -120,6 +128,7 @@ class UpdateControllerConfigurator extends BaseControllerConfigurator implements
     {
         parent::configureUseStatements($builder, $classFullyQualifiedClassName);
 
+        $builder->addUseStatement(MapRequestPayload::class);
         $builder->addUseStatement(JsonResponse::class);
         $builder->addUseStatement(Route::class);
         $builder->addUseStatement(UuidInterface::class);
@@ -181,9 +190,7 @@ class UpdateControllerConfigurator extends BaseControllerConfigurator implements
         $lowercase = StringUtils::firstToLowercase($className);
 
         return <<<PHP
-            // TODO: Implement
-            
-            return \$this->json(\$entity, Response::HTTP_OK, [], ['groups' => ['{$lowercase}:detail', 'reference']]);
+            return \$this->handleUpdate(\$id, \$request, ['{$lowercase}:detail', 'reference']);
         PHP;
     }
 }

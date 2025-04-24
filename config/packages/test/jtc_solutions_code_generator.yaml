@@ -3,6 +3,8 @@ jtc_solutions_code_generator:
     namespace:
       controllerNamespaceTemplate: 'App\{domain}\App\Api\{entity}'
       dtoNamespaceTemplate: 'App\{domain}\Domain\Dto\{entity}'
+      serviceNamespaceTemplate: 'App\{domain}\Domain\Service'
+      repositoryNamespaceTemplate: 'App\{domain}\Infrastructure\Repository'
     project:
       projectBaseNamespace: 'App'
       projectDir: 'output'
@@ -16,3 +18,14 @@ jtc_solutions_code_generator:
     openApi:
       errorResponseClass: App\Shared\Domain\Dto\ErrorRequestJsonResponse
       paginationClass: App\Shared\Domain\Dto\Pagination
+  controllers:
+    create:
+      parent: JtcSolutions\Core\Controller\BaseEntityCRUDController
+    update:
+      parent: JtcSolutions\Core\Controller\BaseEntityCRUDController
+    delete:
+      parent: JtcSolutions\Core\Controller\BaseEntityCRUDController
+    detail:
+      parent: JtcSolutions\Core\Controller\BaseController
+    list:
+      parent: JtcSolutions\Core\Controller\BaseController
