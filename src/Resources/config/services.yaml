@@ -39,6 +39,9 @@ services:
   JtcSolutions\CodeGenerator\Service\Generator\Dto\DtoGenerator:
     public: true
 
+  JtcSolutions\CodeGenerator\Service\Generator\Service\ServiceGenerator:
+    public: true
+
   ## Configurators
 
   JtcSolutions\CodeGenerator\Service\Configurator\Controller\CreateControllerConfigurator:
