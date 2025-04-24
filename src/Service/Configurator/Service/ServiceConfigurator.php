@@ -215,7 +215,7 @@ class ServiceConfigurator
         $mapDataAndCallCreateMethod->addArgument(
             new MethodArgumentConfiguration(
                 argumentName: 'requestBody',
-                argumentType: $this->contextProvider->dtoFullyQualifiedClassName,
+                argumentType: FQCNHelper::transformFQCNToShortClassName($this->contextProvider->dtoFullyQualifiedClassName),
             ),
         );
 
@@ -255,7 +255,7 @@ class ServiceConfigurator
         $mapDataAndCallUpdateMethod->addArgument(
             new MethodArgumentConfiguration(
                 argumentName: 'requestBody',
-                argumentType: $this->contextProvider->dtoFullyQualifiedClassName,
+                argumentType: FQCNHelper::transformFQCNToShortClassName($this->contextProvider->dtoFullyQualifiedClassName),
             ),
         );
 
