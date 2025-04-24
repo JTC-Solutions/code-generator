@@ -2,7 +2,7 @@
 
 namespace JtcSolutions\CodeGenerator\DependencyInjection;
 
-use JtcSolutions\CodeGenerator\Tests\Functional\TestEntityClass\EntityId;
+use JtcSolutions\Core\Dto\EntityId;
 use JtcSolutions\Core\Dto\ErrorRequestJsonResponse;
 use JtcSolutions\Core\Dto\IEntityRequestBody;
 use JtcSolutions\Core\Dto\Pagination;
@@ -105,22 +105,16 @@ class Configuration implements ConfigurationInterface
                                     ->defaultValue('App')
                                 ->end()
                                 ->scalarNode('entityInterface')
-                                    ->isRequired()
-                                    ->cannotBeEmpty()
                                     ->info('Interface that all ORM or ODM entities share')
                                     ->example('App\\Shared\\Domain\\Entity\\IEntity')
                                     ->defaultValue(IEntity::class)
                                 ->end()
                                 ->scalarNode('dtoEntityReplacement')
-                                    ->isRequired()
-                                    ->cannotBeEmpty()
                                     ->info('Class that replaces entities in dto generations')
                                     ->example('App\\Shared\\Domain\\Dto\\EntityId')
                                     ->defaultValue(EntityId::class)
                                 ->end()
                                 ->scalarNode('requestDtoInterface')
-                                    ->isRequired()
-                                    ->cannotBeEmpty()
                                     ->info('Interface that will be given to entity request DTO')
                                     ->example('App\\Shared\\Domain\\Dto\\CRUD\\IEntityRequestBody')
                                     ->defaultValue(IEntityRequestBody::class)
@@ -134,15 +128,11 @@ class Configuration implements ConfigurationInterface
                         ->arrayNode('openApi')
                             ->children()
                                 ->scalarNode('errorResponseClass')
-                                    ->isRequired()
-                                    ->cannotBeEmpty()
                                     ->info('FQCN of class that will be used as error DTO.')
                                     ->example('App\Shared\Dto\ErrorResponse')
                                     ->defaultValue(ErrorRequestJsonResponse::class)
                                 ->end()
                                 ->scalarNode('paginationClass')
-                                    ->isRequired()
-                                    ->cannotBeEmpty()
                                     ->info('FQCN of class that will be used as pagination DTO.')
                                     ->example('App\Shared\Dto\Pagination')
                                     ->defaultValue(Pagination::class)
